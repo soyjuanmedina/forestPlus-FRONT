@@ -1,20 +1,22 @@
 <div class="flex h-screen bg-gray-100">
   <!-- Sidebar -->
   <aside class="w-64 bg-white shadow-md hidden md:block">
-    <div class="p-4 text-xl font-bold border-b">Menu</div>
+    <div class="p-4 text-xl font-bold border-b">{{ 'MENU.MENU' | translate }}</div>
     <nav class="p-4 space-y-2">
-      <a routerLink="/dashboard/home" class="block px-3 py-2 rounded-lg hover:bg-gray-200">Home</a>
-      <a routerLink="/dashboard/profile"
-        class="block px-3 py-2 rounded-lg hover:bg-gray-200">Profile</a>
-      <a routerLink="/dashboard/settings"
-        class="block px-3 py-2 rounded-lg hover:bg-gray-200">Settings</a>
+      <a routerLink="home" routerLinkActive="font-bold"
+        class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.HOME' | translate }}</a>
+      <a routerLink="profile" routerLinkActive="font-bold"
+        class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.PROFILE' | translate }}</a>
+      <a routerLink="settings" routerLinkActive="font-bold"
+        class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.SETTINGS' | translate }}</a>
     </nav>
   </aside>
 
   <!-- Main content -->
   <div class="flex-1 flex flex-col">
     <!-- Topbar -->
-    <header class="flex items-center justify-between bg-blue-600 text-white p-4 shadow-md">
+    <header
+      class="flex items-center justify-between bg-gradient-to-r from-teal-500 to-green-500 text-white p-4 shadow-md">
       <button class="md:hidden" (click)="toggleSidebar()">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
           stroke="currentColor">
@@ -22,40 +24,32 @@
             d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
-      <span class="font-bold">Dashboard</span>
+      <span class="font-bold">{{ 'DASHBOARD.DASHBOARD' | translate }}</span>
+      <div class="language-switcher">
+        <button [class.active]="selectedLang === 'es'" (click)="switchLanguage('es')">ES</button>
+        <button [class.active]="selectedLang === 'en'" (click)="switchLanguage('en')">EN</button>
+      </div>
     </header>
 
-    <!-- Content -->
-    <main class="p-6 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-      <div class="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition">
-        <h2 class="text-gray-600 text-lg">Users</h2>
-        <p class="text-3xl font-bold">150</p>
-      </div>
-
-      <div class="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition">
-        <h2 class="text-gray-600 text-lg">Companies</h2>
-        <p class="text-3xl font-bold">42</p>
-      </div>
-
-      <div class="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition">
-        <h2 class="text-gray-600 text-lg">CO₂ Absorption</h2>
-        <p class="text-3xl font-bold">12,300 kg</p>
-      </div>
+    <!-- Subpage content -->
+    <main class="p-6 flex-1 overflow-auto">
+      <router-outlet></router-outlet>
     </main>
   </div>
 </div>
 
-<!-- Mobile Sidebar Overlay -->
+<!-- Mobile sidebar overlay -->
 <div *ngIf="sidebarOpen" class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
   (click)="toggleSidebar()"></div>
 
 <aside *ngIf="sidebarOpen" class="fixed inset-y-0 left-0 w-64 bg-white shadow-md z-50 md:hidden">
-  <div class="p-4 text-xl font-bold border-b">Menu</div>
+  <div class="p-4 text-xl font-bold border-b">{{ 'MENU.MENU' | translate }}</div>
   <nav class="p-4 space-y-2">
-    <a routerLink="/dashboard/home" class="block px-3 py-2 rounded-lg hover:bg-gray-200">Home</a>
-    <a routerLink="/dashboard/profile"
-      class="block px-3 py-2 rounded-lg hover:bg-gray-200">Profile</a>
-    <a routerLink="/dashboard/settings"
-      class="block px-3 py-2 rounded-lg hover:bg-gray-200">Settings</a>
+    <a routerLink="home" (click)="toggleSidebar()" routerLinkActive="font-bold"
+      class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.HOME' | translate }}</a>
+    <a routerLink="profile" (click)="toggleSidebar()" routerLinkActive="font-bold"
+      class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.PROFILE' | translate }}</a>
+    <a routerLink="settings" (click)="toggleSidebar()" routerLinkActive="font-bold"
+      class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.SETTINGS' | translate }}</a>
   </nav>
 </aside>

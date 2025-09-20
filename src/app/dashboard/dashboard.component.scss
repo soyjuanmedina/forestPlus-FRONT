@@ -19,3 +19,30 @@
 .dashboard-card {
   text-align: center;
 }
+
+
+.language-switcher {
+  display: flex;
+  gap: 0.5rem;
+
+  button {
+// fondo transparente claro
+      background: transparent;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.75rem; // más pequeño
+    font-weight: 500;
+    transition: all 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    &.active {
+    background: rgba(255, 255, 255, 0.2); // fondo verde, distinto del botón principal
+      color: white;
+      font-weight: bold;
+    }
+  }
+}

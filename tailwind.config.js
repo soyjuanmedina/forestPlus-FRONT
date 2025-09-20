@@ -1,10 +1,19 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/**/*.{html,ts,scss}" // <- escanea todos tus templates y scss
+    "./src/**/*.{html,ts}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        forest: {
+          green: '#28a745',  // Verde principal
+          teal: '#00a7c4',   // Turquesa
+          light: '#f5f5f5',  // Gris claro
+          dark: '#1b4332'    // Verde oscuro opcional
+        },
+      },
+    },
   },
   plugins: [],
 }

@@ -1,8 +1,19 @@
 import { Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { HomeComponent } from './dashboard/home/home.component';
+import { ProfileComponent } from './dashboard/profile/profile.component';
+import { SettingsComponent } from './dashboard/settings/settings.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // raíz redirige al dashboard
-  { path: 'dashboard', component: DashboardComponent },
-  // otras rutas futuras aquí
+  {
+    path: '',
+    component: DashboardComponent,
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: HomeComponent },
+      { path: 'profile', component: ProfileComponent },
+      { path: 'settings', component: SettingsComponent }
+    ]
+  },
+  { path: '**', redirectTo: '' } // fallback
 ];

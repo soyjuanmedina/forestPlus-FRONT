@@ -1,0 +1,11 @@
+{
+  "MENU": {
+    "MENU": "Menu",
+    "HOME": "Home",
+    "PROFILE": "Profile",
+    "SETTINGS": "Settings"
+  },
+  "DASHBOARD": {
+    "DASHBOARD": "Dashboard"
+  }
+}
