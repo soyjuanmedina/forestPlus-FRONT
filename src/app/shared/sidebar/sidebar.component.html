@@ -1,29 +1,45 @@
-<!-- Sidebar desktop -->
-<aside class="w-64 bg-white shadow-md hidden md:block">
+<!-- Desktop Sidebar -->
+<aside class="w-64 bg-white shadow-md hidden md:block h-screen">
   <div class="p-4 text-xl font-bold border-b">{{ 'MENU.MENU' | translate }}</div>
   <nav class="p-4 space-y-2">
-    <a routerLink="home" routerLinkActive="font-bold"
-      class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.HOME' | translate }}</a>
-    <a routerLink="profile" routerLinkActive="font-bold"
-      class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.PROFILE' | translate }}</a>
-    <a routerLink="settings" routerLinkActive="font-bold"
-      class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.SETTINGS' | translate }}</a>
+    <ng-container *ngIf="auth.isLoggedIn; else loggedOutLinks">
+      <a routerLink="home" routerLinkActive="font-bold"
+        class="block px-3 py-2 rounded-lg hover:bg-gray-200"> {{ 'MENU.HOME' | translate }} </a>
+      <a routerLink="profile" routerLinkActive="font-bold"
+        class="block px-3 py-2 rounded-lg hover:bg-gray-200"> {{ 'MENU.PROFILE' | translate }} </a>
+      <a routerLink="settings" routerLinkActive="font-bold"
+        class="block px-3 py-2 rounded-lg hover:bg-gray-200"> {{ 'MENU.SETTINGS' | translate }} </a>
+    </ng-container>
+    <ng-template #loggedOutLinks>
+      <a routerLink="login" routerLinkActive="font-bold"
+        class="block px-3 py-2 rounded-lg hover:bg-gray-200"> {{ 'MENU.LOGIN' | translate }} </a>
+      <a routerLink="register" routerLinkActive="font-bold"
+        class="block px-3 py-2 rounded-lg hover:bg-gray-200"> {{ 'MENU.REGISTER' | translate }} </a>
+    </ng-template>
   </nav>
 </aside>
 
 <!-- Mobile overlay -->
 <div *ngIf="sidebarOpen" class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-  (click)="toggleSidebar()"></div>
+  (click)="closeSidebar()"></div>
 
-<!-- Sidebar mobile -->
+<!-- Mobile Sidebar -->
 <aside *ngIf="sidebarOpen" class="fixed inset-y-0 left-0 w-64 bg-white shadow-md z-50 md:hidden">
   <div class="p-4 text-xl font-bold border-b">{{ 'MENU.MENU' | translate }}</div>
   <nav class="p-4 space-y-2">
-    <a routerLink="home" (click)="toggleSidebar()" routerLinkActive="font-bold"
-      class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.HOME' | translate }}</a>
-    <a routerLink="profile" (click)="toggleSidebar()" routerLinkActive="font-bold"
-      class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.PROFILE' | translate }}</a>
-    <a routerLink="settings" (click)="toggleSidebar()" routerLinkActive="font-bold"
-      class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.SETTINGS' | translate }}</a>
+    <ng-container *ngIf="auth.isLoggedIn; else loggedOutLinksMobile">
+      <a routerLink="home" (click)="closeSidebar()" routerLinkActive="font-bold"
+        class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.HOME' | translate }}</a>
+      <a routerLink="profile" (click)="closeSidebar()" routerLinkActive="font-bold"
+        class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.PROFILE' | translate }}</a>
+      <a routerLink="settings" (click)="closeSidebar()" routerLinkActive="font-bold"
+        class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.SETTINGS' | translate }}</a>
+    </ng-container>
+    <ng-template #loggedOutLinksMobile>
+      <a routerLink="login" (click)="closeSidebar()" routerLinkActive="font-bold"
+        class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.LOGIN' | translate }}</a>
+      <a routerLink="register" (click)="closeSidebar()" routerLinkActive="font-bold"
+        class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.REGISTER' | translate }}</a>
+    </ng-template>
   </nav>
 </aside>

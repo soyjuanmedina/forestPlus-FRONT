@@ -3,7 +3,9 @@
     "MENU": "Menu",
     "HOME": "Inicio",
     "PROFILE": "Perfil",
-    "SETTINGS": "Ajustes"
+    "SETTINGS": "Ajustes",
+    "LOGIN": "Login",
+    "REGISTER": "Registro"
   },
   "DASHBOARD": {
     "DASHBOARD": "Dashboard"
