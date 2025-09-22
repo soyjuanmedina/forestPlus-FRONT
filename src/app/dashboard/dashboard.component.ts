@@ -2,31 +2,17 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { SidebarComponent } from '../shared/sidebar/sidebar.component';
+import { HeaderComponent } from '../shared/header/header.component';
 
 @Component( {
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet, TranslateModule],
+  imports: [CommonModule, RouterModule, RouterOutlet, TranslateModule, SidebarComponent, HeaderComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 } )
 export class DashboardComponent {
   sidebarOpen = false;
   selectedLang = 'es';
-
-  constructor ( private translate: TranslateService ) {
-    // Idioma por defecto
-    translate.setDefaultLang( 'es' );
-    // Idioma inicial
-    translate.use( 'es' );
-  }
-
-  toggleSidebar () {
-    this.sidebarOpen = !this.sidebarOpen;
-  }
-
-  switchLanguage ( lang: string ) {
-    this.selectedLang = lang;
-    this.translate.use( lang );
-  }
 }

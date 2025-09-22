@@ -1,55 +1,12 @@
 <div class="flex h-screen bg-gray-100">
-  <!-- Sidebar -->
-  <aside class="w-64 bg-white shadow-md hidden md:block">
-    <div class="p-4 text-xl font-bold border-b">{{ 'MENU.MENU' | translate }}</div>
-    <nav class="p-4 space-y-2">
-      <a routerLink="home" routerLinkActive="font-bold"
-        class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.HOME' | translate }}</a>
-      <a routerLink="profile" routerLinkActive="font-bold"
-        class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.PROFILE' | translate }}</a>
-      <a routerLink="settings" routerLinkActive="font-bold"
-        class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.SETTINGS' | translate }}</a>
-    </nav>
-  </aside>
+  <app-sidebar [(sidebarOpen)]="sidebarOpen"></app-sidebar>
 
-  <!-- Main content -->
   <div class="flex-1 flex flex-col">
-    <!-- Topbar -->
-    <header
-      class="flex items-center justify-between bg-gradient-to-r from-teal-500 to-green-500 text-white p-4 shadow-md">
-      <button class="md:hidden" (click)="toggleSidebar()">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
-      <span class="font-bold">{{ 'DASHBOARD.DASHBOARD' | translate }}</span>
-      <div class="language-switcher">
-        <button [class.active]="selectedLang === 'es'" (click)="switchLanguage('es')">ES</button>
-        <button [class.active]="selectedLang === 'en'" (click)="switchLanguage('en')">EN</button>
-      </div>
-    </header>
+    <app-header [(selectedLang)]="selectedLang" (toggleSidebar)="sidebarOpen = !sidebarOpen">
+    </app-header>
 
-    <!-- Subpage content -->
     <main class="p-6 flex-1 overflow-auto">
       <router-outlet></router-outlet>
     </main>
   </div>
 </div>
-
-<!-- Mobile sidebar overlay -->
-<div *ngIf="sidebarOpen" class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-  (click)="toggleSidebar()"></div>
-
-<aside *ngIf="sidebarOpen" class="fixed inset-y-0 left-0 w-64 bg-white shadow-md z-50 md:hidden">
-  <div class="p-4 text-xl font-bold border-b">{{ 'MENU.MENU' | translate }}</div>
-  <nav class="p-4 space-y-2">
-    <a routerLink="home" (click)="toggleSidebar()" routerLinkActive="font-bold"
-      class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.HOME' | translate }}</a>
-    <a routerLink="profile" (click)="toggleSidebar()" routerLinkActive="font-bold"
-      class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.PROFILE' | translate }}</a>
-    <a routerLink="settings" (click)="toggleSidebar()" routerLinkActive="font-bold"
-      class="block px-3 py-2 rounded-lg hover:bg-gray-200">{{ 'MENU.SETTINGS' | translate }}</a>
-  </nav>
-</aside>
