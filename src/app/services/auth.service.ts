@@ -1,13 +1,34 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 
-@Injectable( { providedIn: 'root' } )
+@Injectable( {
+  providedIn: 'root'
+} )
 export class AuthService {
-  private loggedIn = new BehaviorSubject<boolean>( false );
-  isLoggedIn$ = this.loggedIn.asObservable();
+  private user: any = null; // aquí guardamos el usuario (puede venir del localStorage)
 
-  login () { this.loggedIn.next( true ); }
-  logout () { this.loggedIn.next( false ); }
+  constructor () {
+    // ejemplo: cargar usuario del localStorage
+    const storedUser = localStorage.getItem( 'user' );
+    if ( storedUser ) {
+      this.user = JSON.parse( storedUser );
+    }
+  }
 
-  get isLoggedIn () { return this.loggedIn.value; }
+  isLoggedIn (): boolean {
+    return this.user !== null;
+  }
+
+  login ( userData: any ) {
+    this.user = userData;
+    localStorage.setItem( 'user', JSON.stringify( userData ) );
+  }
+
+  logout () {
+    this.user = null;
+    localStorage.removeItem( 'user' );
+  }
+
+  getUser () {
+    return this.user;
+  }
 }
