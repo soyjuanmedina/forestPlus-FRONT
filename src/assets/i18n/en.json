@@ -9,5 +9,19 @@
   },
   "DASHBOARD": {
     "DASHBOARD": "Dashboard"
+  },
+  "LOGIN": {
+    "TITLE": "Login",
+    "EMAIL": "Email",
+    "EMAIL_PLACEHOLDER": "example@email.com",
+    "EMAIL_REQUIRED": "Email is required",
+    "EMAIL_INVALID": "Invalid email format",
+    "PASSWORD": "Password",
+    "PASSWORD_PLACEHOLDER": "Enter your password",
+    "PASSWORD_REQUIRED": "Password is required",
+    "PASSWORD_MINLENGTH": "Password must be at least {{length}} characters",
+    "BUTTON": "Login",
+    "NO_ACCOUNT": "Don't have an account?",
+    "REGISTER": "Register"
   }
 }

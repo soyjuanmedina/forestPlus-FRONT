@@ -9,5 +9,19 @@
   },
   "DASHBOARD": {
     "DASHBOARD": "Dashboard"
+  },
+  "LOGIN": {
+    "TITLE": "Iniciar Sesión",
+    "EMAIL": "Correo electrónico",
+    "EMAIL_PLACEHOLDER": "ejemplo@correo.com",
+    "EMAIL_REQUIRED": "El email es obligatorio",
+    "EMAIL_INVALID": "Formato de email inválido",
+    "PASSWORD": "Contraseña",
+    "PASSWORD_PLACEHOLDER": "Introduce tu contraseña",
+    "PASSWORD_REQUIRED": "La contraseña es obligatoria",
+    "PASSWORD_MINLENGTH": "La contraseña debe tener al menos {{length}} caracteres",
+    "BUTTON": "Iniciar Sesión",
+    "NO_ACCOUNT": "¿No tienes cuenta?",
+    "REGISTER": "Regístrate"
   }
 }

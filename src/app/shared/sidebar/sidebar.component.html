@@ -2,7 +2,7 @@
 <aside class="w-64 bg-white shadow-md hidden md:block h-screen">
   <div class="p-4 text-xl font-bold border-b">{{ 'MENU.MENU' | translate }}</div>
   <nav class="p-4 space-y-2">
-    <ng-container *ngIf="auth.isLoggedIn; else loggedOutLinks">
+    <ng-container *ngIf="auth.isLoggedIn(); else loggedOutLinks">
       <a routerLink="home" routerLinkActive="font-bold"
         class="block px-3 py-2 rounded-lg hover:bg-gray-200"> {{ 'MENU.HOME' | translate }} </a>
       <a routerLink="profile" routerLinkActive="font-bold"

@@ -8,6 +8,8 @@ import { TranslateHttpLoader } from './app/i18n/translate.loader';
 import { HttpClient } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // <--- importante
+
 
 export function HttpLoaderFactory ( http: HttpClient ) {
   return new TranslateHttpLoader( http, '/assets/i18n/', '.json' );
@@ -18,6 +20,7 @@ bootstrapApplication( AppComponent, {
     provideHttpClient(),
     provideRouter( routes ),
     importProvidersFrom(
+      BrowserAnimationsModule,
       TranslateModule.forRoot( {
         loader: {
           provide: TranslateLoader,

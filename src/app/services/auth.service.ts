@@ -19,8 +19,8 @@ export class AuthService {
   }
 
   login ( userData: any ) {
-    this.user = userData;
-    localStorage.setItem( 'user', JSON.stringify( userData ) );
+    // this.user = userData;
+    // localStorage.setItem( 'user', JSON.stringify( userData ) );
   }
 
   logout () {

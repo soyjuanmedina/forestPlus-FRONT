@@ -1,1 +1,45 @@
-<p>login works!</p>
+<div class="flex flex-col items-center justify-start min-h-screen bg-gray-100 pt-16">
+  <mat-card class="w-full max-w-md p-6 shadow-lg rounded-2xl">
+    <h3 class="text-xl font-semibold mb-4 text-center">{{ 'LOGIN.TITLE' | translate }}</h3>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="w-full mb-4">
+        <mat-label>{{ 'LOGIN.EMAIL' | translate }}</mat-label>
+        <input matInput placeholder="{{ 'LOGIN.EMAIL_PLACEHOLDER' | translate }}"
+          formControlName="email">
+        <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+          {{ 'LOGIN.EMAIL_REQUIRED' | translate }}
+        </mat-error>
+        <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+          {{ 'LOGIN.EMAIL_INVALID' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full mb-6">
+        <mat-label>{{ 'LOGIN.PASSWORD' | translate }}</mat-label>
+        <input matInput [type]="hidePassword ? 'password' : 'text'"
+          placeholder="{{ 'LOGIN.PASSWORD_PLACEHOLDER' | translate }}" formControlName="password">
+        <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+          {{ 'LOGIN.PASSWORD_REQUIRED' | translate }}
+        </mat-error>
+        <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
+          {{ 'LOGIN.PASSWORD_MINLENGTH' | translate:{length:6} }}
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="w-full py-3 mb-4" type="submit"
+        [disabled]="loginForm.invalid">
+        {{ 'LOGIN.BUTTON' | translate }}
+      </button>
+    </form>
+
+    <p class="text-center text-gray-500">
+      {{ 'LOGIN.NO_ACCOUNT' | translate }}
+      <a routerLink="register" class="text-blue-500 font-semibold hover:underline">{{
+        'LOGIN.REGISTER' | translate }}</a>
+    </p>
+  </mat-card>
+</div>
