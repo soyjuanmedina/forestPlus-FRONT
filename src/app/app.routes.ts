@@ -8,18 +8,18 @@ import { LoginComponent } from './dashboard/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   {
     path: '',
     component: DashboardComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
-      { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent },
-      { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-      { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
-      { path: '**', redirectTo: 'home' } // fallback
+      { path: 'home', component: HomeComponent },
+      { path: 'profile', component: ProfileComponent },
+      { path: 'settings', component: SettingsComponent }
     ]
   },
-  { path: '**', redirectTo: '' } // fallback
+  { path: '**', redirectTo: 'login' }
 ];

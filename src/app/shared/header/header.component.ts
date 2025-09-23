@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AuthService } from '../../services/auth.service';
 
 @Component( {
   selector: 'app-header',
@@ -14,7 +16,7 @@ export class HeaderComponent {
 
   @Output() toggleSidebar = new EventEmitter<void>(); // para abrir/cerrar sidebar mobile
 
-  constructor ( private translate: TranslateService ) { }
+  constructor ( private translate: TranslateService, private authService: AuthService, private router: Router ) { }
 
   switchLanguage ( lang: string ) {
     this.selectedLang = lang;
@@ -24,5 +26,10 @@ export class HeaderComponent {
 
   onToggleSidebar () {
     this.toggleSidebar.emit();
+  }
+
+  logout () {
+    this.authService.logout();
+    this.router.navigate( ['/login'] ); // redirige al login
   }
 }

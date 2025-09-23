@@ -1,0 +1,8 @@
+{
+  "/api": {
+    "target": "https://forestplus-back-production.up.railway.app",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

@@ -1,14 +1,20 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
+
+
 
 @Injectable( {
   providedIn: 'root'
 } )
 export class AuthService {
+  private baseUrl = `/api/auth`;
   private user: any = null; // aquí guardamos el usuario (puede venir del localStorage)
 
-  constructor () {
+  constructor ( private http: HttpClient ) {
     // ejemplo: cargar usuario del localStorage
-    const storedUser = localStorage.getItem( 'user' );
+    const storedUser = localStorage.getItem( 'forestPlus_user' );
     if ( storedUser ) {
       this.user = JSON.parse( storedUser );
     }
@@ -18,14 +24,19 @@ export class AuthService {
     return this.user !== null;
   }
 
-  login ( userData: any ) {
-    // this.user = userData;
-    // localStorage.setItem( 'user', JSON.stringify( userData ) );
+  login ( credentials: { email: string; password: string } ): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>( `${this.baseUrl}/login`, credentials ).pipe(
+      tap( res => {
+        localStorage.setItem( 'forestPlus_token', res.token );
+        this.user = { email: credentials.email };
+        localStorage.setItem( 'forestPlus_user', JSON.stringify( this.user ) );
+      } )
+    );
   }
 
   logout () {
-    this.user = null;
-    localStorage.removeItem( 'user' );
+    localStorage.removeItem( 'forestPlus_token' );
+    localStorage.removeItem( 'forestPlus_user' );
   }
 
   getUser () {
