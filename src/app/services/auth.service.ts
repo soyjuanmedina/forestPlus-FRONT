@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 } )
 export class AuthService {
-  private baseUrl = `/api/auth`;
+  private baseUrl = `${environment.apiBaseUrl}/auth`;
   private user: any = null; // aquí guardamos el usuario (puede venir del localStorage)
 
   constructor ( private http: HttpClient ) {
