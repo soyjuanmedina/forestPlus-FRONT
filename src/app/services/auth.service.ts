@@ -4,6 +4,8 @@ import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { UserService } from './user.service';
 import { LoginResponse } from '../models/login.response';
+import { UserResponse } from '../models/user.response';
+import { RegisterUserRequest } from '../models/register.request ';
 
 
 
@@ -24,6 +26,10 @@ export class AuthService {
 
   isLoggedIn (): boolean {
     return this.user !== null;
+  }
+
+  register ( request: RegisterUserRequest ): Observable<UserResponse> {
+    return this.http.post<UserResponse>( `${this.baseUrl}/register`, request );
   }
 
   login ( credentials: { email: string; password: string } ): Observable<LoginResponse> {

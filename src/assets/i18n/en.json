@@ -24,5 +24,42 @@
     "BUTTON": "Login",
     "NO_ACCOUNT": "Don't have an account?",
     "REGISTER": "Register"
+  },
+  "HOME": {
+    "TITLE": "Welcome to Forest+",
+    "LINES": [
+      "The platform that combines technology and innovation to care for our planet.",
+      "Using satellite imagery and Artificial Intelligence, we make digital reforestation possible with traceability and measurable results.",
+      "We regenerate ecosystems and help organizations achieve their climate goals efficiently.",
+      "Together, we build a greener future."
+    ]
+  },
+  "PROFILE": {
+    "ROLE": "Role"
+  },
+  "REGISTER": {
+    "TITLE": "Create Account",
+    "NAME": "First Name",
+    "NAME_PLACEHOLDER": "Enter your first name",
+    "NAME_REQUIRED": "First name is required",
+    "SURNAME": "Last Name",
+    "SURNAME_PLACEHOLDER": "Enter your last name",
+    "SURNAME_REQUIRED": "Last name is required",
+    "SECOND_SURNAME": "Second Last Name",
+    "SECOND_SURNAME_PLACEHOLDER": "Enter your second last name (optional)",
+    "EMAIL": "Email",
+    "EMAIL_PLACEHOLDER": "Enter your email",
+    "EMAIL_REQUIRED": "Email is required",
+    "EMAIL_INVALID": "Invalid email address",
+    "PASSWORD": "Password",
+    "PASSWORD_PLACEHOLDER": "Enter your password",
+    "PASSWORD_REQUIRED": "Password is required",
+    "PASSWORD_MINLENGTH": "Password must be at least {{length}} characters",
+    "ROLE": "Role",
+    "ROLE_REQUIRED": "Role is required",
+    "BUTTON": "Register",
+    "HAVE_ACCOUNT": "Already have an account?",
+    "LOGIN": "Login",
+    "SUCCESS": "Thank you for registering at Forest+. Please confirm your email before logging in."
   }
 }

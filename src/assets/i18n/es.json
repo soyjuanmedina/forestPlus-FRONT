@@ -12,7 +12,7 @@
     "LOGOUT": "Cerrar sesion"
   },
   "LOGIN": {
-    "TITLE": "Iniciar Sesión",
+    "TITLE": "Inicio de Sesión",
     "EMAIL": "Correo electrónico",
     "EMAIL_PLACEHOLDER": "ejemplo@correo.com",
     "EMAIL_REQUIRED": "El email es obligatorio",
@@ -24,5 +24,42 @@
     "BUTTON": "Iniciar Sesión",
     "NO_ACCOUNT": "¿No tienes cuenta?",
     "REGISTER": "Regístrate"
+  },
+  "HOME": {
+    "TITLE": "Bienvenido a Forest+",
+    "LINES": [
+      "La plataforma que combina tecnología e innovación para cuidar nuestro planeta.",
+      "Con imágenes satelitales e Inteligencia Artificial, hacemos posible la reforestación digital con trazabilidad y resultados medibles.",
+      "Regeneramos ecosistemas y ayudamos a organizaciones a cumplir sus metas climáticas de manera eficiente.",
+      "Juntos, construimos un futuro más verde."
+    ]
+  },
+  "PROFILE": {
+    "ROLE": "Rol"
+  },
+  "REGISTER": {
+    "TITLE": "Crear cuenta",
+    "NAME": "Nombre",
+    "NAME_PLACEHOLDER": "Introduce tu nombre",
+    "NAME_REQUIRED": "El nombre es obligatorio",
+    "SURNAME": "Primer apellido",
+    "SURNAME_PLACEHOLDER": "Introduce tu primer apellido",
+    "SURNAME_REQUIRED": "El primer apellido es obligatorio",
+    "SECOND_SURNAME": "Segundo apellido",
+    "SECOND_SURNAME_PLACEHOLDER": "Introduce tu segundo apellido (opcional)",
+    "EMAIL": "Correo electrónico",
+    "EMAIL_PLACEHOLDER": "Introduce tu correo electrónico",
+    "EMAIL_REQUIRED": "El correo electrónico es obligatorio",
+    "EMAIL_INVALID": "El correo electrónico no es válido",
+    "PASSWORD": "Contraseña",
+    "PASSWORD_PLACEHOLDER": "Introduce tu contraseña",
+    "PASSWORD_REQUIRED": "La contraseña es obligatoria",
+    "PASSWORD_MINLENGTH": "La contraseña debe tener al menos {{length}} caracteres",
+    "ROLE": "Rol",
+    "ROLE_REQUIRED": "El rol es obligatorio",
+    "BUTTON": "Registrarse",
+    "HAVE_ACCOUNT": "¿Ya tienes una cuenta?",
+    "LOGIN": "Iniciar sesión",
+    "SUCCESS": "Gracias por registrarte en Forest+. Por favor, confirma tu correo electrónico antes de hacer login"
   }
 }

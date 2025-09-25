@@ -1,1 +1,8 @@
-<p>home works!</p>
+<section class="home-presentation p-8 max-w-5xl mx-auto text-center space-y-6">
+  <h1 class="text-4xl font-extrabold text-green-800">{{ 'HOME.TITLE' | translate }}<span
+      *ngIf="userName">, {{ userName }}</span></h1>
+
+  <p *ngFor="let line of 'HOME.LINES' | translate" class="text-lg text-gray-700 leading-relaxed">
+    {{ line }}
+  </p>
+</section>

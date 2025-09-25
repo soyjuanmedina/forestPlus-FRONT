@@ -4,16 +4,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { UserResponse } from '../../models/user.response';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component( {
   selector: 'app-profile',
   standalone: true,
-  templateUrl: './profile.component.html',
   imports: [
     CommonModule,
+    TranslateModule,
     MatCardModule,
     MatButtonModule
   ],
+  templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 } )
 export class ProfileComponent implements OnInit {
