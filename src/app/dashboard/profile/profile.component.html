@@ -1,1 +1,16 @@
-<p>profile works!</p>
+<div class="max-w-sm mx-auto" *ngIf="user">
+  <mat-card class="rounded-2xl shadow-md p-4">
+    <div class="flex flex-col items-center text-center">
+      <img src="https://i.pravatar.cc/150?u={{ user.id }}" alt="Avatar"
+        class="w-24 h-24 rounded-full shadow-lg mb-4" />
+      <h2 class="text-xl font-semibold">{{ user.name }}&nbsp;{{ user.surname }}&nbsp;{{
+        user.secondSurname }}</h2>
+      <p class="text-gray-500">{{ user.email }}</p>
+      <p class="mt-2 text-sm text-gray-600">Rol: {{ user.role }}</p>
+
+      <div class="flex gap-2 mt-4">
+        <button mat-raised-button color="primary">Editar</button>
+      </div>
+    </div>
+  </mat-card>
+</div>
