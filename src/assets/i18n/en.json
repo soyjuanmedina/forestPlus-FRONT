@@ -23,7 +23,11 @@
     "PASSWORD_MINLENGTH": "Password must be at least {{length}} characters",
     "BUTTON": "Login",
     "NO_ACCOUNT": "Don't have an account?",
-    "REGISTER": "Register"
+    "REGISTER": "Register",
+    "EMAIL_NOT_VERIFIED": "Email has not been verified",
+    "RESEND_EMAIL": "Resend verification email",
+    "VERIFICATION_EMAIL_SENT": "A new verification email has been sent",
+    "VERIFICATION_EMAIL_FAILED": "Failed to send the verification email"
   },
   "HOME": {
     "TITLE": "Welcome to Forest+",
@@ -60,6 +64,15 @@
     "BUTTON": "Register",
     "HAVE_ACCOUNT": "Already have an account?",
     "LOGIN": "Login",
-    "SUCCESS": "Thank you for registering at Forest+. Please confirm your email before logging in."
+    "SUCCESS": "Thank you for registering at Forest+. Please confirm your email before logging in.",
+    "ALREADY_ACCOUNT": "¿Already account?"
+  },
+  "VERIFY_EMAIL": {
+    "TITLE": "Email Verification",
+    "PROCESSING": "We are verifying your email, please wait...",
+    "SUCCESS": "Your email has been successfully verified! 🎉",
+    "ERROR": "An error occurred while verifying your email.",
+    "INVALID_LINK": "The verification link is invalid.",
+    "GO_TO_LOGIN": "Go to Login"
   }
 }

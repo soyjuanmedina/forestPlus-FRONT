@@ -1,0 +1,117 @@
+<div class="flex flex-col items-center justify-start min-h-screen bg-gray-100 pt-16">
+
+  <!-- Logo -->
+  <div class="flex flex-col items-center mb-4">
+    <img src="assets/logo.png" alt="Forest+ Logo" class="h-24 w-24 mb-4" />
+  </div>
+
+  <div class="w-full max-w-3xl p-6 bg-white shadow-lg rounded-2xl">
+    <h1 class="text-2xl font-bold text-green-700 text-center mb-6">
+      {{ 'REGISTER.TITLE' | translate }}
+    </h1>
+
+    <!-- Formulario -->
+    <form *ngIf="!registerSuccess" [formGroup]="registerForm" (ngSubmit)="onSubmit()"
+      class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <!-- Nombre ocupa ambas columnas -->
+      <div class="md:col-span-2">
+        <label class="block text-gray-700 mb-1">{{ 'REGISTER.NAME' | translate }}</label>
+        <input type="text" formControlName="name"
+          placeholder="{{ 'REGISTER.NAME_PLACEHOLDER' | translate }}"
+          class="w-full px-4 py-2 border-b border-gray-300 focus:border-green-500 focus:outline-none bg-transparent">
+        <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched"
+          class="text-red-500 text-sm mt-1">
+          <div *ngIf="registerForm.get('name')?.hasError('required')">{{ 'REGISTER.NAME_REQUIRED' |
+            translate }}</div>
+        </div>
+      </div>
+
+      <!-- Apellido y Segundo Apellido -->
+      <div>
+        <label class="block text-gray-700 mb-1">{{ 'REGISTER.SURNAME' | translate }}</label>
+        <input type="text" formControlName="surname"
+          placeholder="{{ 'REGISTER.SURNAME_PLACEHOLDER' | translate }}"
+          class="w-full px-4 py-2 border-b border-gray-300 focus:border-green-500 focus:outline-none bg-transparent">
+        <div *ngIf="registerForm.get('surname')?.invalid && registerForm.get('surname')?.touched"
+          class="text-red-500 text-sm mt-1">
+          <div *ngIf="registerForm.get('surname')?.hasError('required')">{{
+            'REGISTER.SURNAME_REQUIRED'
+            | translate }}</div>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-gray-700 mb-1">{{ 'REGISTER.SECOND_SURNAME' | translate }}</label>
+        <input type="text" formControlName="secondSurname"
+          placeholder="{{ 'REGISTER.SECOND_SURNAME_PLACEHOLDER' | translate }}"
+          class="w-full px-4 py-2 border-b border-gray-300 focus:border-green-500 focus:outline-none bg-transparent">
+      </div>
+
+      <!-- Email ocupa ambas columnas -->
+      <div class="md:col-span-2">
+        <label class="block text-gray-700 mb-1">{{ 'REGISTER.EMAIL' | translate }}</label>
+        <input type="email" formControlName="email"
+          placeholder="{{ 'REGISTER.EMAIL_PLACEHOLDER' | translate }}"
+          class="w-full px-4 py-2 border-b border-gray-300 focus:border-green-500 focus:outline-none bg-transparent">
+        <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+          class="text-red-500 text-sm mt-1">
+          <div *ngIf="registerForm.get('email')?.hasError('required')">{{ 'REGISTER.EMAIL_REQUIRED'
+            |
+            translate }}</div>
+          <div *ngIf="registerForm.get('email')?.hasError('email')">{{ 'REGISTER.EMAIL_INVALID' |
+            translate }}</div>
+        </div>
+      </div>
+
+      <!-- Contraseña ocupa ambas columnas -->
+      <div class="md:col-span-2 relative">
+        <label class="block text-gray-700 mb-1">{{ 'REGISTER.PASSWORD' | translate }}</label>
+        <input [type]="hidePassword ? 'password' : 'text'" formControlName="password"
+          placeholder="{{ 'REGISTER.PASSWORD_PLACEHOLDER' | translate }}"
+          class="w-full px-4 py-2 border-b border-gray-300 focus:border-green-500 focus:outline-none bg-transparent">
+        <button type="button" (click)="hidePassword = !hidePassword"
+          class="absolute right-0 top-1/2 transform -translate-y-1/2 px-2 text-gray-500">
+          {{ hidePassword ? '👁️‍🗨️' : '👁️' }}
+        </button>
+        <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+          class="text-red-500 text-sm mt-1">
+          <div *ngIf="registerForm.get('password')?.hasError('required')">{{
+            'REGISTER.PASSWORD_REQUIRED' | translate }}</div>
+          <div *ngIf="registerForm.get('password')?.hasError('minlength')">{{
+            'REGISTER.PASSWORD_MINLENGTH' | translate:{length:6} }}</div>
+        </div>
+      </div>
+
+      <!-- Botón registro -->
+      <div class="md:col-span-2 mt-4">
+        <button type="submit"
+          class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 disabled:opacity-50"
+          [disabled]="registerForm.invalid">
+          {{ 'REGISTER.BUTTON' | translate }}
+        </button>
+      </div>
+
+    </form>
+
+
+    <!-- Mensaje de éxito -->
+    <div *ngIf="registerSuccess" class="text-center text-green-600 font-semibold text-lg mt-4">
+      {{ 'REGISTER.SUCCESS' | translate }}
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="registerError" class="text-center text-red-500 mt-4">
+      {{ registerError }}
+    </div>
+
+    <!-- Después del mensaje de error o éxito -->
+    <p class="text-center text-gray-500 mt-4">
+      {{ 'REGISTER.ALREADY_ACCOUNT' | translate }}
+      <a [routerLink]="['../login']" class="text-blue-500 font-semibold hover:underline">
+        {{ 'REGISTER.LOGIN' | translate }}
+      </a>
+    </p>
+
+  </div>
+</div>

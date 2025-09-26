@@ -1,0 +1,35 @@
+<div class="flex flex-col items-center justify-start min-h-screen bg-gray-100 pt-16">
+  <!-- Logo -->
+  <div class="flex flex-col items-center mb-4">
+    <img src="assets/logo.png" alt="Forest+ Logo" class="h-24 w-24 mb-4" />
+  </div>
+
+  <mat-card class="w-full max-w-3xl p-6 shadow-lg rounded-2xl">
+    <h1 class="text-2xl font-bold text-green-700 text-center mb-6">
+      {{ 'VERIFY_EMAIL.TITLE' | translate }}
+    </h1>
+
+    <!-- Spinner de carga -->
+    <div *ngIf="loading" class="flex flex-col items-center justify-center">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p class="mt-4 text-gray-600">{{ 'VERIFY_EMAIL.PROCESSING' | translate }}</p>
+    </div>
+
+    <!-- Mensaje de éxito -->
+    <div *ngIf="!loading && success" class="text-center text-green-600 font-semibold text-lg mt-4">
+      {{ 'VERIFY_EMAIL.SUCCESS' | translate }}
+      <!-- Botón para ir al login -->
+      <div class="mt-6">
+        <a routerLink="/login"
+          class="bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded-lg">
+          {{ 'VERIFY_EMAIL.GO_TO_LOGIN' | translate }}
+        </a>
+      </div>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="!loading && !success" class="text-center text-red-600 font-semibold mt-4">
+      {{ errorMessage || ('VERIFY_EMAIL.ERROR' | translate) }}
+    </div>
+  </mat-card>
+</div>

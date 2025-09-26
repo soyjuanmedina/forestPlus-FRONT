@@ -7,7 +7,7 @@
     "start-local": "ng serve --configuration local",
     "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
-    "test": "ng generate component dashboard/register"
+    "test": "ng generate component email-verify"
   },
   "private": true,
   "dependencies": {

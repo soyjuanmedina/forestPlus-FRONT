@@ -7,7 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component( {
   selector: 'app-login',
@@ -16,10 +16,6 @@ import { TranslateModule } from '@ngx-translate/core';
     CommonModule,
     ReactiveFormsModule,
     TranslateModule,
-    MatInputModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
     RouterModule
   ],
   templateUrl: './login.component.html',
@@ -29,14 +25,30 @@ export class LoginComponent {
   loginForm: FormGroup;
   hidePassword = true;
   loginError: string | null = null;
+  showResendButton: boolean = false;
+  unverifiedEmail: string | null = null;
 
-  constructor ( private fb: FormBuilder, private authService: AuthService, private router: Router ) {
+  constructor ( private fb: FormBuilder, private authService: AuthService, private router: Router, private translate: TranslateService ) {
     this.loginForm = this.fb.group( {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength( 6 )]]
     } );
     this.loginForm.valueChanges.subscribe( () => {
       this.loginError = null;
+    } );
+  }
+
+  resendVerificationEmail () {
+    if ( !this.unverifiedEmail ) return;
+
+    this.authService.resendVerificationEmail( { email: this.unverifiedEmail } ).subscribe( {
+      next: () => {
+        this.loginError = this.translate.instant( 'LOGIN.VERIFICATION_EMAIL_SENT' );
+        this.showResendButton = false;
+      },
+      error: ( err ) => {
+        this.loginError = this.translate.instant( 'LOGIN.VERIFICATION_EMAIL_FAILED' );
+      }
     } );
   }
 
@@ -54,7 +66,20 @@ export class LoginComponent {
         },
         error: ( err ) => {
           console.error( err );
-          this.loginError = 'Usuario o contraseña incorrectos';
+          const backendMessage = err.error?.message || 'LOGIN.GENERIC_ERROR';
+
+          if ( backendMessage === 'EMAIL_NOT_VERIFIED' ) {
+            // Mostrar mensaje con botón
+            this.loginError = this.translate.instant( 'LOGIN.EMAIL_NOT_VERIFIED' );
+            this.showResendButton = true;
+            this.unverifiedEmail = this.loginForm.value.email; // Guardar email
+          } else {
+            // Mensajes normales
+            this.translate.get( backendMessage ).subscribe( translated => {
+              this.loginError = translated;
+              this.showResendButton = false;
+            } );
+          }
         }
       } );
     }

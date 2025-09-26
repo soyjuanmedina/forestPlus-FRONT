@@ -23,7 +23,11 @@
     "PASSWORD_MINLENGTH": "La contraseña debe tener al menos {{length}} caracteres",
     "BUTTON": "Iniciar Sesión",
     "NO_ACCOUNT": "¿No tienes cuenta?",
-    "REGISTER": "Regístrate"
+    "REGISTER": "Regístrate",
+    "EMAIL_NOT_VERIFIED": "El email no ha sido verificado",
+    "RESEND_EMAIL": "Enviar nuevo correo de verificación",
+    "VERIFICATION_EMAIL_SENT": "Se ha enviado un nuevo correo de verificación",
+    "VERIFICATION_EMAIL_FAILED": "Ha fallado el envio del correo de verificación"
   },
   "HOME": {
     "TITLE": "Bienvenido a Forest+",
@@ -60,6 +64,15 @@
     "BUTTON": "Registrarse",
     "HAVE_ACCOUNT": "¿Ya tienes una cuenta?",
     "LOGIN": "Iniciar sesión",
-    "SUCCESS": "Gracias por registrarte en Forest+. Por favor, confirma tu correo electrónico antes de hacer login"
+    "SUCCESS": "Gracias por registrarte en Forest+. Por favor, confirma tu correo electrónico antes de hacer login",
+    "ALREADY_ACCOUNT": "¿Ya tienes cuenta?"
+  },
+  "VERIFY_EMAIL": {
+    "TITLE": "Verificación de correo",
+    "PROCESSING": "Estamos verificando tu correo, por favor espera...",
+    "SUCCESS": "¡Tu correo ha sido verificado correctamente! 🎉",
+    "ERROR": "Ha ocurrido un error al verificar tu correo.",
+    "INVALID_LINK": "El enlace de verificación no es válido.",
+    "GO_TO_LOGIN": "Ir a Iniciar Sesión"
   }
 }

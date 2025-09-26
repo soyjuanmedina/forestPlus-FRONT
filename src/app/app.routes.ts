@@ -3,13 +3,15 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './dashboard/home/home.component';
 import { ProfileComponent } from './dashboard/profile/profile.component';
 import { SettingsComponent } from './dashboard/settings/settings.component';
-import { RegisterComponent } from './dashboard/register/register.component';
-import { LoginComponent } from './dashboard/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
+import { EmailVerifyComponent } from './pages/email-verify/email-verify.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'verify-email', component: EmailVerifyComponent },
   {
     path: '',
     component: DashboardComponent,

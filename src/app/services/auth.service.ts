@@ -6,6 +6,7 @@ import { UserService } from './user.service';
 import { LoginResponse } from '../models/login.response';
 import { UserResponse } from '../models/user.response';
 import { RegisterUserRequest } from '../models/register.request ';
+import { ResendVerificationEmailRequest } from '../models/resend-verification-request';
 
 
 
@@ -32,6 +33,13 @@ export class AuthService {
     return this.http.post<UserResponse>( `${this.baseUrl}/register`, request );
   }
 
+  resendVerificationEmail ( request: ResendVerificationEmailRequest ): Observable<void> {
+    return this.http.post<void>(
+      `${this.baseUrl}/resend-verification`,
+      request
+    );
+  }
+
   login ( credentials: { email: string; password: string } ): Observable<LoginResponse> {
     return this.http.post<LoginResponse>( `${this.baseUrl}/login`, credentials ).pipe(
       tap( res => {
@@ -46,6 +54,10 @@ export class AuthService {
   logout () {
     localStorage.removeItem( 'forestPlus_token' );
     localStorage.removeItem( 'forestPlus_user' );
+  }
+
+  verifyEmail ( uuid: string ): Observable<any> {
+    return this.http.get( `${this.baseUrl}/verify?uuid=${uuid}` );
   }
 
   getUser () {
