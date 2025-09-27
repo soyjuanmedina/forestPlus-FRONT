@@ -1,13 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { finalize } from 'rxjs/operators';
 
 @Component( {
   selector: 'app-login',
@@ -19,23 +16,78 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     RouterModule
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrls: ['./login.component.scss']
 } )
 export class LoginComponent {
   loginForm: FormGroup;
+  forgotForm: FormGroup;
   hidePassword = true;
   loginError: string | null = null;
   showResendButton: boolean = false;
   unverifiedEmail: string | null = null;
+  success = false;
+  forgotMode = false;
 
-  constructor ( private fb: FormBuilder, private authService: AuthService, private router: Router, private translate: TranslateService ) {
+  constructor (
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private translate: TranslateService
+  ) {
     this.loginForm = this.fb.group( {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength( 6 )]]
     } );
-    this.loginForm.valueChanges.subscribe( () => {
-      this.loginError = null;
+
+    this.forgotForm = this.fb.group( {
+      email: ['', [Validators.required, Validators.email]]
     } );
+
+    this.loginForm.valueChanges.subscribe( () => this.loginError = null );
+  }
+
+  toggleForgotMode () {
+    this.forgotMode = !this.forgotMode;
+    this.success = false;
+    this.loginError = null;
+  }
+
+  onSubmit () {
+    if ( this.forgotMode ) {
+      this.onForgotSubmit();
+      return;
+    }
+
+    if ( this.loginForm.valid ) {
+      const { email, password } = this.loginForm.value;
+      this.authService.login( { email, password } )
+        .subscribe( {
+          next: ( res ) => {
+            if ( res.forcePasswordChange ) {
+              this.router.navigateByUrl( '/reset-password' );
+            } else if ( this.authService.isLoggedIn() ) {
+              this.router.navigateByUrl( '/' );
+            }
+          },
+          error: ( err ) => this.handleLoginError( err )
+        } );
+    }
+  }
+
+  private handleLoginError ( err: any ) {
+    console.error( err );
+    const backendMessage = err.error?.message || 'LOGIN.GENERIC_ERROR';
+
+    if ( backendMessage === 'EMAIL_NOT_VERIFIED' ) {
+      this.loginError = this.translate.instant( 'LOGIN.EMAIL_NOT_VERIFIED' );
+      this.showResendButton = true;
+      this.unverifiedEmail = this.loginForm.value.email;
+    } else {
+      this.translate.get( backendMessage ).subscribe( translated => {
+        this.loginError = translated;
+        this.showResendButton = false;
+      } );
+    }
   }
 
   resendVerificationEmail () {
@@ -46,42 +98,25 @@ export class LoginComponent {
         this.loginError = this.translate.instant( 'LOGIN.VERIFICATION_EMAIL_SENT' );
         this.showResendButton = false;
       },
-      error: ( err ) => {
+      error: () => {
         this.loginError = this.translate.instant( 'LOGIN.VERIFICATION_EMAIL_FAILED' );
       }
     } );
   }
 
-  onSubmit () {
-    if ( this.loginForm.valid ) {
-      const { email, password } = this.loginForm.value;
+  onForgotSubmit () {
+    if ( this.forgotForm.invalid ) return;
 
-      this.authService.login( { email, password } ).subscribe( {
-        next: ( res ) => {
-          // Login exitoso, ir a /home
-          console.log( 'Login', );
-          if ( this.authService.isLoggedIn() ) {
-            this.router.navigateByUrl( '/' ); // Esto redirige al DashboardComponent
-          }
+    const email = this.forgotForm.value.email;
+    this.authService.forgotPassword( email )
+      .pipe( finalize( () => { } ) ) // el spinner global ya se encarga
+      .subscribe( {
+        next: () => {
+          this.success = true;
         },
         error: ( err ) => {
-          console.error( err );
-          const backendMessage = err.error?.message || 'LOGIN.GENERIC_ERROR';
-
-          if ( backendMessage === 'EMAIL_NOT_VERIFIED' ) {
-            // Mostrar mensaje con botón
-            this.loginError = this.translate.instant( 'LOGIN.EMAIL_NOT_VERIFIED' );
-            this.showResendButton = true;
-            this.unverifiedEmail = this.loginForm.value.email; // Guardar email
-          } else {
-            // Mensajes normales
-            this.translate.get( backendMessage ).subscribe( translated => {
-              this.loginError = translated;
-              this.showResendButton = false;
-            } );
-          }
+          alert( err?.error?.message || 'Error enviando correo de restablecimiento' );
         }
       } );
-    }
   }
 }

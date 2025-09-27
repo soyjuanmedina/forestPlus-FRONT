@@ -9,12 +9,6 @@
       {{ 'VERIFY_EMAIL.TITLE' | translate }}
     </h1>
 
-    <!-- Spinner de carga -->
-    <div *ngIf="loading" class="flex flex-col items-center justify-center">
-      <mat-spinner diameter="50"></mat-spinner>
-      <p class="mt-4 text-gray-600">{{ 'VERIFY_EMAIL.PROCESSING' | translate }}</p>
-    </div>
-
     <!-- Mensaje de éxito -->
     <div *ngIf="!loading && success" class="text-center text-green-600 font-semibold text-lg mt-4">
       {{ 'VERIFY_EMAIL.SUCCESS' | translate }}

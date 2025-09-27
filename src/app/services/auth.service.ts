@@ -40,6 +40,23 @@ export class AuthService {
     );
   }
 
+  resetPassword ( payload: { newPassword: string } ): Observable<any> {
+    const token = localStorage.getItem( 'forestPlus_token' );
+    return this.http.post( `${this.baseUrl}/reset-password`, payload, {
+      headers: { Authorization: `Bearer ${token}` }
+    } );
+  }
+
+  forgotPassword ( email: string ): Observable<any> {
+    return this.http.post( `${this.baseUrl}/forgot-password`, { email } );
+  }
+
+  resetForgotPassword ( uuid: string, newPassword: string ): Observable<any> {
+    return this.http.post( `${this.baseUrl}/forgot-password/reset?uuid=${uuid}`, {
+      newPassword
+    } );
+  }
+
   login ( credentials: { email: string; password: string } ): Observable<LoginResponse> {
     return this.http.post<LoginResponse>( `${this.baseUrl}/login`, credentials ).pipe(
       tap( res => {

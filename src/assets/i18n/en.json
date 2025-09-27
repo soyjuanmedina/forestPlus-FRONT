@@ -27,7 +27,12 @@
     "EMAIL_NOT_VERIFIED": "Email has not been verified",
     "RESEND_EMAIL": "Resend verification email",
     "VERIFICATION_EMAIL_SENT": "A new verification email has been sent",
-    "VERIFICATION_EMAIL_FAILED": "Failed to send the verification email"
+    "VERIFICATION_EMAIL_FAILED": "Failed to send the verification email",
+    "FORGOT_PASSWORD_TITLE": "Reset Password",
+    "FORGOT_PASSWORD_SUCCESS": "A password reset email has been sent. Please check your inbox.",
+    "GO_TO_LOGIN": "Back to Login",
+    "FORGOT_PASSWORD": "Forgot your password?",
+    "SEND_NEW_PASSWORD": "Send New Password"
   },
   "HOME": {
     "TITLE": "Welcome to Forest+",

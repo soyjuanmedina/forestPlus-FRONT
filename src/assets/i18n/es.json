@@ -27,7 +27,12 @@
     "EMAIL_NOT_VERIFIED": "El email no ha sido verificado",
     "RESEND_EMAIL": "Enviar nuevo correo de verificación",
     "VERIFICATION_EMAIL_SENT": "Se ha enviado un nuevo correo de verificación",
-    "VERIFICATION_EMAIL_FAILED": "Ha fallado el envio del correo de verificación"
+    "VERIFICATION_EMAIL_FAILED": "Ha fallado el envio del correo de verificación",
+    "FORGOT_PASSWORD_TITLE": "Restablecer contraseña",
+    "FORGOT_PASSWORD_SUCCESS": "Se ha enviado un correo para restablecer tu contraseña. Revisa tu bandeja de entrada.",
+    "GO_TO_LOGIN": "Volver al inicio de sesión",
+    "FORGOT_PASSWORD": "¿Olvidaste tu contraseña?",
+    "SEND_NEW_PASSWORD": "Enviar nueva contraseña"
   },
   "HOME": {
     "TITLE": "Bienvenido a Forest+",
