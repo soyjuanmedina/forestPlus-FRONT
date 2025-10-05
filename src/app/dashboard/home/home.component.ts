@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { UserResponse } from '../../models/user.response';
 import { UserService } from '../../services/user.service';
+import { UserResponseDto } from '../../api';
 
 @Component( {
   selector: 'app-home',
@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   constructor ( private userService: UserService ) { }
 
   ngOnInit (): void {
-    this.userService.getUser().subscribe( ( user: UserResponse | null ) => {
+    this.userService.getUser().subscribe( ( user: UserResponseDto | null ) => {
       this.userName = user?.name || '';
     } );
   }

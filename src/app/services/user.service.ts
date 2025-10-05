@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { UserResponse } from '../models/user.response';
+import { UserResponseDto } from '../api/model/userResponse';
+
 
 @Injectable( { providedIn: 'root' } )
 export class UserService {
-  private userSubject = new BehaviorSubject<UserResponse | null>( null );
+  private userSubject = new BehaviorSubject<UserResponseDto | null>( null );
 
   constructor () {
     const savedUser = localStorage.getItem( 'user' );
@@ -13,16 +14,16 @@ export class UserService {
     }
   }
 
-  setUser ( user: UserResponse ) {
+  setUser ( user: UserResponseDto ) {
     this.userSubject.next( user );
     localStorage.setItem( 'user', JSON.stringify( user ) );
   }
 
-  getUser (): Observable<UserResponse | null> {
+  getUser (): Observable<UserResponseDto | null> {
     return this.userSubject.asObservable();
   }
 
-  getCurrentUser (): UserResponse | null {
+  getCurrentUser (): UserResponseDto | null {
     return this.userSubject.value;
   }
 

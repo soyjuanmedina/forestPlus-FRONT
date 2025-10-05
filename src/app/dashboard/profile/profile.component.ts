@@ -2,9 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { UserService } from '../../services/user.service';
-import { UserResponse } from '../../models/user.response';
 import { TranslateModule } from '@ngx-translate/core';
+import { UserResponseDto } from '../../api';
+import { UserService } from '../../services/user.service';
 
 @Component( {
   selector: 'app-profile',
@@ -19,7 +19,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./profile.component.scss']
 } )
 export class ProfileComponent implements OnInit {
-  @Input() user?: UserResponse;
+  @Input() user?: UserResponseDto;
 
   constructor ( private userService: UserService ) { }
 
