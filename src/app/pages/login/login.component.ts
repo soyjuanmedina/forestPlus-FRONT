@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
+import { AuthControllerService } from '../../api/api/authController.service';
 
 @Component( {
   selector: 'app-login',
@@ -30,9 +31,10 @@ export class LoginComponent {
 
   constructor (
     private fb: FormBuilder,
-    private authService: AuthService,
+    private authControllerService: AuthControllerService,
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private authService: AuthService
   ) {
     this.loginForm = this.fb.group( {
       email: ['', [Validators.required, Validators.email]],
@@ -60,7 +62,7 @@ export class LoginComponent {
 
     if ( this.loginForm.valid ) {
       const { email, password } = this.loginForm.value;
-      this.authService.login( { email, password } )
+      this.authControllerService.login( { email, password } )
         .subscribe( {
           next: ( res ) => {
             if ( res.forcePasswordChange ) {
@@ -93,7 +95,7 @@ export class LoginComponent {
   resendVerificationEmail () {
     if ( !this.unverifiedEmail ) return;
 
-    this.authService.resendVerificationEmail( { email: this.unverifiedEmail } ).subscribe( {
+    this.authControllerService.resendVerification( { email: this.unverifiedEmail } ).subscribe( {
       next: () => {
         this.loginError = this.translate.instant( 'LOGIN.VERIFICATION_EMAIL_SENT' );
         this.showResendButton = false;
@@ -108,7 +110,7 @@ export class LoginComponent {
     if ( this.forgotForm.invalid ) return;
 
     const email = this.forgotForm.value.email;
-    this.authService.forgotPassword( email )
+    this.authControllerService.forgotPassword( email )
       .pipe( finalize( () => { } ) ) // el spinner global ya se encarga
       .subscribe( {
         next: () => {

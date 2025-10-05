@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { UserService } from '../../services/user.service';
 import { UserResponse } from '../../models/user.response';
+import { UserService } from '../../services/user.service';
 
 @Component( {
   selector: 'app-home',

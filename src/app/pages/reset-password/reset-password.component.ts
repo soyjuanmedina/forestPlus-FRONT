@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { AuthControllerService, ResetPasswordRequestDto } from '../../api';
+import { Observable } from 'rxjs';
 
 @Component( {
   selector: 'app-reset-password',
@@ -29,7 +30,7 @@ export class ResetPasswordComponent {
 
   constructor (
     private fb: FormBuilder,
-    private authService: AuthService,
+    private authControllerService: AuthControllerService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -55,12 +56,20 @@ export class ResetPasswordComponent {
     // Diferenciar endpoints según el tipo de token
     const isUUID = this.token.length === 36 && this.token.includes( '-' );
 
-    const request$ = isUUID
-      ? this.authService.resetForgotPassword( this.token!, newPassword as string )
-      : this.authService.resetPassword( {
-        newPassword: newPassword as string
-      } );               // Endpoint: /reset-password con JWT
 
+    let request$: Observable<any>;
+
+    if ( isUUID ) {
+      // Caso: reset por UUID (forgot-password/reset)
+      const payload: ResetPasswordRequestDto = { newPassword: newPassword as string };
+      request$ = this.authControllerService.resetForgotPassword( this.token, payload );
+
+    } else {
+      // Caso: reset con JWT (usuario logueado)
+      const payload: ResetPasswordRequestDto = { newPassword: newPassword as string };
+      const authHeader = `Bearer ${this.token}`;
+      request$ = this.authControllerService.resetPassword( authHeader, payload );
+    }
     request$.subscribe( {
       next: () => {
         this.successMessage = 'Contraseña cambiada correctamente';

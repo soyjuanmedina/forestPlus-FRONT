@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { AuthService } from '../../services/auth.service';
 
 @Component( {
   selector: 'app-sidebar',
@@ -15,7 +15,7 @@ export class SidebarComponent {
   @Input() sidebarOpen = false;                // estado desde el padre
   @Output() sidebarOpenChange = new EventEmitter<boolean>();
 
-  constructor ( public auth: AuthService ) { }
+  constructor ( public authService: AuthService ) { }
 
   toggleSidebar () {
     this.sidebarOpen = !this.sidebarOpen;

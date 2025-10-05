@@ -1,0 +1,15 @@
+export * from './authController.service';
+import { AuthControllerService } from './authController.service';
+export * from './companyController.service';
+import { CompanyControllerService } from './companyController.service';
+export * from './coordinateController.service';
+import { CoordinateControllerService } from './coordinateController.service';
+export * from './landController.service';
+import { LandControllerService } from './landController.service';
+export * from './pingController.service';
+import { PingControllerService } from './pingController.service';
+export * from './treeController.service';
+import { TreeControllerService } from './treeController.service';
+export * from './userController.service';
+import { UserControllerService } from './userController.service';
+export const APIS = [AuthControllerService, CompanyControllerService, CoordinateControllerService, LandControllerService, PingControllerService, TreeControllerService, UserControllerService];

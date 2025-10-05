@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
+import { AuthControllerService } from '../../api/api/authController.service';
 
 @Component( {
   standalone: true,
@@ -25,14 +25,14 @@ export class EmailVerifyComponent implements OnInit {
   success = false;
   errorMessage: string | null = null;
 
-  constructor ( private route: ActivatedRoute, private authService: AuthService, private translate: TranslateService ) { }
+  constructor ( private route: ActivatedRoute, private authControllerService: AuthControllerService, private translate: TranslateService ) { }
 
   ngOnInit (): void {
     this.route.queryParams.subscribe( params => {
       const uuid = params['uuid'];
       console.log( 'uuid:', uuid );
       if ( uuid ) {
-        this.authService.verifyEmail( uuid ).subscribe( {
+        this.authControllerService.verifyEmail( uuid ).subscribe( {
           next: () => {
             this.success = true;
             this.loading = false;
