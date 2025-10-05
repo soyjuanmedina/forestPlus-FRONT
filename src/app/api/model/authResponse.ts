@@ -10,9 +10,18 @@
 import { UserResponseDto } from './userResponse';
 
 
+/**
+ * Respuesta de autenticación con token y datos del usuario
+ */
 export interface AuthResponseDto { 
+    /**
+     * Token JWT del usuario
+     */
     token?: string;
     user?: UserResponseDto;
-    forcePasswordChange?: boolean;
+    /**
+     * Indica si se requiere cambio de contraseña
+     */
+    forcePasswordChange?: boolean | null;
 }
 

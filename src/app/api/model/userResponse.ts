@@ -10,6 +10,9 @@
 import { CompanyResponseDto } from './companyResponse';
 
 
+/**
+ * Información del usuario logueado
+ */
 export interface UserResponseDto { 
     id?: number;
     name?: string;

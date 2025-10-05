@@ -9,6 +9,9 @@
  */
 
 
+/**
+ * Email del usuario que olvidó la contraseña
+ */
 export interface ForgotPasswordRequestDto { 
     email?: string;
 }

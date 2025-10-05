@@ -9,6 +9,9 @@
  */
 
 
+/**
+ * Email del usuario
+ */
 export interface ResendVerificationEmailRequestDto { 
     email?: string;
 }

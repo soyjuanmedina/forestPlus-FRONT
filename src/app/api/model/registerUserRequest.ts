@@ -9,6 +9,9 @@
  */
 
 
+/**
+ * Email y contraseña del usuario
+ */
 export interface RegisterUserRequestDto { 
     name?: string;
     surname?: string;

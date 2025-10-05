@@ -3,13 +3,49 @@
     <div class="flex flex-col items-center text-center">
       <img src="https://i.pravatar.cc/150?u={{ user.id }}" alt="Avatar"
         class="w-24 h-24 rounded-full shadow-lg mb-4" />
-      <h2 class="text-xl font-semibold">{{ user.name }}&nbsp;{{ user.surname }}&nbsp;{{
-        user.secondSurname }}</h2>
-      <p class="text-gray-500">{{ user.email }}</p>
 
-      <div class="flex gap-2 mt-4">
-        <button mat-raised-button color="primary">Editar</button>
-      </div>
+      <!-- 🔹 Modo lectura -->
+      <ng-container *ngIf="!editMode; else editForm">
+        <h2 class="text-xl font-semibold">
+          {{ user.name }} {{ user.surname }} {{ user.secondSurname }}
+        </h2>
+        <p class="text-gray-500">{{ user.email }}</p>
+
+        <div class="flex gap-2 mt-4">
+          <button mat-raised-button color="primary" (click)="toggleEdit()">Editar</button>
+        </div>
+      </ng-container>
+
+      <!-- 🔹 Modo edición -->
+      <ng-template #editForm>
+        <form (ngSubmit)="saveChanges()">
+          <mat-form-field appearance="outline" class="w-full mb-2">
+            <mat-label>Nombre</mat-label>
+            <input matInput [(ngModel)]="editData.name" name="name" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full mb-2">
+            <mat-label>Primer apellido</mat-label>
+            <input matInput [(ngModel)]="editData.surname" name="surname" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full mb-2">
+            <mat-label>Segundo apellido</mat-label>
+            <input matInput [(ngModel)]="editData.secondSurname" name="secondSurname" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full mb-2">
+            <mat-label>Email</mat-label>
+            <input matInput [(ngModel)]="editData.email" name="email" />
+          </mat-form-field>
+
+          <div class="flex gap-2 mt-4 justify-center">
+            <button mat-raised-button color="primary" type="submit">Guardar</button>
+            <button mat-stroked-button color="warn" type="button"
+              (click)="toggleEdit()">Cancelar</button>
+          </div>
+        </form>
+      </ng-template>
     </div>
   </mat-card>
 </div>

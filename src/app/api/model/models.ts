@@ -7,6 +7,7 @@ export * from './forgotPasswordRequest';
 export * from './landEntity';
 export * from './landRequest';
 export * from './landResponse';
+export * from './messageResponse';
 export * from './registerUserByAdminRequest';
 export * from './registerUserRequest';
 export * from './resendVerificationEmailRequest';

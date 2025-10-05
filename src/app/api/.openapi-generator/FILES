@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.base.service.ts
 api.module.ts
@@ -24,6 +23,7 @@ model/forgotPasswordRequest.ts
 model/landEntity.ts
 model/landRequest.ts
 model/landResponse.ts
+model/messageResponse.ts
 model/models.ts
 model/registerUserByAdminRequest.ts
 model/registerUserRequest.ts

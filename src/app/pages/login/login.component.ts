@@ -6,6 +6,7 @@ import { Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { AuthControllerService } from '../../api/api/authController.service';
+import { AuthResponseDto } from '../../api';
 
 @Component( {
   selector: 'app-login',
@@ -62,17 +63,23 @@ export class LoginComponent {
 
     if ( this.loginForm.valid ) {
       const { email, password } = this.loginForm.value;
-      this.authControllerService.login( { email, password } )
-        .subscribe( {
-          next: ( res ) => {
-            if ( res.forcePasswordChange ) {
-              this.router.navigateByUrl( '/reset-password' );
-            } else if ( this.authService.isLoggedIn() ) {
-              this.router.navigateByUrl( '/' );
-            }
-          },
-          error: ( err ) => this.handleLoginError( err )
-        } );
+      this.authControllerService.login( { email, password } ).subscribe( {
+        next: ( res: AuthResponseDto ) => {
+          // ✅ Guarda token y usuario
+          if ( res.token && res.user ) {
+            localStorage.setItem( 'forestPlus_token', res.token );
+            localStorage.setItem( 'forestPlus_user', JSON.stringify( res.user ) );
+            this.authService.setUser( res.user );
+          }
+          // ✅ Redirige según la respuesta
+          if ( res.forcePasswordChange ) {
+            this.router.navigateByUrl( '/reset-password' );
+          } else {
+            this.router.navigateByUrl( '/' );
+          }
+        },
+        error: ( err ) => this.handleLoginError( err )
+      } );
     }
   }
 

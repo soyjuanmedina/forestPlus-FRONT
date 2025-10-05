@@ -9,10 +9,7 @@
  */
 
 
-/**
- * Nueva contraseña
- */
-export interface ResetPasswordRequestDto { 
-    newPassword?: string;
+export interface MessageResponseDto { 
+    message?: string;
 }
 
