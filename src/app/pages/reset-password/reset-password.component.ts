@@ -3,8 +3,9 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthControllerService, ResetPasswordRequestDto } from '../../api';
 import { Observable } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
+import { ResetPasswordRequestDto } from '../../api';
 
 @Component( {
   selector: 'app-reset-password',
@@ -30,7 +31,7 @@ export class ResetPasswordComponent {
 
   constructor (
     private fb: FormBuilder,
-    private authControllerService: AuthControllerService,
+    private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -53,23 +54,12 @@ export class ResetPasswordComponent {
       return;
     }
 
-    // Diferenciar endpoints según el tipo de token
-    const isUUID = this.token.length === 36 && this.token.includes( '-' );
+    // Crear payload
+    const payload: ResetPasswordRequestDto = { newPassword: newPassword as string };
 
+    // Llamar al método unificado en AuthService
+    const request$ = this.authService.resetPassword( payload, this.isUUID( this.token ) ? this.token : undefined );
 
-    let request$: Observable<any>;
-
-    if ( isUUID ) {
-      // Caso: reset por UUID (forgot-password/reset)
-      const payload: ResetPasswordRequestDto = { newPassword: newPassword as string };
-      request$ = this.authControllerService.resetForgotPassword( this.token, payload );
-
-    } else {
-      // Caso: reset con JWT (usuario logueado)
-      const payload: ResetPasswordRequestDto = { newPassword: newPassword as string };
-      const authHeader = `Bearer ${this.token}`;
-      request$ = this.authControllerService.resetPassword( authHeader, payload );
-    }
     request$.subscribe( {
       next: () => {
         this.successMessage = 'Contraseña cambiada correctamente';
@@ -80,4 +70,10 @@ export class ResetPasswordComponent {
       }
     } );
   }
+
+  // Método auxiliar para detectar si el token es UUID
+  private isUUID ( token: string ): boolean {
+    return token.length === 36 && token.includes( '-' );
+  }
+
 }

@@ -5,8 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
-import { AuthControllerService } from '../../api/api/authController.service';
-import { AuthResponseDto } from '../../api';
+import { AuthResponseDto, UserResponseDto } from '../../api';
 
 @Component( {
   selector: 'app-login',
@@ -32,7 +31,6 @@ export class LoginComponent {
 
   constructor (
     private fb: FormBuilder,
-    private authControllerService: AuthControllerService,
     private router: Router,
     private translate: TranslateService,
     private authService: AuthService
@@ -63,20 +61,9 @@ export class LoginComponent {
 
     if ( this.loginForm.valid ) {
       const { email, password } = this.loginForm.value;
-      this.authControllerService.login( { email, password } ).subscribe( {
-        next: ( res: AuthResponseDto ) => {
-          // ✅ Guarda token y usuario
-          if ( res.token && res.user ) {
-            localStorage.setItem( 'forestPlus_token', res.token );
-            localStorage.setItem( 'forestPlus_user', JSON.stringify( res.user ) );
-            this.authService.setUser( res.user );
-          }
-          // ✅ Redirige según la respuesta
-          if ( res.forcePasswordChange ) {
-            this.router.navigateByUrl( '/reset-password' );
-          } else {
-            this.router.navigateByUrl( '/' );
-          }
+      this.authService.login( { email, password } ).subscribe( {
+        next: ( user: UserResponseDto ) => {
+          this.router.navigateByUrl( '/' );
         },
         error: ( err ) => this.handleLoginError( err )
       } );
@@ -102,7 +89,7 @@ export class LoginComponent {
   resendVerificationEmail () {
     if ( !this.unverifiedEmail ) return;
 
-    this.authControllerService.resendVerification( { email: this.unverifiedEmail } ).subscribe( {
+    this.authService.resendVerification( this.unverifiedEmail ).subscribe( {
       next: () => {
         this.loginError = this.translate.instant( 'LOGIN.VERIFICATION_EMAIL_SENT' );
         this.showResendButton = false;
@@ -117,7 +104,7 @@ export class LoginComponent {
     if ( this.forgotForm.invalid ) return;
 
     const email = this.forgotForm.value.email;
-    this.authControllerService.forgotPassword( email )
+    this.authService.forgotPassword( email )
       .pipe( finalize( () => { } ) ) // el spinner global ya se encarga
       .subscribe( {
         next: () => {

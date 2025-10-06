@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { UserResponseDto, RegisterUserRequestDto, UserControllerService } from '../../api';
+import { UserResponseDto, RegisterUserRequestDto } from '../../api';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 
@@ -34,13 +34,13 @@ export class ProfileComponent implements OnInit {
 
   constructor (
     private userService: UserService,
-    private userController: UserControllerService,
     private authService: AuthService
   ) { }
 
   ngOnInit (): void {
     this.userService.getUser().subscribe( u => {
       this.user = u ?? undefined;
+      console.log( 'ngOnInit', this.user );
     } );
   }
 
@@ -62,12 +62,11 @@ export class ProfileComponent implements OnInit {
       email: this.editData.email
     };
 
-    this.userController.updateUser( this.user.id, updateDto ).subscribe( {
-      next: updated => {
+    this.userService.updateUser( this.user.id, updateDto ).subscribe( {
+      next: ( updated: UserResponseDto ) => {
         this.user = updated;
         this.editMode = false;
-        this.userService.setUser( updated );
-        this.authService.setUser( updated );
+        this.authService.updateCurrentUser( updated );
       },
       error: err => {
         console.error( '❌ Error al actualizar usuario:', err );

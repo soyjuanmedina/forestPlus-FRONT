@@ -9,7 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthControllerService } from '../../api';
+import { AuthService } from '../../services/auth.service';
 
 @Component( {
   selector: 'app-register',
@@ -36,7 +36,7 @@ export class RegisterComponent {
   registerSuccess: boolean = false;
   roles = ['USER', 'ADMIN', 'COMPANY_ADMIN', 'COMPANY_USER'];
 
-  constructor ( private fb: FormBuilder, private authControllerService: AuthControllerService, private router: Router ) {
+  constructor ( private fb: FormBuilder, private authService: AuthService ) {
     this.registerForm = this.fb.group( {
       name: ['', Validators.required],
       surname: [''],
@@ -53,7 +53,7 @@ export class RegisterComponent {
     this.registerError = '';
     this.registerSuccess = false;
 
-    this.authControllerService.register( this.registerForm.value ).subscribe( {
+    this.authService.register( this.registerForm.value ).subscribe( {
       next: () => {
         this.registerSuccess = true; // mostrar mensaje de éxito
         this.registerForm.reset();   // opcional: limpiar el formulario

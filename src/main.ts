@@ -10,6 +10,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // <--- importante
 import { loadingInterceptor } from './app/interceptors/loading.interceptor';
+import { authInterceptor } from './app/interceptors/auth.interceptor';
 
 
 export function HttpLoaderFactory ( http: HttpClient ) {
@@ -30,6 +31,6 @@ bootstrapApplication( AppComponent, {
         }
       } )
     ),
-    provideHttpClient( withInterceptors( [loadingInterceptor] ) )
+    provideHttpClient( withInterceptors( [loadingInterceptor, authInterceptor] ) )
   ]
 } ).catch( err => console.error( err ) );
