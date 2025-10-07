@@ -40,7 +40,26 @@ export class AuthService {
   }
 
   /** Guardar usuario en localStorage y BehaviorSubject */
-  private setUser ( user: UserResponseDto, token?: string ): void {
+  private setUser ( user: any, token?: string ): void {
+    let parsedUser: UserResponseDto;
+
+    if ( user instanceof Blob ) {
+      // ⚙️ Si llega como Blob, lo convertimos a JSON antes de continuar
+      user.text().then( text => {
+        try {
+          parsedUser = JSON.parse( text ) as UserResponseDto;
+          this.applyUser( parsedUser, token );
+        } catch ( e ) {
+          console.error( '❌ Error al parsear usuario desde Blob:', e );
+        }
+      } );
+    } else {
+      parsedUser = user as UserResponseDto;
+      this.applyUser( parsedUser, token );
+    }
+  }
+
+  private applyUser ( user: UserResponseDto, token?: string ): void {
     this.userSubject.next( user );
     localStorage.setItem( 'forestPlus_user', JSON.stringify( user ) );
     if ( token ) {

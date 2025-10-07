@@ -38,9 +38,9 @@ export class ProfileComponent implements OnInit {
   ) { }
 
   ngOnInit (): void {
-    this.userService.getUser().subscribe( u => {
-      this.user = u ?? undefined;
-      console.log( 'ngOnInit', this.user );
+    this.authService.user$.subscribe( user => {
+      this.user = user ?? undefined;
+      console.log( 'asdf', this.user );
     } );
   }
 
