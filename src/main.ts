@@ -11,6 +11,8 @@ import { routes } from './app/app.routes';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // <--- importante
 import { loadingInterceptor } from './app/interceptors/loading.interceptor';
 import { authInterceptor } from './app/interceptors/auth.interceptor';
+import { provideApi } from './app/api';
+import { environment } from './environments/environment';
 
 
 export function HttpLoaderFactory ( http: HttpClient ) {
@@ -19,6 +21,7 @@ export function HttpLoaderFactory ( http: HttpClient ) {
 
 bootstrapApplication( AppComponent, {
   providers: [
+    provideApi( environment.apiBaseUrl ),
     provideHttpClient(),
     provideRouter( routes ),
     importProvidersFrom(

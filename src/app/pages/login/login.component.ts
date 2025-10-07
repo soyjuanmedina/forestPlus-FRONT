@@ -6,6 +6,7 @@ import { Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { AuthResponseDto, UserResponseDto } from '../../api';
+import { UserService } from '../../services/user.service';
 
 @Component( {
   selector: 'app-login',
@@ -33,7 +34,8 @@ export class LoginComponent {
     private fb: FormBuilder,
     private router: Router,
     private translate: TranslateService,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
   ) {
     this.loginForm = this.fb.group( {
       email: ['', [Validators.required, Validators.email]],
@@ -61,8 +63,11 @@ export class LoginComponent {
 
     if ( this.loginForm.valid ) {
       const { email, password } = this.loginForm.value;
+
+
       this.authService.login( { email, password } ).subscribe( {
         next: ( user: UserResponseDto ) => {
+          this.userService.updateCurrentUser( user );
           this.router.navigateByUrl( '/' );
         },
         error: ( err ) => this.handleLoginError( err )
