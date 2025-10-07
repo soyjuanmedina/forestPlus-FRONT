@@ -8,6 +8,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { EmailVerifyComponent } from './pages/email-verify/email-verify.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { RoleGuard } from './guards/role.guard';
+import { AdminPageComponent } from './dashboard/admin/admin-page/admin-page.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -22,7 +24,13 @@ export const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'profile', component: ProfileComponent },
-      { path: 'settings', component: SettingsComponent }
+      { path: 'settings', component: SettingsComponent },
+      {
+        path: 'admin',
+        component: AdminPageComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'COMPANY_ADMIN'] } // solo estos roles
+      }
     ]
   },
   { path: '**', redirectTo: 'login' }

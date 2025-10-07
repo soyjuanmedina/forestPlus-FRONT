@@ -77,4 +77,10 @@ export class UserService {
   deleteUser ( id: number ): Observable<any> {
     return this.userController.deleteUser( id );
   }
+
+  /** Devuelve true si el usuario tiene rol ADMIN o COMPANY_ADMIN */
+  isAdminOrCompanyAdmin (): boolean {
+    const user = this.getCurrentUser(); // tu método que devuelve UserResponseDto | null
+    return !!user && ( user.role === 'ADMIN' || user.role === 'COMPANY_ADMIN' );
+  }
 }
