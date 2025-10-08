@@ -16,7 +16,7 @@ steps:
       - |
         npm run build:prod
 
-  # 3️⃣ Subir la carpeta dist completa al bucket GCS
+  # 3️⃣ Subir solo el contenido de browser/ al bucket raíz
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     args:
       - 'gsutil'
@@ -25,7 +25,7 @@ steps:
       - '-r'
       - '-c'
       - '-d'
-      - 'dist/forest-plus/'   # <-- carpeta correcta generada por Angular
+      - 'dist/forest-plus/browser/'   # <-- contenido de browser al raíz del bucket
       - 'gs://forestplus-angular-frontend'
 
   # 4️⃣ Forzar permisos públicos
