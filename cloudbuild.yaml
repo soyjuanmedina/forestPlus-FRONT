@@ -13,7 +13,7 @@ steps:
     args:
       - '-c'
       - |
-        npm run build -- --configuration production
+        npm run build:prod
 
   # 3️⃣ Subir la carpeta dist al bucket GCS
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
