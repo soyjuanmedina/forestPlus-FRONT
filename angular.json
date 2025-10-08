@@ -36,7 +36,6 @@
           },
           "configurations": {
             "production": {
-              "baseHref": "/forestplus-angular-frontend/",
               "budgets": [
                 {
                   "type": "initial",

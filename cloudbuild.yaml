@@ -16,7 +16,7 @@ steps:
       - |
         npm run build -- --configuration production
 
-  # 3️⃣ Reemplazar <base href="/"> por la ruta correcta
+  # 3️⃣ Ajustar rutas en index.html para bucket
   - name: 'node:20'
     entrypoint: 'bash'
     args:
@@ -26,7 +26,7 @@ steps:
         sed -i 's|href="assets/|href="/forestplus-angular-frontend/assets/|g' dist/forest-plus/browser/index.html
         sed -i 's|src="assets/|src="/forestplus-angular-frontend/assets/|g' dist/forest-plus/browser/index.html
 
-  # 4️⃣ Subir solo el contenido de browser/ al bucket raíz
+  # 4️⃣ Subir contenido al bucket
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     args:
       - 'gsutil'
@@ -35,7 +35,7 @@ steps:
       - '-r'
       - '-c'
       - '-d'
-      - 'dist/forest-plus/browser/'   # <-- contenido de browser al raíz del bucket
+      - 'dist/forest-plus/browser/'
       - 'gs://forestplus-angular-frontend'
 
   # 5️⃣ Forzar permisos públicos
@@ -48,6 +48,18 @@ steps:
       - '-r'
       - '-u'
       - 'AllUsers:R'
+      - 'gs://forestplus-angular-frontend'
+
+  # 6️⃣ Configurar bucket como hosting de SPA
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    args:
+      - 'gsutil'
+      - 'web'
+      - 'set'
+      - '-m'
+      - 'index.html'
+      - '-e'
+      - 'index.html'
       - 'gs://forestplus-angular-frontend'
 
 options:
