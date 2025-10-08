@@ -1,13 +1,14 @@
 steps:
-  # 1️⃣ Instalar dependencias con Node 20
+  # 1️⃣ Limpiar dist y instalar dependencias
   - name: 'node:20'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
+        rm -rf dist/
         npm install
 
-  # 2️⃣ Build Angular en producción con baseHref
+  # 2️⃣ Build Angular producción usando script centralizado
   - name: 'node:20'
     entrypoint: 'bash'
     args:
@@ -15,7 +16,7 @@ steps:
       - |
         npm run build:prod
 
-  # 3️⃣ Subir la carpeta dist al bucket GCS
+  # 3️⃣ Subir la carpeta dist completa al bucket GCS
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     args:
       - 'gsutil'
@@ -24,7 +25,7 @@ steps:
       - '-r'
       - '-c'
       - '-d'
-      - 'dist/forest-plus/browser/'   # barra final importante
+      - 'dist/forest-plus/'   # <-- carpeta correcta generada por Angular
       - 'gs://forestplus-angular-frontend'
 
   # 4️⃣ Forzar permisos públicos
