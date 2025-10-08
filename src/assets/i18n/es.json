@@ -1,11 +1,22 @@
 {
   "MENU": {
-    "MENU": "Menu",
+    "MENU": "Menú",
     "HOME": "Inicio",
     "PROFILE": "Perfil",
-    "SETTINGS": "Ajustes",
-    "LOGIN": "Login",
-    "REGISTER": "Registro"
+    "MY_COMPANY": "Mi compañía",
+    "MY_LANDS": "Mis terrenos",
+    "MY_TREES": "Mis árboles",
+    "ADMIN": "Administración",
+    "ADMIN": {
+      "USERS": "Usuarios",
+      "COMPANIES": "Compañías",
+      "TREE_TYPES": "Tipos de árboles",
+      "TREES": "Árboles",
+      "AVAILABLE_LANDS": "Terrenos disponibles",
+      "LANDS": "Terrenos"
+    },
+    "LOGIN": "Iniciar sesión",
+    "REGISTER": "Registrarse"
   },
   "DASHBOARD": {
     "DASHBOARD": "Dashboard",

@@ -3,8 +3,19 @@
     "MENU": "Menu",
     "HOME": "Home",
     "PROFILE": "Profile",
-    "SETTINGS": "Settings",
-    "LOGIN": "Login",
+    "MY_COMPANY": "My Company",
+    "MY_LANDS": "My Lands",
+    "MY_TREES": "My Trees",
+    "ADMIN": "Administration",
+    "ADMIN": {
+      "USERS": "Users",
+      "COMPANIES": "Companies",
+      "TREE_TYPES": "Tree Types",
+      "TREES": "Trees",
+      "AVAILABLE_LANDS": "Available Lands",
+      "LANDS": "Lands"
+    },
+    "LOGIN": "Log In",
     "REGISTER": "Register"
   },
   "DASHBOARD": {

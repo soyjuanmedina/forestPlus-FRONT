@@ -1,0 +1,24 @@
+steps:
+  # 1️⃣ Instalar dependencias
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['install']
+
+  # 2️⃣ Build de Angular en producción
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['run', 'build', '--', '--configuration', 'production']
+
+  # 3️⃣ Subir la carpeta browser al bucket
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    args:
+      - 'gsutil'
+      - '-m'
+      - 'rsync'
+      - '-r'
+      - '-c'
+      - '-d'
+      - 'dist/forest-plus/browser'
+      - 'gs://forestplus-angular-frontend'
+
+# Opcional: ver los logs en Cloud Logging
+options:
+  logging: CLOUD_LOGGING_ONLY

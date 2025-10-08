@@ -6,8 +6,9 @@ import { RouterModule } from '@angular/router';
 
 interface MenuLink {
   label: string;
-  route: string;
-  roles?: string[]; // Si está definido, solo lo ven estos roles
+  route?: string;
+  roles?: string[];
+  children?: MenuLink[]; // submenú
 }
 
 @Component( {
@@ -24,8 +25,21 @@ export class SidebarComponent {
   menuLinks: MenuLink[] = [
     { label: 'MENU.HOME', route: 'home' },
     { label: 'MENU.PROFILE', route: 'profile' },
-    { label: 'MENU.SETTINGS', route: 'settings' },
-    { label: 'MENU.ADMIN', route: 'admin', roles: ['ADMIN', 'COMPANY_ADMIN'] }
+    { label: 'MENU.MY_COMPANY', route: 'company', roles: ['COMPANY_ADMIN', 'COMPANY_USER'] },
+    { label: 'MENU.MY_LANDS', route: 'lands' },
+    { label: 'MENU.MY_TREES', route: 'trees' },
+    {
+      label: 'MENU.ADMIN',
+      roles: ['ADMIN', 'COMPANY_ADMIN'],
+      children: [
+        { label: 'MENU.ADMIN.USERS', route: 'admin/users', roles: ['ADMIN', 'COMPANY_ADMIN'] },
+        { label: 'MENU.ADMIN.COMPANIES', route: 'admin/companies', roles: ['ADMIN'] },
+        { label: 'MENU.ADMIN.TREE_TYPES', route: 'admin/tree-types', roles: ['ADMIN'] },
+        { label: 'MENU.ADMIN.TREES', route: 'admin/trees', roles: ['ADMIN', 'COMPANY_ADMIN'] },
+        { label: 'MENU.ADMIN.AVAILABLE_LANDS', route: 'admin/available-lands', roles: ['ADMIN'] },
+        { label: 'MENU.ADMIN.LANDS', route: 'admin/lands', roles: ['ADMIN', 'COMPANY_ADMIN'] }
+      ]
+    }
   ];
 
   constructor ( public userService: UserService ) { }
@@ -39,7 +53,7 @@ export class SidebarComponent {
   canShow ( link: MenuLink ): boolean {
     if ( !link.roles ) return true; // todos pueden ver
     const user = this.userService.getCurrentUser();
-    console.log( 'user.role', user );
+    console.log( 'user.role', user?.role );
     return !!user && link.roles.includes( user.role! );
   }
 }
