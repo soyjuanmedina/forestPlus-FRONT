@@ -24,9 +24,30 @@ steps:
       - '-r'
       - '-c'
       - '-d'
-      - 'dist/forest-plus/browser/'
+      - 'dist/forest-plus/browser/'   # barra final importante
       - 'gs://forestplus-angular-frontend'
 
-# Opcional: ver logs solo en Cloud Logging
+  # 4️⃣ Forzar permisos públicos
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    args:
+      - 'gsutil'
+      - '-m'
+      - 'acl'
+      - 'ch'
+      - '-r'
+      - '-u'
+      - 'AllUsers:R'
+      - 'gs://forestplus-angular-frontend'
+
+  # 5️⃣ Ajustar tipos MIME
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gsutil -m setmeta -h "Content-Type:text/html" gs://forestplus-angular-frontend/index.html
+        gsutil -m setmeta -h "Content-Type:text/javascript" gs://forestplus-angular-frontend/*.js
+        gsutil -m setmeta -h "Content-Type:text/css" gs://forestplus-angular-frontend/*.css
+
 options:
   logging: CLOUD_LOGGING_ONLY
