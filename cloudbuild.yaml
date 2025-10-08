@@ -23,6 +23,8 @@ steps:
       - '-c'
       - |
         sed -i 's|<base href="/">|<base href="/forestplus-angular-frontend/">|' dist/forest-plus/browser/index.html
+        sed -i 's|href="assets/|href="/forestplus-angular-frontend/assets/|g' dist/forest-plus/browser/index.html
+        sed -i 's|src="assets/|src="/forestplus-angular-frontend/assets/|g' dist/forest-plus/browser/index.html
 
   # 4️⃣ Subir solo el contenido de browser/ al bucket raíz
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
