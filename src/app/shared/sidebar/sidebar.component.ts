@@ -29,7 +29,7 @@ export class SidebarComponent {
     { label: 'MENU.MY_LANDS', route: 'lands' },
     { label: 'MENU.MY_TREES', route: 'trees' },
     {
-      label: 'MENU.ADMIN',
+      label: 'MENU.ADMIN.ADMIN',
       roles: ['ADMIN', 'COMPANY_ADMIN'],
       children: [
         { label: 'MENU.ADMIN.USERS', route: 'admin/users', roles: ['ADMIN', 'COMPANY_ADMIN'] },
@@ -53,5 +53,13 @@ export class SidebarComponent {
     if ( !link.roles ) return true;
     const user = this.userService.getCurrentUser();
     return !!user && link.roles.includes( user.role! );
+  }
+
+  get userLinks (): MenuLink[] {
+    return this.menuLinks.filter( link => !link.children );
+  }
+
+  get adminLinks (): MenuLink[] {
+    return this.menuLinks.filter( link => link.children && this.canShow( link ) );
   }
 }

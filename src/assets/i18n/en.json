@@ -6,8 +6,8 @@
     "MY_COMPANY": "My Company",
     "MY_LANDS": "My Lands",
     "MY_TREES": "My Trees",
-    "ADMIN": "Administration",
     "ADMIN": {
+      "ADMIN": "Administration",
       "USERS": "Users",
       "COMPANIES": "Companies",
       "TREE_TYPES": "Tree Types",

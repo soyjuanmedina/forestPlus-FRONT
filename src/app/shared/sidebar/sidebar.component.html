@@ -1,30 +1,38 @@
-<!-- Sidebar (Desktop + Mobile) -->
 <ng-container *ngIf="userService.getCurrentUser(); else loggedOutLinks">
+
   <!-- Desktop Sidebar -->
-  <aside class="w-64 bg-white shadow-md hidden md:block h-screen">
+  <aside class="w-64 bg-white shadow-md hidden md:flex flex-col h-screen">
+    <!-- Encabezado -->
     <div class="p-4 text-xl font-bold border-b">
       {{ 'MENU.MENU' | translate }}
     </div>
 
-    <nav class="p-4 space-y-2">
-      <ng-container *ngFor="let link of menuLinks">
-        <!-- Enlace sin submenú -->
-        <ng-container *ngIf="!link.children">
-          <a *ngIf="canShow(link)" [routerLink]="link.route" routerLinkActive="font-bold"
-            class="block px-3 py-2 rounded-lg hover:bg-gray-200">
-            {{ link.label | translate }}
-          </a>
+    <!-- Links de usuario pegados arriba -->
+    <div class="flex-1">
+      <nav class="p-4 space-y-2">
+        <ng-container *ngFor="let link of menuLinks">
+          <!-- Solo links de usuario (sin children) -->
+          <ng-container *ngIf="!link.children && canShow(link)">
+            <a [routerLink]="link.route" class="block px-3 py-2 rounded hover:bg-gray-200">
+              {{ link.label | translate }}
+            </a>
+          </ng-container>
         </ng-container>
+      </nav>
+    </div>
 
-        <!-- Enlace con submenú -->
+    <!-- Links de administración pegados abajo -->
+    <nav class="p-4 space-y-2 border-t">
+      <ng-container *ngFor="let link of menuLinks">
+        <!-- Solo links de administración (con children) -->
         <ng-container *ngIf="link.children && canShow(link)">
           <div class="px-3 py-2 font-semibold text-gray-700">
             {{ link.label | translate }}
           </div>
           <div class="ml-4 space-y-1">
             <ng-container *ngFor="let child of link.children">
-              <a *ngIf="canShow(child)" [routerLink]="child.route" routerLinkActive="font-bold"
-                class="block px-3 py-1 rounded-lg hover:bg-gray-100">
+              <a *ngIf="canShow(child)" [routerLink]="child.route"
+                class="block px-3 py-1 rounded hover:bg-gray-100">
                 {{ child.label | translate }}
               </a>
             </ng-container>
@@ -36,26 +44,33 @@
 
   <!-- Mobile overlay -->
   <div *ngIf="sidebarOpen" class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-    (click)="closeSidebar()">
-  </div>
+    (click)="closeSidebar()"></div>
 
   <!-- Mobile Sidebar -->
-  <aside *ngIf="sidebarOpen" class="fixed inset-y-0 left-0 w-64 bg-white shadow-md z-50 md:hidden">
+  <aside *ngIf="sidebarOpen"
+    class="fixed inset-y-0 left-0 w-64 bg-white shadow-md z-50 md:hidden flex flex-col h-full">
+    <!-- Encabezado -->
     <div class="p-4 text-xl font-bold border-b">
       {{ 'MENU.MENU' | translate }}
     </div>
 
-    <nav class="p-4 space-y-2">
-      <ng-container *ngFor="let link of menuLinks">
-        <!-- Enlace sin submenú -->
-        <ng-container *ngIf="!link.children">
-          <a *ngIf="canShow(link)" [routerLink]="link.route" (click)="closeSidebar()"
-            routerLinkActive="font-bold" class="block px-3 py-2 rounded-lg hover:bg-gray-200">
-            {{ link.label | translate }}
-          </a>
+    <!-- Links de usuario -->
+    <div class="flex-1 overflow-auto">
+      <nav class="p-4 space-y-2">
+        <ng-container *ngFor="let link of menuLinks">
+          <ng-container *ngIf="!link.children && canShow(link)">
+            <a [routerLink]="link.route" (click)="closeSidebar()"
+              class="block px-3 py-2 rounded hover:bg-gray-200">
+              {{ link.label | translate }}
+            </a>
+          </ng-container>
         </ng-container>
+      </nav>
+    </div>
 
-        <!-- Enlace con submenú -->
+    <!-- Links de administración -->
+    <nav class="p-4 space-y-2 border-t">
+      <ng-container *ngFor="let link of menuLinks">
         <ng-container *ngIf="link.children && canShow(link)">
           <div class="px-3 py-2 font-semibold text-gray-700">
             {{ link.label | translate }}
@@ -63,7 +78,7 @@
           <div class="ml-4 space-y-1">
             <ng-container *ngFor="let child of link.children">
               <a *ngIf="canShow(child)" [routerLink]="child.route" (click)="closeSidebar()"
-                routerLinkActive="font-bold" class="block px-3 py-1 rounded-lg hover:bg-gray-100">
+                class="block px-3 py-1 rounded hover:bg-gray-100">
                 {{ child.label | translate }}
               </a>
             </ng-container>
@@ -72,42 +87,44 @@
       </ng-container>
     </nav>
   </aside>
+
 </ng-container>
 
 <!-- Logged out links -->
 <ng-template #loggedOutLinks>
-  <aside class="w-64 bg-white shadow-md hidden md:block h-screen">
+  <!-- Desktop -->
+  <aside class="w-64 bg-white shadow-md hidden md:flex flex-col h-screen">
     <div class="p-4 text-xl font-bold border-b">
       {{ 'MENU.MENU' | translate }}
     </div>
     <nav class="p-4 space-y-2">
       <a routerLink="login" routerLinkActive="font-bold"
-        class="block px-3 py-2 rounded-lg hover:bg-gray-200">
+        class="block px-3 py-2 rounded hover:bg-gray-200">
         {{ 'MENU.LOGIN' | translate }}
       </a>
       <a routerLink="register" routerLinkActive="font-bold"
-        class="block px-3 py-2 rounded-lg hover:bg-gray-200">
+        class="block px-3 py-2 rounded hover:bg-gray-200">
         {{ 'MENU.REGISTER' | translate }}
       </a>
     </nav>
   </aside>
 
-  <!-- Mobile logged out -->
+  <!-- Mobile -->
   <div *ngIf="sidebarOpen" class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-    (click)="closeSidebar()">
-  </div>
+    (click)="closeSidebar()"></div>
 
-  <aside *ngIf="sidebarOpen" class="fixed inset-y-0 left-0 w-64 bg-white shadow-md z-50 md:hidden">
+  <aside *ngIf="sidebarOpen"
+    class="fixed inset-y-0 left-0 w-64 bg-white shadow-md z-50 md:hidden flex flex-col h-full">
     <div class="p-4 text-xl font-bold border-b">
       {{ 'MENU.MENU' | translate }}
     </div>
     <nav class="p-4 space-y-2">
       <a routerLink="login" (click)="closeSidebar()" routerLinkActive="font-bold"
-        class="block px-3 py-2 rounded-lg hover:bg-gray-200">
+        class="block px-3 py-2 rounded hover:bg-gray-200">
         {{ 'MENU.LOGIN' | translate }}
       </a>
       <a routerLink="register" (click)="closeSidebar()" routerLinkActive="font-bold"
-        class="block px-3 py-2 rounded-lg hover:bg-gray-200">
+        class="block px-3 py-2 rounded hover:bg-gray-200">
         {{ 'MENU.REGISTER' | translate }}
       </a>
     </nav>
