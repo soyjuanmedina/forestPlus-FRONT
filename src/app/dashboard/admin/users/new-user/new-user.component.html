@@ -1,0 +1,103 @@
+<div class="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-lg">
+  <h2 class="text-2xl font-bold text-green-700 text-center mb-6">Nuevo Usuario</h2>
+
+  <form [formGroup]="newUserForm" (ngSubmit)="onSubmit()"
+    class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+    <!-- Nombre -->
+    <div class="md:col-span-2">
+      <label class="block text-gray-700 mb-1">Nombre</label>
+      <input type="text" formControlName="name" placeholder="Nombre"
+        class="w-full px-4 py-2 border-b border-gray-300 focus:border-green-500 focus:outline-none bg-transparent">
+      <div *ngIf="newUserForm.get('name')?.invalid && newUserForm.get('name')?.touched"
+        class="text-red-500 text-sm mt-1">Campo requerido</div>
+    </div>
+
+    <!-- Apellido -->
+    <div>
+      <label class="block text-gray-700 mb-1">Apellido</label>
+      <input type="text" formControlName="surname" placeholder="Apellido"
+        class="w-full px-4 py-2 border-b border-gray-300 focus:border-green-500 focus:outline-none bg-transparent">
+      <div *ngIf="newUserForm.get('surname')?.invalid && newUserForm.get('surname')?.touched"
+        class="text-red-500 text-sm mt-1">Campo requerido</div>
+    </div>
+
+    <!-- Segundo Apellido -->
+    <div>
+      <label class="block text-gray-700 mb-1">Segundo Apellido</label>
+      <input type="text" formControlName="secondSurname" placeholder="Segundo Apellido"
+        class="w-full px-4 py-2 border-b border-gray-300 focus:border-green-500 focus:outline-none bg-transparent">
+    </div>
+
+    <!-- Email -->
+    <div class="md:col-span-2">
+      <label class="block text-gray-700 mb-1">Email</label>
+      <input type="email" formControlName="email" placeholder="Correo electrónico"
+        class="w-full px-4 py-2 border-b border-gray-300 focus:border-green-500 focus:outline-none bg-transparent">
+      <div *ngIf="newUserForm.get('email')?.invalid && newUserForm.get('email')?.touched"
+        class="text-red-500 text-sm mt-1">
+        <div *ngIf="newUserForm.get('email')?.hasError('required')">Campo requerido</div>
+        <div *ngIf="newUserForm.get('email')?.hasError('email')">Email inválido</div>
+      </div>
+    </div>
+
+    <!-- Contraseña -->
+    <div class="md:col-span-2 relative">
+      <label class="block text-gray-700 mb-1">Contraseña</label>
+      <input [type]="hidePassword ? 'password' : 'text'" formControlName="password"
+        placeholder="Contraseña"
+        class="w-full px-4 py-2 border-b border-gray-300 focus:border-green-500 focus:outline-none bg-transparent">
+      <button type="button" (click)="hidePassword = !hidePassword"
+        class="absolute right-0 top-1/2 transform -translate-y-1/2 px-2 text-gray-500">
+        {{ hidePassword ? '👁️‍🗨️' : '👁️' }}
+      </button>
+      <div *ngIf="newUserForm.get('password')?.invalid && newUserForm.get('password')?.touched"
+        class="text-red-500 text-sm mt-1">
+        <div *ngIf="newUserForm.get('password')?.hasError('required')">Campo requerido</div>
+        <div *ngIf="newUserForm.get('password')?.hasError('minlength')">Mínimo 6 caracteres</div>
+      </div>
+    </div>
+
+    <!-- Rol -->
+    <div>
+      <label class="block text-gray-700 mb-1">Rol</label>
+      <select formControlName="role"
+        class="w-full px-4 py-2 border-b border-gray-300 focus:border-green-500 focus:outline-none bg-transparent">
+        <option value="">Seleccione rol</option>
+        <option *ngFor="let r of roles" [value]="r.value">{{ r.label }}</option>
+      </select>
+      <div *ngIf="newUserForm.get('role')?.invalid && newUserForm.get('role')?.touched"
+        class="text-red-500 text-sm mt-1">Campo requerido</div>
+    </div>
+
+    <!-- Compañía -->
+    <div
+      *ngIf="newUserForm.get('role')?.value === 'COMPANY_ADMIN' || newUserForm.get('role')?.value === 'COMPANY_USER'">
+      <label class="block text-gray-700 mb-1">Compañía</label>
+      <select formControlName="companyId"
+        class="w-full px-4 py-2 border-b border-gray-300 focus:border-green-500 focus:outline-none bg-transparent">
+        <option value="">Seleccione compañía</option>
+        <option *ngFor="let c of companies" [value]="c.id">{{ c.name }}</option>
+      </select>
+      <div *ngIf="newUserForm.get('companyId')?.invalid && newUserForm.get('companyId')?.touched"
+        class="text-red-500 text-sm mt-1">Campo requerido</div>
+    </div>
+
+    <!-- Botón -->
+    <div class="md:col-span-2 mt-4">
+      <button type="submit"
+        class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 disabled:opacity-50"
+        [disabled]="newUserForm.invalid">
+        Crear Usuario
+      </button>
+    </div>
+  </form>
+
+  <!-- Mensajes -->
+  <div *ngIf="registerSuccess" class="text-center text-green-600 font-semibold text-lg mt-4">
+    Usuario creado correctamente
+  </div>
+  <div *ngIf="registerError" class="text-center text-red-500 mt-4">
+    {{ registerError }}
+  </div>
+</div>

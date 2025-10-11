@@ -40,10 +40,10 @@ export class TreeControllerService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createTree(treeEntityDto: TreeEntityDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<TreeEntityDto>;
-    public createTree(treeEntityDto: TreeEntityDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<TreeEntityDto>>;
-    public createTree(treeEntityDto: TreeEntityDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<TreeEntityDto>>;
-    public createTree(treeEntityDto: TreeEntityDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public createTree(treeEntityDto: TreeEntityDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<TreeEntityDto>;
+    public createTree(treeEntityDto: TreeEntityDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<TreeEntityDto>>;
+    public createTree(treeEntityDto: TreeEntityDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<TreeEntityDto>>;
+    public createTree(treeEntityDto: TreeEntityDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (treeEntityDto === null || treeEntityDto === undefined) {
             throw new Error('Required parameter treeEntityDto was null or undefined when calling createTree.');
         }
@@ -51,7 +51,7 @@ export class TreeControllerService extends BaseService {
         let localVarHeaders = this.defaultHeaders;
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            '*/*'
+            'application/json'
         ]);
         if (localVarHttpHeaderAcceptSelected !== undefined) {
             localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
@@ -154,15 +154,15 @@ export class TreeControllerService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllTrees(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<Array<TreeEntityDto>>;
-    public getAllTrees(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<TreeEntityDto>>>;
-    public getAllTrees(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<TreeEntityDto>>>;
-    public getAllTrees(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getAllTrees(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<TreeEntityDto>>;
+    public getAllTrees(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<TreeEntityDto>>>;
+    public getAllTrees(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<TreeEntityDto>>>;
+    public getAllTrees(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            '*/*'
+            'application/json'
         ]);
         if (localVarHttpHeaderAcceptSelected !== undefined) {
             localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
@@ -204,10 +204,10 @@ export class TreeControllerService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getTreeById(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<TreeEntityDto>;
-    public getTreeById(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<TreeEntityDto>>;
-    public getTreeById(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<TreeEntityDto>>;
-    public getTreeById(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getTreeById(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<TreeEntityDto>;
+    public getTreeById(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<TreeEntityDto>>;
+    public getTreeById(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<TreeEntityDto>>;
+    public getTreeById(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling getTreeById.');
         }
@@ -215,7 +215,7 @@ export class TreeControllerService extends BaseService {
         let localVarHeaders = this.defaultHeaders;
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            '*/*'
+            'application/json'
         ]);
         if (localVarHttpHeaderAcceptSelected !== undefined) {
             localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
@@ -258,10 +258,10 @@ export class TreeControllerService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateTree(id: number, treeEntityDto: TreeEntityDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<TreeEntityDto>;
-    public updateTree(id: number, treeEntityDto: TreeEntityDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<TreeEntityDto>>;
-    public updateTree(id: number, treeEntityDto: TreeEntityDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<TreeEntityDto>>;
-    public updateTree(id: number, treeEntityDto: TreeEntityDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public updateTree(id: number, treeEntityDto: TreeEntityDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<TreeEntityDto>;
+    public updateTree(id: number, treeEntityDto: TreeEntityDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<TreeEntityDto>>;
+    public updateTree(id: number, treeEntityDto: TreeEntityDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<TreeEntityDto>>;
+    public updateTree(id: number, treeEntityDto: TreeEntityDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateTree.');
         }
@@ -272,7 +272,7 @@ export class TreeControllerService extends BaseService {
         let localVarHeaders = this.defaultHeaders;
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            '*/*'
+            'application/json'
         ]);
         if (localVarHttpHeaderAcceptSelected !== undefined) {
             localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);

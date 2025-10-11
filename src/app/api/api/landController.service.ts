@@ -42,10 +42,10 @@ export class LandControllerService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createLand(landRequestDto: LandRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<LandResponseDto>;
-    public createLand(landRequestDto: LandRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<LandResponseDto>>;
-    public createLand(landRequestDto: LandRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<LandResponseDto>>;
-    public createLand(landRequestDto: LandRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public createLand(landRequestDto: LandRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<LandResponseDto>;
+    public createLand(landRequestDto: LandRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<LandResponseDto>>;
+    public createLand(landRequestDto: LandRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<LandResponseDto>>;
+    public createLand(landRequestDto: LandRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (landRequestDto === null || landRequestDto === undefined) {
             throw new Error('Required parameter landRequestDto was null or undefined when calling createLand.');
         }
@@ -53,7 +53,7 @@ export class LandControllerService extends BaseService {
         let localVarHeaders = this.defaultHeaders;
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            '*/*'
+            'application/json'
         ]);
         if (localVarHttpHeaderAcceptSelected !== undefined) {
             localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
@@ -156,15 +156,15 @@ export class LandControllerService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllLands(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<Array<LandResponseDto>>;
-    public getAllLands(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<LandResponseDto>>>;
-    public getAllLands(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<LandResponseDto>>>;
-    public getAllLands(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getAllLands(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<LandResponseDto>>;
+    public getAllLands(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<LandResponseDto>>>;
+    public getAllLands(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<LandResponseDto>>>;
+    public getAllLands(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            '*/*'
+            'application/json'
         ]);
         if (localVarHttpHeaderAcceptSelected !== undefined) {
             localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
@@ -206,10 +206,10 @@ export class LandControllerService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getLandById(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<LandResponseDto>;
-    public getLandById(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<LandResponseDto>>;
-    public getLandById(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<LandResponseDto>>;
-    public getLandById(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getLandById(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<LandResponseDto>;
+    public getLandById(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<LandResponseDto>>;
+    public getLandById(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<LandResponseDto>>;
+    public getLandById(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling getLandById.');
         }
@@ -217,7 +217,7 @@ export class LandControllerService extends BaseService {
         let localVarHeaders = this.defaultHeaders;
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            '*/*'
+            'application/json'
         ]);
         if (localVarHttpHeaderAcceptSelected !== undefined) {
             localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
@@ -260,10 +260,10 @@ export class LandControllerService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateLand(id: number, landRequestDto: LandRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<LandResponseDto>;
-    public updateLand(id: number, landRequestDto: LandRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<LandResponseDto>>;
-    public updateLand(id: number, landRequestDto: LandRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<LandResponseDto>>;
-    public updateLand(id: number, landRequestDto: LandRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public updateLand(id: number, landRequestDto: LandRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<LandResponseDto>;
+    public updateLand(id: number, landRequestDto: LandRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<LandResponseDto>>;
+    public updateLand(id: number, landRequestDto: LandRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<LandResponseDto>>;
+    public updateLand(id: number, landRequestDto: LandRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateLand.');
         }
@@ -274,7 +274,7 @@ export class LandControllerService extends BaseService {
         let localVarHeaders = this.defaultHeaders;
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            '*/*'
+            'application/json'
         ]);
         if (localVarHttpHeaderAcceptSelected !== undefined) {
             localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);

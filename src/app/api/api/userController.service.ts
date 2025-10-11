@@ -40,6 +40,7 @@ export class UserControllerService extends BaseService {
     }
 
     /**
+     * Eliminar un usuario
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -92,18 +93,19 @@ export class UserControllerService extends BaseService {
     }
 
     /**
+     * Obtener todos los usuarios
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllUsers(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<Array<UserResponseDto>>;
-    public getAllUsers(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<UserResponseDto>>>;
-    public getAllUsers(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<UserResponseDto>>>;
-    public getAllUsers(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getAllUsers(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<UserResponseDto>>;
+    public getAllUsers(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<UserResponseDto>>>;
+    public getAllUsers(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<UserResponseDto>>>;
+    public getAllUsers(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            '*/*'
+            'application/json'
         ]);
         if (localVarHttpHeaderAcceptSelected !== undefined) {
             localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
@@ -141,14 +143,15 @@ export class UserControllerService extends BaseService {
     }
 
     /**
+     * Obtener un usuario por su ID
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getUserById(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<UserResponseDto>;
-    public getUserById(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UserResponseDto>>;
-    public getUserById(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UserResponseDto>>;
-    public getUserById(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getUserById(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<UserResponseDto>;
+    public getUserById(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UserResponseDto>>;
+    public getUserById(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UserResponseDto>>;
+    public getUserById(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling getUserById.');
         }
@@ -156,7 +159,7 @@ export class UserControllerService extends BaseService {
         let localVarHeaders = this.defaultHeaders;
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            '*/*'
+            'application/json'
         ]);
         if (localVarHttpHeaderAcceptSelected !== undefined) {
             localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
@@ -194,14 +197,15 @@ export class UserControllerService extends BaseService {
     }
 
     /**
+     * Registrar un usuario por un administrador
      * @param registerUserByAdminRequestDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public registerUserByAdmin(registerUserByAdminRequestDto: RegisterUserByAdminRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<UserResponseDto>;
-    public registerUserByAdmin(registerUserByAdminRequestDto: RegisterUserByAdminRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UserResponseDto>>;
-    public registerUserByAdmin(registerUserByAdminRequestDto: RegisterUserByAdminRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UserResponseDto>>;
-    public registerUserByAdmin(registerUserByAdminRequestDto: RegisterUserByAdminRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public registerUserByAdmin(registerUserByAdminRequestDto: RegisterUserByAdminRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<UserResponseDto>;
+    public registerUserByAdmin(registerUserByAdminRequestDto: RegisterUserByAdminRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UserResponseDto>>;
+    public registerUserByAdmin(registerUserByAdminRequestDto: RegisterUserByAdminRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UserResponseDto>>;
+    public registerUserByAdmin(registerUserByAdminRequestDto: RegisterUserByAdminRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (registerUserByAdminRequestDto === null || registerUserByAdminRequestDto === undefined) {
             throw new Error('Required parameter registerUserByAdminRequestDto was null or undefined when calling registerUserByAdmin.');
         }
@@ -209,7 +213,7 @@ export class UserControllerService extends BaseService {
         let localVarHeaders = this.defaultHeaders;
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            '*/*'
+            'application/json'
         ]);
         if (localVarHttpHeaderAcceptSelected !== undefined) {
             localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
@@ -257,15 +261,16 @@ export class UserControllerService extends BaseService {
     }
 
     /**
+     * Actualizar el propio usuario
      * @param id 
      * @param registerUserRequestDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateUser(id: number, registerUserRequestDto: RegisterUserRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<UserResponseDto>;
-    public updateUser(id: number, registerUserRequestDto: RegisterUserRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UserResponseDto>>;
-    public updateUser(id: number, registerUserRequestDto: RegisterUserRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UserResponseDto>>;
-    public updateUser(id: number, registerUserRequestDto: RegisterUserRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public updateUser(id: number, registerUserRequestDto: RegisterUserRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<UserResponseDto>;
+    public updateUser(id: number, registerUserRequestDto: RegisterUserRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UserResponseDto>>;
+    public updateUser(id: number, registerUserRequestDto: RegisterUserRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UserResponseDto>>;
+    public updateUser(id: number, registerUserRequestDto: RegisterUserRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateUser.');
         }
@@ -276,7 +281,7 @@ export class UserControllerService extends BaseService {
         let localVarHeaders = this.defaultHeaders;
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            '*/*'
+            'application/json'
         ]);
         if (localVarHttpHeaderAcceptSelected !== undefined) {
             localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
@@ -324,15 +329,16 @@ export class UserControllerService extends BaseService {
     }
 
     /**
+     * Actualizar un usuario por un administrador
      * @param id 
      * @param registerUserByAdminRequestDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateUserByAdmin(id: number, registerUserByAdminRequestDto: RegisterUserByAdminRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<UserResponseDto>;
-    public updateUserByAdmin(id: number, registerUserByAdminRequestDto: RegisterUserByAdminRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UserResponseDto>>;
-    public updateUserByAdmin(id: number, registerUserByAdminRequestDto: RegisterUserByAdminRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UserResponseDto>>;
-    public updateUserByAdmin(id: number, registerUserByAdminRequestDto: RegisterUserByAdminRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public updateUserByAdmin(id: number, registerUserByAdminRequestDto: RegisterUserByAdminRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<UserResponseDto>;
+    public updateUserByAdmin(id: number, registerUserByAdminRequestDto: RegisterUserByAdminRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UserResponseDto>>;
+    public updateUserByAdmin(id: number, registerUserByAdminRequestDto: RegisterUserByAdminRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UserResponseDto>>;
+    public updateUserByAdmin(id: number, registerUserByAdminRequestDto: RegisterUserByAdminRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateUserByAdmin.');
         }
@@ -343,7 +349,7 @@ export class UserControllerService extends BaseService {
         let localVarHeaders = this.defaultHeaders;
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            '*/*'
+            'application/json'
         ]);
         if (localVarHttpHeaderAcceptSelected !== undefined) {
             localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);

@@ -10,6 +10,7 @@ import { EmailVerifyComponent } from './pages/email-verify/email-verify.componen
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { RoleGuard } from './guards/role.guard';
 import { AdminPageComponent } from './dashboard/admin/admin-page/admin-page.component';
+import { AdminUsersComponent } from './dashboard/admin/users/admin-users/admin-users.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -29,7 +30,21 @@ export const routes: Routes = [
         path: 'admin',
         component: AdminPageComponent,
         canActivate: [RoleGuard],
-        data: { roles: ['ADMIN', 'COMPANY_ADMIN'] } // solo estos roles
+        data: { roles: ['ADMIN', 'COMPANY_ADMIN'] },
+        children: [
+          {
+            path: 'users',
+            component: AdminUsersComponent,
+            canActivate: [RoleGuard],
+            data: { roles: ['ADMIN', 'COMPANY_ADMIN'] }
+          },
+          {
+            path: 'new-user',
+            loadComponent: () => import( './dashboard/admin/users/new-user/new-user.component' ).then( m => m.NewUserComponent ),
+            canActivate: [RoleGuard],
+            data: { roles: ['ADMIN', 'COMPANY_ADMIN'] }
+          }
+        ]
       }
     ]
   },

@@ -9,13 +9,12 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional } from '@angular/core';
-import {
-  HttpClient, HttpHeaders, HttpParams,
-  HttpResponse, HttpEvent, HttpParameterCodec, HttpContext
-} from '@angular/common/http';
-import { CustomHttpParameterCodec } from '../encoder';
-import { Observable } from 'rxjs';
+import { Inject, Injectable, Optional }                      from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams,
+         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
+        }       from '@angular/common/http';
+import { CustomHttpParameterCodec }                          from '../encoder';
+import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
 import { AuthResponseDto } from '../model/authResponse';
@@ -33,485 +32,485 @@ import { ResetPasswordRequestDto } from '../model/resetPasswordRequest';
 import { UserResponseDto } from '../model/userResponse';
 
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
-import { Configuration } from '../configuration';
+import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
+import { Configuration }                                     from '../configuration';
 import { BaseService } from '../api.base.service';
 
 
 
-@Injectable( {
+@Injectable({
   providedIn: 'root'
-} )
+})
 export class AuthControllerService extends BaseService {
 
-  constructor ( protected httpClient: HttpClient, @Optional() @Inject( BASE_PATH ) basePath: string | string[], @Optional() configuration?: Configuration ) {
-    super( basePath, configuration );
-  }
-
-  /**
-   * Recuperar contraseña
-   * Envía un email para recuperar la contraseña
-   * @param forgotPasswordRequestDto 
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public forgotPassword ( forgotPasswordRequestDto: ForgotPasswordRequestDto, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<MessageResponseDto>;
-  public forgotPassword ( forgotPasswordRequestDto: ForgotPasswordRequestDto, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<HttpResponse<MessageResponseDto>>;
-  public forgotPassword ( forgotPasswordRequestDto: ForgotPasswordRequestDto, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<HttpEvent<MessageResponseDto>>;
-  public forgotPassword ( forgotPasswordRequestDto: ForgotPasswordRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<any> {
-    if ( forgotPasswordRequestDto === null || forgotPasswordRequestDto === undefined ) {
-      throw new Error( 'Required parameter forgotPasswordRequestDto was null or undefined when calling forgotPassword.' );
+    constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string|string[], @Optional() configuration?: Configuration) {
+        super(basePath, configuration);
     }
 
-    let localVarHeaders = this.defaultHeaders;
+    /**
+     * Recuperar contraseña
+     * Envía un email para recuperar la contraseña
+     * @param forgotPasswordRequestDto 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public forgotPassword(forgotPasswordRequestDto: ForgotPasswordRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<MessageResponseDto>;
+    public forgotPassword(forgotPasswordRequestDto: ForgotPasswordRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<MessageResponseDto>>;
+    public forgotPassword(forgotPasswordRequestDto: ForgotPasswordRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<MessageResponseDto>>;
+    public forgotPassword(forgotPasswordRequestDto: ForgotPasswordRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (forgotPasswordRequestDto === null || forgotPasswordRequestDto === undefined) {
+            throw new Error('Required parameter forgotPasswordRequestDto was null or undefined when calling forgotPassword.');
+        }
 
-    const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept( [
-      'application/json'
-    ] );
-    if ( localVarHttpHeaderAcceptSelected !== undefined ) {
-      localVarHeaders = localVarHeaders.set( 'Accept', localVarHttpHeaderAcceptSelected );
+        let localVarHeaders = this.defaultHeaders;
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/auth/forgot-password`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<MessageResponseDto>('post', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: forgotPasswordRequestDto,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
     }
 
-    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+    /**
+     * Login de usuario
+     * Autentica al usuario y devuelve token y datos del usuario
+     * @param registerUserRequestDto 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public login(registerUserRequestDto: RegisterUserRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<AuthResponseDto>;
+    public login(registerUserRequestDto: RegisterUserRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<AuthResponseDto>>;
+    public login(registerUserRequestDto: RegisterUserRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<AuthResponseDto>>;
+    public login(registerUserRequestDto: RegisterUserRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (registerUserRequestDto === null || registerUserRequestDto === undefined) {
+            throw new Error('Required parameter registerUserRequestDto was null or undefined when calling login.');
+        }
 
-    const localVarTransferCache: boolean = options?.transferCache ?? true;
+        let localVarHeaders = this.defaultHeaders;
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
 
 
-    // to determine the Content-Type header
-    const consumes: string[] = [
-      'application/json'
-    ];
-    const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType( consumes );
-    if ( httpContentTypeSelected !== undefined ) {
-      localVarHeaders = localVarHeaders.set( 'Content-Type', httpContentTypeSelected );
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/auth/login`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<AuthResponseDto>('post', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: registerUserRequestDto,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
     }
 
-    let responseType_: 'text' | 'json' | 'blob' = 'json';
-    if ( localVarHttpHeaderAcceptSelected ) {
-      if ( localVarHttpHeaderAcceptSelected.startsWith( 'text' ) ) {
-        responseType_ = 'text';
-      } else if ( this.configuration.isJsonMime( localVarHttpHeaderAcceptSelected ) ) {
-        responseType_ = 'json';
-      } else {
-        responseType_ = 'blob';
-      }
+    /**
+     * Registro de usuario
+     * Registra un nuevo usuario en el sistema
+     * @param registerUserRequestDto 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public register(registerUserRequestDto: RegisterUserRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<UserResponseDto>;
+    public register(registerUserRequestDto: RegisterUserRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UserResponseDto>>;
+    public register(registerUserRequestDto: RegisterUserRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UserResponseDto>>;
+    public register(registerUserRequestDto: RegisterUserRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (registerUserRequestDto === null || registerUserRequestDto === undefined) {
+            throw new Error('Required parameter registerUserRequestDto was null or undefined when calling register.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/auth/register`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<UserResponseDto>('post', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: registerUserRequestDto,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
     }
 
-    let localVarPath = `/api/auth/forgot-password`;
-    const { basePath, withCredentials } = this.configuration;
-    return this.httpClient.request<MessageResponseDto>( 'post', `${basePath}${localVarPath}`,
-      {
-        context: localVarHttpContext,
-        body: forgotPasswordRequestDto,
-        responseType: <any>responseType_,
-        ...( withCredentials ? { withCredentials } : {} ),
-        headers: localVarHeaders,
-        observe: observe,
-        transferCache: localVarTransferCache,
-        reportProgress: reportProgress
-      }
-    );
-  }
+    /**
+     * Reenvío de email de verificación
+     * Envía de nuevo el email de verificación
+     * @param resendVerificationEmailRequestDto 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public resendVerification(resendVerificationEmailRequestDto: ResendVerificationEmailRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<MessageResponseDto>;
+    public resendVerification(resendVerificationEmailRequestDto: ResendVerificationEmailRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<MessageResponseDto>>;
+    public resendVerification(resendVerificationEmailRequestDto: ResendVerificationEmailRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<MessageResponseDto>>;
+    public resendVerification(resendVerificationEmailRequestDto: ResendVerificationEmailRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (resendVerificationEmailRequestDto === null || resendVerificationEmailRequestDto === undefined) {
+            throw new Error('Required parameter resendVerificationEmailRequestDto was null or undefined when calling resendVerification.');
+        }
 
-  /**
-   * Login de usuario
-   * Autentica al usuario y devuelve token y datos del usuario
-   * @param registerUserRequestDto 
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public login ( registerUserRequestDto: RegisterUserRequestDto, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<AuthResponseDto>;
-  public login ( registerUserRequestDto: RegisterUserRequestDto, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<HttpResponse<AuthResponseDto>>;
-  public login ( registerUserRequestDto: RegisterUserRequestDto, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<HttpEvent<AuthResponseDto>>;
-  public login ( registerUserRequestDto: RegisterUserRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<any> {
-    if ( registerUserRequestDto === null || registerUserRequestDto === undefined ) {
-      throw new Error( 'Required parameter registerUserRequestDto was null or undefined when calling login.' );
+        let localVarHeaders = this.defaultHeaders;
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/auth/resend-verification`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<MessageResponseDto>('post', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: resendVerificationEmailRequestDto,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
     }
 
-    let localVarHeaders = this.defaultHeaders;
+    /**
+     * Restablecer contraseña olvidada
+     * Actualiza la contraseña usando el UUID enviado por email
+     * @param uuid UUID enviado al email
+     * @param resetPasswordRequestDto 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public resetForgotPassword(uuid: string, resetPasswordRequestDto: ResetPasswordRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<MessageResponseDto>;
+    public resetForgotPassword(uuid: string, resetPasswordRequestDto: ResetPasswordRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<MessageResponseDto>>;
+    public resetForgotPassword(uuid: string, resetPasswordRequestDto: ResetPasswordRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<MessageResponseDto>>;
+    public resetForgotPassword(uuid: string, resetPasswordRequestDto: ResetPasswordRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (uuid === null || uuid === undefined) {
+            throw new Error('Required parameter uuid was null or undefined when calling resetForgotPassword.');
+        }
+        if (resetPasswordRequestDto === null || resetPasswordRequestDto === undefined) {
+            throw new Error('Required parameter resetPasswordRequestDto was null or undefined when calling resetForgotPassword.');
+        }
 
-    const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept( [
-      'application/json'
-    ] );
-    if ( localVarHttpHeaderAcceptSelected !== undefined ) {
-      localVarHeaders = localVarHeaders.set( 'Accept', localVarHttpHeaderAcceptSelected );
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>uuid, 'uuid');
+
+        let localVarHeaders = this.defaultHeaders;
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/auth/forgot-password/reset`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<MessageResponseDto>('post', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: resetPasswordRequestDto,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
     }
 
-    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+    /**
+     * Restablecimiento de contraseña
+     * Cambia la contraseña del usuario autenticado
+     * @param authorization Token JWT del usuario
+     * @param resetPasswordRequestDto 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public resetPassword(authorization: string, resetPasswordRequestDto: ResetPasswordRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<MessageResponseDto>;
+    public resetPassword(authorization: string, resetPasswordRequestDto: ResetPasswordRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<MessageResponseDto>>;
+    public resetPassword(authorization: string, resetPasswordRequestDto: ResetPasswordRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<MessageResponseDto>>;
+    public resetPassword(authorization: string, resetPasswordRequestDto: ResetPasswordRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (authorization === null || authorization === undefined) {
+            throw new Error('Required parameter authorization was null or undefined when calling resetPassword.');
+        }
+        if (resetPasswordRequestDto === null || resetPasswordRequestDto === undefined) {
+            throw new Error('Required parameter resetPasswordRequestDto was null or undefined when calling resetPassword.');
+        }
 
-    const localVarTransferCache: boolean = options?.transferCache ?? true;
+        let localVarHeaders = this.defaultHeaders;
+        if (authorization !== undefined && authorization !== null) {
+            localVarHeaders = localVarHeaders.set('Authorization', String(authorization));
+        }
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
 
 
-    // to determine the Content-Type header
-    const consumes: string[] = [
-      'application/json'
-    ];
-    const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType( consumes );
-    if ( httpContentTypeSelected !== undefined ) {
-      localVarHeaders = localVarHeaders.set( 'Content-Type', httpContentTypeSelected );
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/auth/reset-password`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<MessageResponseDto>('post', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: resetPasswordRequestDto,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
     }
 
-    let responseType_: 'text' | 'json' | 'blob' = 'json';
-    if ( localVarHttpHeaderAcceptSelected ) {
-      if ( localVarHttpHeaderAcceptSelected.startsWith( 'text' ) ) {
-        responseType_ = 'text';
-      } else if ( this.configuration.isJsonMime( localVarHttpHeaderAcceptSelected ) ) {
-        responseType_ = 'json';
-      } else {
-        responseType_ = 'blob';
-      }
+    /**
+     * Verificación de email
+     * Verifica la cuenta del usuario usando el UUID enviado por email
+     * @param uuid UUID enviado al email del usuario
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public verifyEmail(uuid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<MessageResponseDto>;
+    public verifyEmail(uuid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<MessageResponseDto>>;
+    public verifyEmail(uuid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<MessageResponseDto>>;
+    public verifyEmail(uuid: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (uuid === null || uuid === undefined) {
+            throw new Error('Required parameter uuid was null or undefined when calling verifyEmail.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>uuid, 'uuid');
+
+        let localVarHeaders = this.defaultHeaders;
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/auth/verify`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<MessageResponseDto>('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
     }
-
-    let localVarPath = `/api/auth/login`;
-    const { basePath, withCredentials } = this.configuration;
-    return this.httpClient.request<AuthResponseDto>( 'post', `${basePath}${localVarPath}`,
-      {
-        context: localVarHttpContext,
-        body: registerUserRequestDto,
-        responseType: <any>responseType_,
-        ...( withCredentials ? { withCredentials } : {} ),
-        headers: localVarHeaders,
-        observe: observe,
-        transferCache: localVarTransferCache,
-        reportProgress: reportProgress
-      }
-    );
-  }
-
-  /**
-   * Registro de usuario
-   * Registra un nuevo usuario en el sistema
-   * @param registerUserRequestDto 
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public register ( registerUserRequestDto: RegisterUserRequestDto, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<UserResponseDto>;
-  public register ( registerUserRequestDto: RegisterUserRequestDto, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<HttpResponse<UserResponseDto>>;
-  public register ( registerUserRequestDto: RegisterUserRequestDto, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<HttpEvent<UserResponseDto>>;
-  public register ( registerUserRequestDto: RegisterUserRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<any> {
-    if ( registerUserRequestDto === null || registerUserRequestDto === undefined ) {
-      throw new Error( 'Required parameter registerUserRequestDto was null or undefined when calling register.' );
-    }
-
-    let localVarHeaders = this.defaultHeaders;
-
-    const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept( [
-      'application/json'
-    ] );
-    if ( localVarHttpHeaderAcceptSelected !== undefined ) {
-      localVarHeaders = localVarHeaders.set( 'Accept', localVarHttpHeaderAcceptSelected );
-    }
-
-    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
-
-    const localVarTransferCache: boolean = options?.transferCache ?? true;
-
-
-    // to determine the Content-Type header
-    const consumes: string[] = [
-      'application/json'
-    ];
-    const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType( consumes );
-    if ( httpContentTypeSelected !== undefined ) {
-      localVarHeaders = localVarHeaders.set( 'Content-Type', httpContentTypeSelected );
-    }
-
-    let responseType_: 'text' | 'json' | 'blob' = 'json';
-    if ( localVarHttpHeaderAcceptSelected ) {
-      if ( localVarHttpHeaderAcceptSelected.startsWith( 'text' ) ) {
-        responseType_ = 'text';
-      } else if ( this.configuration.isJsonMime( localVarHttpHeaderAcceptSelected ) ) {
-        responseType_ = 'json';
-      } else {
-        responseType_ = 'blob';
-      }
-    }
-
-    let localVarPath = `/api/auth/register`;
-    const { basePath, withCredentials } = this.configuration;
-    return this.httpClient.request<UserResponseDto>( 'post', `${basePath}${localVarPath}`,
-      {
-        context: localVarHttpContext,
-        body: registerUserRequestDto,
-        responseType: <any>responseType_,
-        ...( withCredentials ? { withCredentials } : {} ),
-        headers: localVarHeaders,
-        observe: observe,
-        transferCache: localVarTransferCache,
-        reportProgress: reportProgress
-      }
-    );
-  }
-
-  /**
-   * Reenvío de email de verificación
-   * Envía de nuevo el email de verificación
-   * @param resendVerificationEmailRequestDto 
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public resendVerification ( resendVerificationEmailRequestDto: ResendVerificationEmailRequestDto, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<MessageResponseDto>;
-  public resendVerification ( resendVerificationEmailRequestDto: ResendVerificationEmailRequestDto, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<HttpResponse<MessageResponseDto>>;
-  public resendVerification ( resendVerificationEmailRequestDto: ResendVerificationEmailRequestDto, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<HttpEvent<MessageResponseDto>>;
-  public resendVerification ( resendVerificationEmailRequestDto: ResendVerificationEmailRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<any> {
-    if ( resendVerificationEmailRequestDto === null || resendVerificationEmailRequestDto === undefined ) {
-      throw new Error( 'Required parameter resendVerificationEmailRequestDto was null or undefined when calling resendVerification.' );
-    }
-
-    let localVarHeaders = this.defaultHeaders;
-
-    const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept( [
-      'application/json'
-    ] );
-    if ( localVarHttpHeaderAcceptSelected !== undefined ) {
-      localVarHeaders = localVarHeaders.set( 'Accept', localVarHttpHeaderAcceptSelected );
-    }
-
-    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
-
-    const localVarTransferCache: boolean = options?.transferCache ?? true;
-
-
-    // to determine the Content-Type header
-    const consumes: string[] = [
-      'application/json'
-    ];
-    const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType( consumes );
-    if ( httpContentTypeSelected !== undefined ) {
-      localVarHeaders = localVarHeaders.set( 'Content-Type', httpContentTypeSelected );
-    }
-
-    let responseType_: 'text' | 'json' | 'blob' = 'json';
-    if ( localVarHttpHeaderAcceptSelected ) {
-      if ( localVarHttpHeaderAcceptSelected.startsWith( 'text' ) ) {
-        responseType_ = 'text';
-      } else if ( this.configuration.isJsonMime( localVarHttpHeaderAcceptSelected ) ) {
-        responseType_ = 'json';
-      } else {
-        responseType_ = 'blob';
-      }
-    }
-
-    let localVarPath = `/api/auth/resend-verification`;
-    const { basePath, withCredentials } = this.configuration;
-    return this.httpClient.request<MessageResponseDto>( 'post', `${basePath}${localVarPath}`,
-      {
-        context: localVarHttpContext,
-        body: resendVerificationEmailRequestDto,
-        responseType: <any>responseType_,
-        ...( withCredentials ? { withCredentials } : {} ),
-        headers: localVarHeaders,
-        observe: observe,
-        transferCache: localVarTransferCache,
-        reportProgress: reportProgress
-      }
-    );
-  }
-
-  /**
-   * Restablecer contraseña olvidada
-   * Actualiza la contraseña usando el UUID enviado por email
-   * @param uuid UUID enviado al email
-   * @param resetPasswordRequestDto 
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public resetForgotPassword ( uuid: string, resetPasswordRequestDto: ResetPasswordRequestDto, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<MessageResponseDto>;
-  public resetForgotPassword ( uuid: string, resetPasswordRequestDto: ResetPasswordRequestDto, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<HttpResponse<MessageResponseDto>>;
-  public resetForgotPassword ( uuid: string, resetPasswordRequestDto: ResetPasswordRequestDto, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<HttpEvent<MessageResponseDto>>;
-  public resetForgotPassword ( uuid: string, resetPasswordRequestDto: ResetPasswordRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<any> {
-    if ( uuid === null || uuid === undefined ) {
-      throw new Error( 'Required parameter uuid was null or undefined when calling resetForgotPassword.' );
-    }
-    if ( resetPasswordRequestDto === null || resetPasswordRequestDto === undefined ) {
-      throw new Error( 'Required parameter resetPasswordRequestDto was null or undefined when calling resetForgotPassword.' );
-    }
-
-    let localVarQueryParameters = new HttpParams( { encoder: this.encoder } );
-    localVarQueryParameters = this.addToHttpParams( localVarQueryParameters,
-      <any>uuid, 'uuid' );
-
-    let localVarHeaders = this.defaultHeaders;
-
-    const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept( [
-      'application/json'
-    ] );
-    if ( localVarHttpHeaderAcceptSelected !== undefined ) {
-      localVarHeaders = localVarHeaders.set( 'Accept', localVarHttpHeaderAcceptSelected );
-    }
-
-    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
-
-    const localVarTransferCache: boolean = options?.transferCache ?? true;
-
-
-    // to determine the Content-Type header
-    const consumes: string[] = [
-      'application/json'
-    ];
-    const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType( consumes );
-    if ( httpContentTypeSelected !== undefined ) {
-      localVarHeaders = localVarHeaders.set( 'Content-Type', httpContentTypeSelected );
-    }
-
-    let responseType_: 'text' | 'json' | 'blob' = 'json';
-    if ( localVarHttpHeaderAcceptSelected ) {
-      if ( localVarHttpHeaderAcceptSelected.startsWith( 'text' ) ) {
-        responseType_ = 'text';
-      } else if ( this.configuration.isJsonMime( localVarHttpHeaderAcceptSelected ) ) {
-        responseType_ = 'json';
-      } else {
-        responseType_ = 'blob';
-      }
-    }
-
-    let localVarPath = `/api/auth/forgot-password/reset`;
-    const { basePath, withCredentials } = this.configuration;
-    return this.httpClient.request<MessageResponseDto>( 'post', `${basePath}${localVarPath}`,
-      {
-        context: localVarHttpContext,
-        body: resetPasswordRequestDto,
-        params: localVarQueryParameters,
-        responseType: <any>responseType_,
-        ...( withCredentials ? { withCredentials } : {} ),
-        headers: localVarHeaders,
-        observe: observe,
-        transferCache: localVarTransferCache,
-        reportProgress: reportProgress
-      }
-    );
-  }
-
-  /**
-   * Restablecimiento de contraseña
-   * Cambia la contraseña del usuario autenticado
-   * @param authorization Token JWT del usuario
-   * @param resetPasswordRequestDto 
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public resetPassword ( authorization: string, resetPasswordRequestDto: ResetPasswordRequestDto, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<MessageResponseDto>;
-  public resetPassword ( authorization: string, resetPasswordRequestDto: ResetPasswordRequestDto, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<HttpResponse<MessageResponseDto>>;
-  public resetPassword ( authorization: string, resetPasswordRequestDto: ResetPasswordRequestDto, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<HttpEvent<MessageResponseDto>>;
-  public resetPassword ( authorization: string, resetPasswordRequestDto: ResetPasswordRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<any> {
-    if ( authorization === null || authorization === undefined ) {
-      throw new Error( 'Required parameter authorization was null or undefined when calling resetPassword.' );
-    }
-    if ( resetPasswordRequestDto === null || resetPasswordRequestDto === undefined ) {
-      throw new Error( 'Required parameter resetPasswordRequestDto was null or undefined when calling resetPassword.' );
-    }
-
-    let localVarHeaders = this.defaultHeaders;
-    if ( authorization !== undefined && authorization !== null ) {
-      localVarHeaders = localVarHeaders.set( 'Authorization', String( authorization ) );
-    }
-
-    const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept( [
-      'application/json'
-    ] );
-    if ( localVarHttpHeaderAcceptSelected !== undefined ) {
-      localVarHeaders = localVarHeaders.set( 'Accept', localVarHttpHeaderAcceptSelected );
-    }
-
-    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
-
-    const localVarTransferCache: boolean = options?.transferCache ?? true;
-
-
-    // to determine the Content-Type header
-    const consumes: string[] = [
-      'application/json'
-    ];
-    const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType( consumes );
-    if ( httpContentTypeSelected !== undefined ) {
-      localVarHeaders = localVarHeaders.set( 'Content-Type', httpContentTypeSelected );
-    }
-
-    let responseType_: 'text' | 'json' | 'blob' = 'json';
-    if ( localVarHttpHeaderAcceptSelected ) {
-      if ( localVarHttpHeaderAcceptSelected.startsWith( 'text' ) ) {
-        responseType_ = 'text';
-      } else if ( this.configuration.isJsonMime( localVarHttpHeaderAcceptSelected ) ) {
-        responseType_ = 'json';
-      } else {
-        responseType_ = 'blob';
-      }
-    }
-
-    let localVarPath = `/api/auth/reset-password`;
-    const { basePath, withCredentials } = this.configuration;
-    return this.httpClient.request<MessageResponseDto>( 'post', `${basePath}${localVarPath}`,
-      {
-        context: localVarHttpContext,
-        body: resetPasswordRequestDto,
-        responseType: <any>responseType_,
-        ...( withCredentials ? { withCredentials } : {} ),
-        headers: localVarHeaders,
-        observe: observe,
-        transferCache: localVarTransferCache,
-        reportProgress: reportProgress
-      }
-    );
-  }
-
-  /**
-   * Verificación de email
-   * Verifica la cuenta del usuario usando el UUID enviado por email
-   * @param uuid UUID enviado al email del usuario
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public verifyEmail ( uuid: string, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<MessageResponseDto>;
-  public verifyEmail ( uuid: string, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<HttpResponse<MessageResponseDto>>;
-  public verifyEmail ( uuid: string, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<HttpEvent<MessageResponseDto>>;
-  public verifyEmail ( uuid: string, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean } ): Observable<any> {
-    if ( uuid === null || uuid === undefined ) {
-      throw new Error( 'Required parameter uuid was null or undefined when calling verifyEmail.' );
-    }
-
-    let localVarQueryParameters = new HttpParams( { encoder: this.encoder } );
-    localVarQueryParameters = this.addToHttpParams( localVarQueryParameters,
-      <any>uuid, 'uuid' );
-
-    let localVarHeaders = this.defaultHeaders;
-
-    const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept( [
-      'application/json'
-    ] );
-    if ( localVarHttpHeaderAcceptSelected !== undefined ) {
-      localVarHeaders = localVarHeaders.set( 'Accept', localVarHttpHeaderAcceptSelected );
-    }
-
-    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
-
-    const localVarTransferCache: boolean = options?.transferCache ?? true;
-
-
-    let responseType_: 'text' | 'json' | 'blob' = 'json';
-    if ( localVarHttpHeaderAcceptSelected ) {
-      if ( localVarHttpHeaderAcceptSelected.startsWith( 'text' ) ) {
-        responseType_ = 'text';
-      } else if ( this.configuration.isJsonMime( localVarHttpHeaderAcceptSelected ) ) {
-        responseType_ = 'json';
-      } else {
-        responseType_ = 'blob';
-      }
-    }
-
-    let localVarPath = `/api/auth/verify`;
-    const { basePath, withCredentials } = this.configuration;
-    return this.httpClient.request<MessageResponseDto>( 'get', `${basePath}${localVarPath}`,
-      {
-        context: localVarHttpContext,
-        params: localVarQueryParameters,
-        responseType: <any>responseType_,
-        ...( withCredentials ? { withCredentials } : {} ),
-        headers: localVarHeaders,
-        observe: observe,
-        transferCache: localVarTransferCache,
-        reportProgress: reportProgress
-      }
-    );
-  }
 
 }

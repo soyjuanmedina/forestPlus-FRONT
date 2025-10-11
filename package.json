@@ -9,7 +9,7 @@
     "build:prod": "ng build --configuration production --base-href /forestplus-angular-frontend/",
     "watch": "ng build --watch --configuration development",
     "gen-api": "openapi-generator-cli generate -i http://localhost:8080/v3/api-docs -g typescript-angular -o ./src/app/api --additional-properties=ngVersion=17,modelSuffix=Dto",
-    "test": "npx angular-cli-ghpages --dir=dist/forest-plus/browser"
+    "test": "ng generate component shared/confirm-dialog --standalone"
   },
   "private": true,
   "dependencies": {

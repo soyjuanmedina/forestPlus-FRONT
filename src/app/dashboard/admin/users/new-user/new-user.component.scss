@@ -1,0 +1,10 @@
+:host {
+  display: block;
+  min-height: calc(100vh - 4rem); // Ajuste según tu layout
+  padding-top: 2rem;
+  background-color: #f3f4f6; // gris claro
+}
+
+input, select {
+  transition: border-color 0.2s;
+}
