@@ -8,7 +8,7 @@ interface MenuLink {
   label: string;
   route?: string;
   roles?: string[];
-  children?: MenuLink[]; // submenú
+  children?: MenuLink[];
 }
 
 @Component( {
@@ -49,11 +49,9 @@ export class SidebarComponent {
     this.sidebarOpenChange.emit( this.sidebarOpen );
   }
 
-  /** Devuelve true si el enlace es visible para el usuario actual */
   canShow ( link: MenuLink ): boolean {
-    if ( !link.roles ) return true; // todos pueden ver
+    if ( !link.roles ) return true;
     const user = this.userService.getCurrentUser();
-    console.log( 'user.role', user?.role );
     return !!user && link.roles.includes( user.role! );
   }
 }
