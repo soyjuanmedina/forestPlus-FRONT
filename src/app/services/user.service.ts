@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable, map } from 'rxjs';
 import { UserResponseDto } from '../api/model/userResponse';
 import { RegisterUserRequestDto } from '../api/model/registerUserRequest';
 import { RegisterUserByAdminRequestDto } from '../api/model/registerUserByAdminRequest';
-import { UserControllerService } from '../api';
+import { PageUserResponseDto, UserControllerService } from '../api';
 
 @Injectable( {
   providedIn: 'root'
@@ -40,9 +40,21 @@ export class UserService {
     localStorage.removeItem( 'forestPlus_user' );
   }
 
-  /** 🔹 Wrapper de getAllUsers */
-  getAllUsers (): Observable<UserResponseDto[]> {
-    return this.userController.getAllUsers();
+  /** 🔹 Wrapper de getUsers con paginación y filtros */
+  getUsers (
+    page: number = 0,
+    size: number = 10,
+    sort: string = 'id,asc',
+    role?: string,
+    companyId?: number
+  ): Observable<PageUserResponseDto> {
+    return this.userController.getUsers(
+      role,
+      companyId,
+      page,
+      size,
+      [sort] // un array con un solo string "campo,direccion"
+    );
   }
 
   /** 🔹 Wrapper de getUserById */

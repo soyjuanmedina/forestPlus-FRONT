@@ -54,9 +54,22 @@ export class AdminUsersComponent implements OnInit {
   }
 
   loadUsers (): void {
-    this.userService.getAllUsers().subscribe( {
+    // valores por defecto
+    const page = this.paginator?.pageIndex ?? 0;
+    const size = this.paginator?.pageSize ?? 10;
+
+    // construir sort string "campo,direccion"
+    const sort = this.sort && this.sort.active && this.sort.direction
+      ? `${this.sort.active},${this.sort.direction}`
+      : 'id,asc';
+
+    // llamar al wrapper del servicio
+    this.userService.getUsers( page, size, sort ).subscribe( {
       next: ( data ) => {
-        this.users.data = data;
+        this.users.data = data.content ?? []; // PageUserResponseDto
+        if ( this.paginator ) {
+          this.paginator.length = data.totalElements ?? data.content?.length ?? 0;
+        }
       },
       error: ( err ) => {
         console.error( '❌ Error al cargar usuarios', err );

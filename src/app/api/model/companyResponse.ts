@@ -7,7 +7,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserResponseDto } from './userResponse';
 import { UserSummaryResponseDto } from './userSummaryResponse';
 
 
@@ -15,7 +14,7 @@ export interface CompanyResponseDto {
     id?: number;
     name?: string;
     address?: string;
-    admin?: UserResponseDto;
+    admin?: UserSummaryResponseDto;
     users?: Array<UserSummaryResponseDto>;
     createdAt?: string;
 }

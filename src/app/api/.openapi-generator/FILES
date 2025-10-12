@@ -25,10 +25,13 @@ model/landRequest.ts
 model/landResponse.ts
 model/messageResponse.ts
 model/models.ts
+model/pageUserResponse.ts
+model/pageableObject.ts
 model/registerUserByAdminRequest.ts
 model/registerUserRequest.ts
 model/resendVerificationEmailRequest.ts
 model/resetPasswordRequest.ts
+model/sortObject.ts
 model/treeEntity.ts
 model/userEntity.ts
 model/userResponse.ts
