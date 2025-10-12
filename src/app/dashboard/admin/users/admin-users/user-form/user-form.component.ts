@@ -8,11 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../../../../../services/user.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { ROLES, RolesEnum } from '../../../../../core/constants/roles';
 
-interface RoleOption {
-  value: string;
-  label: string;
-}
 
 @Component( {
   selector: 'app-user-form',
@@ -24,11 +21,7 @@ interface RoleOption {
 export class UserFormComponent implements OnInit {
   userForm!: FormGroup;
   hidePassword = true;
-  roles: RoleOption[] = [
-    { value: 'ADMIN', label: 'Administrador' },
-    { value: 'COMPANY_ADMIN', label: 'Administrador de Compañía' },
-    { value: 'COMPANY_USER', label: 'Usuario de Compañía' },
-  ];
+  roles = ROLES;
   companies: any[] = [];
   registerSuccess = false;
   registerError = '';
@@ -43,6 +36,7 @@ export class UserFormComponent implements OnInit {
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
   ) { }
+  RolesEnum = RolesEnum;
 
   ngOnInit (): void {
 
@@ -63,7 +57,7 @@ export class UserFormComponent implements OnInit {
       secondSurname: [''],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength( 6 )]],
-      role: ['', Validators.required],
+      role: [null as RolesEnum | null, Validators.required],
       companyId: [''],
     } );
 
@@ -74,9 +68,9 @@ export class UserFormComponent implements OnInit {
     } );
 
     // Validación dinámica de campo companyId según el rol
-    this.userForm.get( 'role' )?.valueChanges.subscribe( role => {
+    this.userForm.get( 'role' )?.valueChanges.subscribe( ( role: RolesEnum ) => {
       const companyControl = this.userForm.get( 'companyId' );
-      if ( role === 'COMPANY_ADMIN' || role === 'COMPANY_USER' ) {
+      if ( role === RolesEnum.COMPANY_ADMIN || role === RolesEnum.COMPANY_USER ) {
         companyControl?.setValidators( [Validators.required] );
       } else {
         companyControl?.clearValidators();

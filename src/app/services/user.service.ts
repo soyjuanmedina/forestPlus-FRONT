@@ -4,6 +4,7 @@ import { UserResponseDto } from '../api/model/userResponse';
 import { RegisterUserRequestDto } from '../api/model/registerUserRequest';
 import { RegisterUserByAdminRequestDto } from '../api/model/registerUserByAdminRequest';
 import { PageUserResponseDto, UserControllerService } from '../api';
+import { RolesEnum } from '../core/constants/roles';
 
 @Injectable( {
   providedIn: 'root'
@@ -92,7 +93,7 @@ export class UserService {
 
   /** Devuelve true si el usuario tiene rol ADMIN o COMPANY_ADMIN */
   isAdminOrCompanyAdmin (): boolean {
-    const user = this.getCurrentUser(); // tu método que devuelve UserResponseDto | null
-    return !!user && ( user.role === 'ADMIN' || user.role === 'COMPANY_ADMIN' );
+    const user = this.getCurrentUser();
+    return !!user && ( user.role === RolesEnum.ADMIN || user.role === RolesEnum.COMPANY_ADMIN );
   }
 }

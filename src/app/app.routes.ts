@@ -11,7 +11,7 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
 import { RoleGuard } from './guards/role.guard';
 import { AdminPageComponent } from './dashboard/admin/admin-page/admin-page.component';
 import { AdminUsersComponent } from './dashboard/admin/users/admin-users/admin-users.component';
-import { UserFormComponent } from './dashboard/admin/users/admin-users/user-form/user-form.component';
+import { RolesEnum } from './core/constants/roles'; // 👈 Importamos tu enum
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -27,29 +27,35 @@ export const routes: Routes = [
       { path: 'home', component: HomeComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'settings', component: SettingsComponent },
+
+      // 👇 Sección Admin protegida por roles
       {
         path: 'admin',
         component: AdminPageComponent,
         canActivate: [RoleGuard],
-        data: { roles: ['ADMIN', 'COMPANY_ADMIN'] },
+        data: { roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] },
         children: [
           {
             path: 'users',
             component: AdminUsersComponent,
             canActivate: [RoleGuard],
-            data: { roles: ['ADMIN', 'COMPANY_ADMIN'] }
+            data: { roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] }
           },
           {
             path: 'user-form',
-            loadComponent: () => import( './dashboard/admin/users/admin-users/user-form/user-form.component' ).then( m => m.UserFormComponent ),
+            loadComponent: () =>
+              import( './dashboard/admin/users/admin-users/user-form/user-form.component' )
+                .then( m => m.UserFormComponent ),
             canActivate: [RoleGuard],
-            data: { roles: ['ADMIN', 'COMPANY_ADMIN'] }
+            data: { roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] }
           },
           {
             path: 'user-form/:id',
-            loadComponent: () => import( './dashboard/admin/users/admin-users/user-form/user-form.component' ).then( m => m.UserFormComponent ),
+            loadComponent: () =>
+              import( './dashboard/admin/users/admin-users/user-form/user-form.component' )
+                .then( m => m.UserFormComponent ),
             canActivate: [RoleGuard],
-            data: { roles: ['ADMIN', 'COMPANY_ADMIN'] }
+            data: { roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] }
           }
         ]
       }

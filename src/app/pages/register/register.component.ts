@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../services/auth.service';
+import { ROLES, RolesEnum } from '../../core/constants/roles';
 
 @Component( {
   selector: 'app-register',
@@ -34,7 +35,7 @@ export class RegisterComponent {
   hidePassword = true;
   registerError: string = '';
   registerSuccess: boolean = false;
-  roles = ['USER', 'ADMIN', 'COMPANY_ADMIN', 'COMPANY_USER'];
+  roles = ROLES;
 
   constructor ( private fb: FormBuilder, private authService: AuthService ) {
     this.registerForm = this.fb.group( {
@@ -43,7 +44,7 @@ export class RegisterComponent {
       secondSurname: [''],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength( 6 )]],
-      role: ['USER']
+      role: [RolesEnum.USER]
     } );
   }
 

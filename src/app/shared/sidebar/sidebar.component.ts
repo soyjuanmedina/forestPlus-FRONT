@@ -3,11 +3,12 @@ import { UserService } from '../../services/user.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { RolesEnum } from '../../core/constants/roles';
 
 interface MenuLink {
   label: string;
   route?: string;
-  roles?: string[];
+  roles?: RolesEnum[];
   children?: MenuLink[];
 }
 
@@ -25,19 +26,19 @@ export class SidebarComponent {
   menuLinks: MenuLink[] = [
     { label: 'MENU.HOME', route: 'home' },
     { label: 'MENU.PROFILE', route: 'profile' },
-    /*     { label: 'MENU.MY_COMPANY', route: 'company', roles: ['COMPANY_ADMIN', 'COMPANY_USER'] },
-        { label: 'MENU.MY_LANDS', route: 'lands' },
-        { label: 'MENU.MY_TREES', route: 'trees' }, */
+    /* { label: 'MENU.MY_COMPANY', route: 'company', roles: [RolesEnum.COMPANY_ADMIN, RolesEnum.COMPANY_USER] },
+       { label: 'MENU.MY_LANDS', route: 'lands' },
+       { label: 'MENU.MY_TREES', route: 'trees' }, */
     {
       label: 'MENU.ADMIN.ADMIN',
-      roles: ['ADMIN', 'COMPANY_ADMIN'],
+      roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN],
       children: [
-        { label: 'MENU.ADMIN.USERS', route: 'admin/users', roles: ['ADMIN', 'COMPANY_ADMIN'] },
-        /*         { label: 'MENU.ADMIN.COMPANIES', route: 'admin/companies', roles: ['ADMIN'] },
-                { label: 'MENU.ADMIN.TREE_TYPES', route: 'admin/tree-types', roles: ['ADMIN'] },
-                { label: 'MENU.ADMIN.TREES', route: 'admin/trees', roles: ['ADMIN', 'COMPANY_ADMIN'] },
-                { label: 'MENU.ADMIN.AVAILABLE_LANDS', route: 'admin/available-lands', roles: ['ADMIN'] },
-                { label: 'MENU.ADMIN.LANDS', route: 'admin/lands', roles: ['ADMIN', 'COMPANY_ADMIN'] } */
+        { label: 'MENU.ADMIN.USERS', route: 'admin/users', roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] },
+        /* { label: 'MENU.ADMIN.COMPANIES', route: 'admin/companies', roles: [RolesEnum.ADMIN] },
+           { label: 'MENU.ADMIN.TREE_TYPES', route: 'admin/tree-types', roles: [RolesEnum.ADMIN] },
+           { label: 'MENU.ADMIN.TREES', route: 'admin/trees', roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] },
+           { label: 'MENU.ADMIN.AVAILABLE_LANDS', route: 'admin/available-lands', roles: [RolesEnum.ADMIN] },
+           { label: 'MENU.ADMIN.LANDS', route: 'admin/lands', roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] } */
       ]
     }
   ];
@@ -52,7 +53,7 @@ export class SidebarComponent {
   canShow ( link: MenuLink ): boolean {
     if ( !link.roles ) return true;
     const user = this.userService.getCurrentUser();
-    return !!user && link.roles.includes( user.role! );
+    return !!user && link.roles.includes( user.role as RolesEnum );
   }
 
   get userLinks (): MenuLink[] {
