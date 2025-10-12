@@ -19,11 +19,21 @@ export interface UserEntityDto {
     company?: CompanyEntityDto;
     email?: string;
     passwordHash?: string;
-    role?: string;
+    role?: UserEntityDto.RoleEnum;
     createdAt?: string;
     emailVerified?: boolean;
     forcePasswordChange?: boolean;
     uuid?: string;
     lands?: Array<LandEntityDto>;
 }
+export namespace UserEntityDto {
+    export const RoleEnum = {
+        Admin: 'ADMIN',
+        User: 'USER',
+        CompanyAdmin: 'COMPANY_ADMIN',
+        CompanyUser: 'COMPANY_USER'
+    } as const;
+    export type RoleEnum = typeof RoleEnum[keyof typeof RoleEnum];
+}
+
 

@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../services/auth.service';
-import { ROLES, RolesEnum } from '../../core/constants/roles';
+import { ROLES, RolesEnum } from '../../models/roles';
 
 @Component( {
   selector: 'app-register',

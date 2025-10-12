@@ -14,7 +14,17 @@ export interface RegisterUserByAdminRequestDto {
     surname?: string;
     secondSurname?: string;
     email?: string;
-    role?: string;
+    role?: RegisterUserByAdminRequestDto.RoleEnum;
     companyId?: number;
 }
+export namespace RegisterUserByAdminRequestDto {
+    export const RoleEnum = {
+        Admin: 'ADMIN',
+        User: 'USER',
+        CompanyAdmin: 'COMPANY_ADMIN',
+        CompanyUser: 'COMPANY_USER'
+    } as const;
+    export type RoleEnum = typeof RoleEnum[keyof typeof RoleEnum];
+}
+
 

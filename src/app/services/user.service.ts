@@ -4,7 +4,7 @@ import { UserResponseDto } from '../api/model/userResponse';
 import { RegisterUserRequestDto } from '../api/model/registerUserRequest';
 import { RegisterUserByAdminRequestDto } from '../api/model/registerUserByAdminRequest';
 import { PageUserResponseDto, UserControllerService } from '../api';
-import { RolesEnum } from '../core/constants/roles';
+import { RolesEnum } from '../models/roles';
 
 @Injectable( {
   providedIn: 'root'
@@ -46,7 +46,7 @@ export class UserService {
     page: number = 0,
     size: number = 10,
     sort: string = 'id,asc',
-    role?: string,
+    role?: RolesEnum,
     companyId?: number
   ): Observable<PageUserResponseDto> {
     return this.userController.getUsers(
@@ -54,7 +54,7 @@ export class UserService {
       companyId,
       page,
       size,
-      [sort] // un array con un solo string "campo,direccion"
+      sort
     );
   }
 

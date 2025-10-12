@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../../../../../services/user.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { ROLES, RolesEnum } from '../../../../../core/constants/roles';
+import { ROLES, RolesEnum } from '../../../../../models/roles';
 
 
 @Component( {

@@ -3,7 +3,7 @@ import { UserService } from '../../services/user.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { RolesEnum } from '../../core/constants/roles';
+import { RolesEnum } from '../../models/roles';
 
 interface MenuLink {
   label: string;

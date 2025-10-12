@@ -11,7 +11,7 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
 import { RoleGuard } from './guards/role.guard';
 import { AdminPageComponent } from './dashboard/admin/admin-page/admin-page.component';
 import { AdminUsersComponent } from './dashboard/admin/users/admin-users/admin-users.component';
-import { RolesEnum } from './core/constants/roles'; // 👈 Importamos tu enum
+import { RolesEnum } from './models/roles';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },

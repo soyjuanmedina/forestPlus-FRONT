@@ -158,10 +158,10 @@ export class UserControllerService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getUsers(role?: string, companyId?: number, page?: number, size?: number, sort?: Array<string>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PageUserResponseDto>;
-    public getUsers(role?: string, companyId?: number, page?: number, size?: number, sort?: Array<string>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PageUserResponseDto>>;
-    public getUsers(role?: string, companyId?: number, page?: number, size?: number, sort?: Array<string>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PageUserResponseDto>>;
-    public getUsers(role?: string, companyId?: number, page?: number, size?: number, sort?: Array<string>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getUsers(role?: 'ADMIN' | 'USER' | 'COMPANY_ADMIN' | 'COMPANY_USER', companyId?: number, page?: number, size?: number, sort?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PageUserResponseDto>;
+    public getUsers(role?: 'ADMIN' | 'USER' | 'COMPANY_ADMIN' | 'COMPANY_USER', companyId?: number, page?: number, size?: number, sort?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PageUserResponseDto>>;
+    public getUsers(role?: 'ADMIN' | 'USER' | 'COMPANY_ADMIN' | 'COMPANY_USER', companyId?: number, page?: number, size?: number, sort?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PageUserResponseDto>>;
+    public getUsers(role?: 'ADMIN' | 'USER' | 'COMPANY_ADMIN' | 'COMPANY_USER', companyId?: number, page?: number, size?: number, sort?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -172,12 +172,8 @@ export class UserControllerService extends BaseService {
           <any>page, 'page');
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
           <any>size, 'size');
-        if (sort) {
-            sort.forEach((element) => {
-                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                  <any>element, 'sort');
-            })
-        }
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>sort, 'sort');
 
         let localVarHeaders = this.defaultHeaders;
 

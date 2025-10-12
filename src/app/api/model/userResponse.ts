@@ -16,9 +16,19 @@ export interface UserResponseDto {
     surname?: string;
     secondSurname?: string;
     email?: string;
-    role?: string;
+    role?: UserResponseDto.RoleEnum;
     emailVerified?: boolean;
     forcePasswordChange?: boolean;
     company?: CompanyResponseDto;
 }
+export namespace UserResponseDto {
+    export const RoleEnum = {
+        Admin: 'ADMIN',
+        User: 'USER',
+        CompanyAdmin: 'COMPANY_ADMIN',
+        CompanyUser: 'COMPANY_USER'
+    } as const;
+    export type RoleEnum = typeof RoleEnum[keyof typeof RoleEnum];
+}
+
 

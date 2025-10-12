@@ -13,6 +13,7 @@ import { Router, RouterModule } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from '../../../../shared/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { RolesEnum } from '../../../../models/roles';
 
 
 @Component( {
@@ -54,19 +55,23 @@ export class AdminUsersComponent implements OnInit {
   }
 
   loadUsers (): void {
-    // valores por defecto
     const page = this.paginator?.pageIndex ?? 0;
     const size = this.paginator?.pageSize ?? 10;
-
-    // construir sort string "campo,direccion"
     const sort = this.sort && this.sort.active && this.sort.direction
       ? `${this.sort.active},${this.sort.direction}`
       : 'id,asc';
 
-    // llamar al wrapper del servicio
-    this.userService.getUsers( page, size, sort ).subscribe( {
+    // Obtener el usuario actual
+    const currentUser = this.userService.getCurrentUser();
+
+    // Solo filtrar por companyId si es COMPANY_ADMIN
+    const companyIdFilter = currentUser?.role === RolesEnum.COMPANY_ADMIN
+      ? currentUser.company?.id
+      : undefined;
+
+    this.userService.getUsers( page, size, sort, undefined, companyIdFilter ).subscribe( {
       next: ( data ) => {
-        this.users.data = data.content ?? []; // PageUserResponseDto
+        this.users.data = data.content ?? [];
         if ( this.paginator ) {
           this.paginator.length = data.totalElements ?? data.content?.length ?? 0;
         }
