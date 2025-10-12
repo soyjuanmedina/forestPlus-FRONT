@@ -27,6 +27,7 @@ export class UserFormComponent implements OnInit {
   registerError = '';
   isEditMode = false;
   userId!: number;
+  currentUserRole: string | null = '';
 
   constructor (
     private fb: FormBuilder,
@@ -39,6 +40,7 @@ export class UserFormComponent implements OnInit {
   RolesEnum = RolesEnum;
 
   ngOnInit (): void {
+    this.currentUserRole = this.userService.getCurrentUser()?.role ?? null;
 
     // 🆔 Si hay id en la ruta → estamos editando
     this.route.paramMap.subscribe( params => {
@@ -91,7 +93,12 @@ export class UserFormComponent implements OnInit {
           role: user.role,
           companyId: user.company?.id ?? '',
         } );
-        this.userForm.get( 'email' )?.disable(); // si no quieres que cambie el email
+        this.userForm.get( 'email' )?.disable();
+        if ( this.isEditMode &&
+          this.userService.getCurrentUser()?.role === RolesEnum.COMPANY_ADMIN &&
+          this.userService.getCurrentUser()?.id === this.userId ) {
+          this.userForm.get( 'role' )?.disable();
+        }
       },
       error: err => console.error( '❌ Error al cargar usuario', err )
     } );
