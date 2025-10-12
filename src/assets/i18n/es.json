@@ -90,5 +90,29 @@
     "ERROR": "Ha ocurrido un error al verificar tu correo.",
     "INVALID_LINK": "El enlace de verificación no es válido.",
     "GO_TO_LOGIN": "Ir a Iniciar Sesión"
+  },
+  "USER": {
+    "NEW_TITLE": "Nuevo Usuario",
+    "EDIT_TITLE": "Edición de Usuario",
+    "NAME_LABEL": "Nombre",
+    "NAME_PLACEHOLDER": "Nombre",
+    "SURNAME_LABEL": "Apellido",
+    "SURNAME_PLACEHOLDER": "Apellido",
+    "SECOND_SURNAME_LABEL": "Segundo Apellido",
+    "SECOND_SURNAME_PLACEHOLDER": "Segundo Apellido",
+    "EMAIL_LABEL": "Email",
+    "EMAIL_PLACEHOLDER": "Correo electrónico",
+    "PASSWORD_LABEL": "Contraseña",
+    "PASSWORD_PLACEHOLDER": "Contraseña",
+    "ROLE_LABEL": "Rol",
+    "SELECT_ROLE": "Seleccione rol",
+    "COMPANY_LABEL": "Compañía",
+    "SELECT_COMPANY": "Seleccione compañía",
+    "CREATE_BUTTON": "Crear Usuario",
+    "EDIT_BUTTON": "Editar Usuario",
+    "FIELD_REQUIRED": "Campo requerido",
+    "INVALID_EMAIL": "Email inválido",
+    "MIN_LENGTH": "Mínimo 6 caracteres",
+    "SUCCESS_MSG": "Usuario creado correctamente"
   }
 }

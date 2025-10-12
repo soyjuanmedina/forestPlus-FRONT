@@ -68,7 +68,14 @@ export class LoginComponent {
       this.authService.login( { email, password } ).subscribe( {
         next: ( user: UserResponseDto ) => {
           this.userService.updateCurrentUser( user );
-          this.router.navigateByUrl( '/' );
+          if ( user.forcePasswordChange ) {
+            // Redirige al reset password
+            this.router.navigate( ['/reset-password'], {
+              queryParams: { email: user.email } // opcional, para rellenar el formulario
+            } );
+          } else {
+            this.router.navigateByUrl( '/' );
+          }
         },
         error: ( err ) => this.handleLoginError( err )
       } );

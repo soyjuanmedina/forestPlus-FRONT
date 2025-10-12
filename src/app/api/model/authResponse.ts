@@ -15,9 +15,13 @@ import { UserResponseDto } from './userResponse';
  */
 export interface AuthResponseDto { 
     /**
-     * Token JWT del usuario
+     * Access Token JWT del usuario
      */
     token?: string;
+    /**
+     * Refresh Token para renovación del access token
+     */
+    refreshToken?: string;
     user?: UserResponseDto;
     /**
      * Indica si se requiere cambio de contraseña

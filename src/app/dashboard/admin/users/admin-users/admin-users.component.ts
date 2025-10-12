@@ -9,7 +9,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { UserService } from '../../../../services/user.service';
 import { UserResponseDto } from '../../../../api/model/userResponse';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from '../../../../shared/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -41,7 +41,8 @@ export class AdminUsersComponent implements OnInit {
 
   constructor ( private userService: UserService,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog ) { }
+    private dialog: MatDialog,
+    private router: Router ) { }
 
   ngOnInit (): void {
     this.loadUsers();
@@ -55,7 +56,6 @@ export class AdminUsersComponent implements OnInit {
   loadUsers (): void {
     this.userService.getAllUsers().subscribe( {
       next: ( data ) => {
-        console.log( '📥 Usuarios desde el back:', data );
         this.users.data = data;
       },
       error: ( err ) => {
@@ -65,8 +65,7 @@ export class AdminUsersComponent implements OnInit {
   }
 
   onEdit ( user: UserResponseDto ): void {
-    console.log( '✏️ Editar usuario:', user );
-    // Aquí abrirás un modal de edición más adelante
+    this.router.navigate( ['/admin/user-form/', user.id] );
   }
 
   onDelete ( user: any ): void {

@@ -18,6 +18,7 @@ export interface UserResponseDto {
     email?: string;
     role?: string;
     emailVerified?: boolean;
+    forcePasswordChange?: boolean;
     company?: CompanyResponseDto;
 }
 

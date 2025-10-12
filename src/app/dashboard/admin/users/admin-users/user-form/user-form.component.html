@@ -1,0 +1,111 @@
+<div class="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-lg">
+  <h2 class="text-2xl font-bold text-green-700 text-center mb-6">
+    {{ isEditMode ? ('USER.EDIT_TITLE' | translate) : ('USER.NEW_TITLE' | translate) }}
+  </h2>
+
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()"
+    class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+    <!-- Nombre -->
+    <div class="md:col-span-2">
+      <label class="block text-gray-700 mb-1">{{ 'USER.NAME_LABEL' | translate }}</label>
+      <input type="text" formControlName="name" [placeholder]="'USER.NAME_PLACEHOLDER' | translate"
+        class="w-full px-4 py-2 border-b border-gray-300 focus:border-green-500 focus:outline-none bg-transparent">
+      <div *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched"
+        class="text-red-500 text-sm mt-1">{{ 'USER.FIELD_REQUIRED' | translate }}</div>
+    </div>
+
+    <!-- Apellido -->
+    <div>
+      <label class="block text-gray-700 mb-1">{{ 'USER.SURNAME_LABEL' | translate }}</label>
+      <input type="text" formControlName="surname"
+        [placeholder]="'USER.SURNAME_PLACEHOLDER' | translate"
+        class="w-full px-4 py-2 border-b border-gray-300 focus:border-green-500 focus:outline-none bg-transparent">
+      <div *ngIf="userForm.get('surname')?.invalid && userForm.get('surname')?.touched"
+        class="text-red-500 text-sm mt-1">{{ 'USER.FIELD_REQUIRED' | translate }}</div>
+    </div>
+
+    <!-- Segundo Apellido -->
+    <div>
+      <label class="block text-gray-700 mb-1">{{ 'USER.SECOND_SURNAME_LABEL' | translate }}</label>
+      <input type="text" formControlName="secondSurname"
+        [placeholder]="'USER.SECOND_SURNAME_PLACEHOLDER' | translate"
+        class="w-full px-4 py-2 border-b border-gray-300 focus:border-green-500 focus:outline-none bg-transparent">
+    </div>
+
+    <!-- Email -->
+    <div class="md:col-span-2">
+      <label class="block text-gray-700 mb-1">{{ 'USER.EMAIL_LABEL' | translate }}</label>
+      <input type="email" formControlName="email"
+        [placeholder]="'USER.EMAIL_PLACEHOLDER' | translate"
+        class="w-full px-4 py-2 border-b border-gray-300 focus:border-green-500 focus:outline-none bg-transparent">
+      <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched"
+        class="text-red-500 text-sm mt-1">
+        <div *ngIf="userForm.get('email')?.hasError('required')">{{ 'USER.FIELD_REQUIRED' |
+          translate }}</div>
+        <div *ngIf="userForm.get('email')?.hasError('email')">{{ 'USER.INVALID_EMAIL' | translate
+          }}</div>
+      </div>
+    </div>
+
+    <!-- Contraseña -->
+    <div class="md:col-span-2 relative">
+      <label class="block text-gray-700 mb-1">{{ 'USER.PASSWORD_LABEL' | translate }}</label>
+      <input [type]="hidePassword ? 'password' : 'text'" formControlName="password"
+        [placeholder]="'USER.PASSWORD_PLACEHOLDER' | translate"
+        class="w-full px-4 py-2 border-b border-gray-300 focus:border-green-500 focus:outline-none bg-transparent">
+      <button type="button" (click)="hidePassword = !hidePassword"
+        class="absolute right-0 top-1/2 transform -translate-y-1/2 px-2 text-gray-500">
+        {{ hidePassword ? '👁️‍🗨️' : '👁️' }}
+      </button>
+      <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched"
+        class="text-red-500 text-sm mt-1">
+        <div *ngIf="userForm.get('password')?.hasError('required')">{{ 'USER.FIELD_REQUIRED' |
+          translate }}</div>
+        <div *ngIf="userForm.get('password')?.hasError('minlength')">{{ 'USER.MIN_LENGTH' |
+          translate }}</div>
+      </div>
+    </div>
+
+    <!-- Rol -->
+    <div>
+      <label class="block text-gray-700 mb-1">{{ 'USER.ROLE_LABEL' | translate }}</label>
+      <select formControlName="role"
+        class="w-full px-4 py-2 border-b border-gray-300 focus:border-green-500 focus:outline-none bg-transparent">
+        <option value="">{{ 'USER.SELECT_ROLE' | translate }}</option>
+        <option *ngFor="let r of roles" [value]="r.value">{{ r.label }}</option>
+      </select>
+      <div *ngIf="userForm.get('role')?.invalid && userForm.get('role')?.touched"
+        class="text-red-500 text-sm mt-1">{{ 'USER.FIELD_REQUIRED' | translate }}</div>
+    </div>
+
+    <!-- Compañía -->
+    <div
+      *ngIf="userForm.get('role')?.value === 'COMPANY_ADMIN' || userForm.get('role')?.value === 'COMPANY_USER'">
+      <label class="block text-gray-700 mb-1">{{ 'USER.COMPANY_LABEL' | translate }}</label>
+      <select formControlName="companyId"
+        class="w-full px-4 py-2 border-b border-gray-300 focus:border-green-500 focus:outline-none bg-transparent">
+        <option value="">{{ 'USER.SELECT_COMPANY' | translate }}</option>
+        <option *ngFor="let c of companies" [value]="c.id">{{ c.name }}</option>
+      </select>
+      <div *ngIf="userForm.get('companyId')?.invalid && userForm.get('companyId')?.touched"
+        class="text-red-500 text-sm mt-1">{{ 'USER.FIELD_REQUIRED' | translate }}</div>
+    </div>
+
+    <!-- Botón -->
+    <div class="md:col-span-2 mt-4">
+      <button type="submit"
+        class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 disabled:opacity-50">
+        {{ isEditMode ? ('USER.EDIT_BUTTON' | translate) : ('USER.CREATE_BUTTON' | translate) }}
+      </button>
+    </div>
+  </form>
+
+  <!-- Mensajes -->
+  <div *ngIf="registerSuccess" class="text-center text-green-600 font-semibold text-lg mt-4">
+    {{ 'USER.SUCCESS_MSG' | translate }}
+  </div>
+  <div *ngIf="registerError" class="text-center text-red-500 mt-4">
+    {{ registerError }}
+  </div>
+</div>

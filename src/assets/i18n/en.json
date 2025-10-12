@@ -90,5 +90,29 @@
     "ERROR": "An error occurred while verifying your email.",
     "INVALID_LINK": "The verification link is invalid.",
     "GO_TO_LOGIN": "Go to Login"
+  },
+  "USER": {
+    "NEW_TITLE": "New User",
+    "EDIT_TITLE": "Edit User",
+    "NAME_LABEL": "First Name",
+    "NAME_PLACEHOLDER": "First Name",
+    "SURNAME_LABEL": "Last Name",
+    "SURNAME_PLACEHOLDER": "Last Name",
+    "SECOND_SURNAME_LABEL": "Second Last Name",
+    "SECOND_SURNAME_PLACEHOLDER": "Second Last Name",
+    "EMAIL_LABEL": "Email",
+    "EMAIL_PLACEHOLDER": "Email",
+    "PASSWORD_LABEL": "Password",
+    "PASSWORD_PLACEHOLDER": "Password",
+    "ROLE_LABEL": "Role",
+    "SELECT_ROLE": "Select role",
+    "COMPANY_LABEL": "Company",
+    "SELECT_COMPANY": "Select company",
+    "CREATE_BUTTON": "Create User",
+    "EDIT_BUTTON": "Edit User",
+    "FIELD_REQUIRED": "Required field",
+    "INVALID_EMAIL": "Invalid email",
+    "MIN_LENGTH": "Minimum 6 characters",
+    "SUCCESS_MSG": "User created successfully"
   }
 }

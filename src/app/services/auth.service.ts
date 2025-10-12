@@ -140,4 +140,34 @@ export class AuthService {
     return this.authApi.resetForgotPassword( uuid, payload );
   }
 
+  /** Renovar el token usando el refresh token */
+  refreshToken (): Observable<AuthResponseDto> {
+    const refreshToken = localStorage.getItem( 'forestPlus_refresh_token' );
+    if ( !refreshToken ) {
+      // No hay refresh token, forzar logout
+      this.logout();
+      return throwError( () => new Error( 'No refresh token found' ) );
+    }
+
+    return this.authApi.refreshToken( { refreshToken } ).pipe(
+      map( ( resp: AuthResponseDto ) => {
+        if ( !resp.user || !resp.token ) {
+          throw new Error( 'Refresh failed: no token/user received' );
+        }
+        // Actualizamos usuario y token en localStorage
+        this.setUser( resp.user, resp.token );
+        if ( resp.refreshToken ) {
+          localStorage.setItem( 'forestPlus_refresh_token', resp.refreshToken );
+        }
+        return resp;
+      } ),
+      catchError( err => {
+        // Si el refresh falla, cerramos sesión
+        this.logout();
+        return throwError( () => err );
+      } )
+    );
+  }
+
+
 }

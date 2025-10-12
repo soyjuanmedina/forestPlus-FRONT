@@ -11,6 +11,7 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
 import { RoleGuard } from './guards/role.guard';
 import { AdminPageComponent } from './dashboard/admin/admin-page/admin-page.component';
 import { AdminUsersComponent } from './dashboard/admin/users/admin-users/admin-users.component';
+import { UserFormComponent } from './dashboard/admin/users/admin-users/user-form/user-form.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -39,8 +40,14 @@ export const routes: Routes = [
             data: { roles: ['ADMIN', 'COMPANY_ADMIN'] }
           },
           {
-            path: 'new-user',
-            loadComponent: () => import( './dashboard/admin/users/new-user/new-user.component' ).then( m => m.NewUserComponent ),
+            path: 'user-form',
+            loadComponent: () => import( './dashboard/admin/users/admin-users/user-form/user-form.component' ).then( m => m.UserFormComponent ),
+            canActivate: [RoleGuard],
+            data: { roles: ['ADMIN', 'COMPANY_ADMIN'] }
+          },
+          {
+            path: 'user-form/:id',
+            loadComponent: () => import( './dashboard/admin/users/admin-users/user-form/user-form.component' ).then( m => m.UserFormComponent ),
             canActivate: [RoleGuard],
             data: { roles: ['ADMIN', 'COMPANY_ADMIN'] }
           }
