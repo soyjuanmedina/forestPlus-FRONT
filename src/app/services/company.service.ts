@@ -26,8 +26,14 @@ export class CompanyService {
   }
 
   /** Actualizar compañía */
-  updateCompany ( id: number, company: { name: string } ): Observable<CompanyResponseDto> {
-    return this.companyController.updateCompany( id, { name: company.name } );
+  updateCompany (
+    id: number,
+    company: { name: string; address?: string }
+  ): Observable<CompanyResponseDto> {
+    return this.companyController.updateCompany( id, {
+      name: company.name,
+      address: company.address
+    } );
   }
 
   /** Eliminar compañía */

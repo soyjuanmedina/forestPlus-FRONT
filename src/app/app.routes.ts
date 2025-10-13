@@ -12,6 +12,7 @@ import { RoleGuard } from './guards/role.guard';
 import { AdminPageComponent } from './dashboard/admin/admin-page/admin-page.component';
 import { AdminUsersComponent } from './dashboard/admin/users/admin-users/admin-users.component';
 import { RolesEnum } from './models/roles';
+import { CompanyComponent } from './dashboard/company/company.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -26,6 +27,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'profile', component: ProfileComponent },
+      { path: 'company', component: CompanyComponent },
       { path: 'settings', component: SettingsComponent },
 
       // 👇 Sección Admin protegida por roles
