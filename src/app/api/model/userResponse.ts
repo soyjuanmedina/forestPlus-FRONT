@@ -11,11 +11,12 @@ import { CompanyResponseDto } from './companyResponse';
 
 
 export interface UserResponseDto { 
-    id?: number;
-    name?: string;
+    id: number;
+    name: string;
+    email: string;
     surname?: string;
     secondSurname?: string;
-    email?: string;
+    picture?: string;
     role?: UserResponseDto.RoleEnum;
     emailVerified?: boolean;
     forcePasswordChange?: boolean;

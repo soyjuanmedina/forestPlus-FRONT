@@ -1,15 +1,27 @@
 <div class="max-w-sm mx-auto" *ngIf="user">
   <mat-card class="rounded-2xl shadow-md p-4">
     <div class="flex flex-col items-center text-center">
-      <img src="assets/logo-white.png" alt="Avatar" class="w-24 h-24 rounded-full shadow-lg mb-4" />
 
-      <!-- 🔹 Modo lectura -->
+      <!-- Preview de la imagen -->
+      <img [src]="previewImage || user.picture || 'assets/logo-white.png'" alt="Avatar"
+        class="w-24 h-24 rounded-full shadow-lg mb-4" />
+
+      <!-- Input de imagen: sólo en modo edición -->
+      <ng-container *ngIf="editMode">
+        <label
+          class="cursor-pointer bg-gray-200 hover:bg-gray-300 p-2 rounded-full mb-4 flex items-center gap-2">
+          <mat-icon>photo_camera</mat-icon>
+          <span>Seleccionar foto</span>
+          <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
+        </label>
+      </ng-container>
+
+      <!-- Modo lectura -->
       <ng-container *ngIf="!editMode; else editForm">
         <h2 class="text-xl font-semibold">
           {{ user.name }} {{ user.surname }} {{ user.secondSurname }}
         </h2>
         <p class="text-gray-500">{{ user.email }}</p>
-        <!-- Compañía: solo para COMPANY_ADMIN o COMPANY_USER -->
         <p class="text-gray-500 font-medium mt-1"
           *ngIf="user.role === 'COMPANY_ADMIN' || user.role === 'COMPANY_USER'">
           Empresa: {{ user.company?.name }}
@@ -20,7 +32,7 @@
         </div>
       </ng-container>
 
-      <!-- 🔹 Modo edición -->
+      <!-- Modo edición -->
       <ng-template #editForm>
         <form (ngSubmit)="saveChanges()">
           <mat-form-field appearance="outline" class="w-full mb-2">
@@ -44,9 +56,12 @@
           </mat-form-field>
 
           <div class="flex gap-2 mt-4 justify-center">
-            <button mat-raised-button color="primary" type="submit">Guardar</button>
-            <button mat-stroked-button color="warn" type="button"
-              (click)="toggleEdit()">Cancelar</button>
+            <button mat-raised-button color="primary" type="submit">
+              Guardar cambios
+            </button>
+            <button mat-stroked-button color="warn" type="button" (click)="toggleEdit()">
+              Cancelar
+            </button>
           </div>
         </form>
       </ng-template>

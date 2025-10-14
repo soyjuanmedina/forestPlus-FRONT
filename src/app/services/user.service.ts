@@ -5,6 +5,8 @@ import { RegisterUserRequestDto } from '../api/model/registerUserRequest';
 import { RegisterUserByAdminRequestDto } from '../api/model/registerUserByAdminRequest';
 import { PageUserResponseDto, UserControllerService } from '../api';
 import { RolesEnum } from '../models/roles';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable( {
   providedIn: 'root'
@@ -12,7 +14,7 @@ import { RolesEnum } from '../models/roles';
 export class UserService {
   private userSubject = new BehaviorSubject<UserResponseDto | null>( null );
 
-  constructor ( private userController: UserControllerService ) {
+  constructor ( private userController: UserControllerService, private http: HttpClient ) {
     const savedUser = localStorage.getItem( 'forestPlus_user' );
     if ( savedUser ) {
       this.userSubject.next( JSON.parse( savedUser ) );
@@ -95,5 +97,24 @@ export class UserService {
   isAdminOrCompanyAdmin (): boolean {
     const user = this.getCurrentUser();
     return !!user && ( user.role === RolesEnum.ADMIN || user.role === RolesEnum.COMPANY_ADMIN );
+  }
+
+  /** 🔹 Subir imagen de perfil */
+  updateUserPicture ( id: number, file: File ): Observable<UserResponseDto> {
+    const formData = new FormData();
+    formData.append( 'file', file );
+
+    return this.http.put<UserResponseDto>(
+      `${environment.apiBaseUrl}/api/users/${id}/picture`,
+      formData
+    ).pipe(
+      map( user => {
+        // Si es el usuario logueado, actualiza el BehaviorSubject
+        if ( this.userSubject.value?.id === user.id ) {
+          this.updateCurrentUser( user );
+        }
+        return user;
+      } )
+    );
   }
 }

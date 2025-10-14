@@ -14,6 +14,7 @@ export interface CompanyResponseDto {
     id?: number;
     name?: string;
     address?: string;
+    picture?: string;
     admin?: UserSummaryResponseDto;
     users?: Array<UserSummaryResponseDto>;
     createdAt?: string;

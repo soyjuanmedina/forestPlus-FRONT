@@ -6,10 +6,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatIconModule } from '@angular/material/icon';
 
 import { UserResponseDto, RegisterUserRequestDto } from '../../api';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component( {
   selector: 'app-profile',
@@ -21,7 +24,8 @@ import { AuthService } from '../../services/auth.service';
     MatCardModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatIconModule
   ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
@@ -31,6 +35,8 @@ export class ProfileComponent implements OnInit {
 
   editMode = false;
   editData: RegisterUserRequestDto = {};
+  selectedFile?: File;
+  previewImage?: string;
 
   constructor (
     private userService: UserService,
@@ -40,7 +46,6 @@ export class ProfileComponent implements OnInit {
   ngOnInit (): void {
     this.authService.user$.subscribe( user => {
       this.user = user ?? undefined;
-      console.log( 'asdf', this.user );
     } );
   }
 
@@ -51,26 +56,61 @@ export class ProfileComponent implements OnInit {
     this.editMode = !this.editMode;
   }
 
+  onFileSelected ( event: any ): void {
+    const file: File = event.target.files[0];
+    if ( file ) {
+      this.selectedFile = file;
+
+      // Mostrar preview
+      const reader = new FileReader();
+      reader.onload = e => this.previewImage = reader.result as string;
+      reader.readAsDataURL( file );
+    }
+  }
+
   saveChanges (): void {
     if ( !this.user?.id ) return;
 
-    // 🔹 Creamos el DTO que realmente espera el backend
     const updateDto: RegisterUserRequestDto = {
-      name: this.editData.name,
-      surname: this.editData.surname,
-      secondSurname: this.editData.secondSurname,
-      email: this.editData.email
+      ...this.editData,
+      role: this.user.role,
+      email: this.user.email
     };
 
-    this.userService.updateUser( this.user.id, updateDto ).subscribe( {
-      next: ( updated: UserResponseDto ) => {
-        this.user = updated;
-        this.editMode = false;
-        this.authService.updateCurrentUser( updated );
-      },
-      error: err => {
-        console.error( '❌ Error al actualizar usuario:', err );
-      }
+    // Creamos un array de observables dependiendo de lo que hay que actualizar
+    const requests = [];
+
+    if ( this.selectedFile ) {
+      requests.push(
+        this.userService.updateUserPicture( this.user.id, this.selectedFile )
+          .pipe( catchError( err => { console.error( 'Error al subir imagen', err ); return of( this.user! ); } ) )
+      );
+    }
+
+    if ( updateDto.name || updateDto.surname || updateDto.secondSurname || updateDto.email ) {
+      requests.push(
+        this.userService.updateUser( this.user.id, updateDto )
+          .pipe( catchError( err => { console.error( 'Error al actualizar datos', err ); return of( this.user! ); } ) )
+      );
+    }
+
+    if ( requests.length === 0 ) {
+      this.editMode = false;
+      return;
+    }
+
+    forkJoin( requests ).subscribe( results => {
+      // Tomamos el último resultado como el usuario actualizado
+      const updatedUser = results[results.length - 1] as UserResponseDto;
+      this.finalizeUpdate( updatedUser );
     } );
+  }
+
+  private finalizeUpdate ( user: UserResponseDto ) {
+    this.user = user;
+    this.authService.updateCurrentUser( user );
+    this.editMode = false;
+    this.selectedFile = undefined;
+    this.previewImage = undefined;
   }
 }

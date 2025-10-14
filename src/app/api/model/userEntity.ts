@@ -16,6 +16,7 @@ export interface UserEntityDto {
     name?: string;
     surname?: string;
     secondSurname?: string;
+    picture?: string;
     company?: CompanyEntityDto;
     email?: string;
     passwordHash?: string;

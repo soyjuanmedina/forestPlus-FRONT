@@ -16,6 +16,7 @@ export interface RegisterUserByAdminRequestDto {
     email?: string;
     role?: RegisterUserByAdminRequestDto.RoleEnum;
     companyId?: number;
+    picture?: string;
 }
 export namespace RegisterUserByAdminRequestDto {
     export const RoleEnum = {

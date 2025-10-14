@@ -9,14 +9,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../../../../../services/user.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { ROLES, RolesEnum } from '../../../../../models/roles';
-
+import { MatIconModule } from '@angular/material/icon';
 
 @Component( {
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslateModule]
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule, MatIconModule]
 } )
 export class UserFormComponent implements OnInit {
   userForm!: FormGroup;
@@ -28,6 +28,11 @@ export class UserFormComponent implements OnInit {
   isEditMode = false;
   userId!: number;
   currentUserRole: string | null = '';
+  selectedFile?: File;
+  previewImage?: string;
+  user?: UserResponseDto;
+
+  RolesEnum = RolesEnum;
 
   constructor (
     private fb: FormBuilder,
@@ -35,9 +40,8 @@ export class UserFormComponent implements OnInit {
     private companyService: CompanyService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) { }
-  RolesEnum = RolesEnum;
 
   ngOnInit (): void {
     this.currentUserRole = this.userService.getCurrentUser()?.role ?? null;
@@ -65,8 +69,8 @@ export class UserFormComponent implements OnInit {
 
     // Cargar compañías
     this.companyService.getAllCompanies().subscribe( {
-      next: ( data ) => this.companies = data,
-      error: ( err ) => console.error( 'Error cargando compañías', err )
+      next: data => this.companies = data,
+      error: err => console.error( 'Error cargando compañías', err )
     } );
 
     // Validación dinámica de campo companyId según el rol
@@ -85,6 +89,8 @@ export class UserFormComponent implements OnInit {
   private loadUser ( id: number ) {
     this.userService.getUserById( id ).subscribe( {
       next: ( user: UserResponseDto ) => {
+        this.user = user;
+        this.previewImage = user.picture;
         this.userForm.patchValue( {
           name: user.name,
           surname: user.surname,
@@ -104,37 +110,63 @@ export class UserFormComponent implements OnInit {
     } );
   }
 
+  onFileSelected ( event: any ): void {
+    const file: File = event.target.files[0];
+    if ( file ) {
+      this.selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = () => this.previewImage = reader.result as string;
+      reader.readAsDataURL( file );
+    }
+  }
+
   onSubmit (): void {
     if ( this.userForm.invalid ) return;
 
     const dto: RegisterUserRequestDto = this.userForm.getRawValue();
 
-    if ( this.isEditMode ) {
-      this.userService.updateUserByAdmin( this.userId, dto ).subscribe( {
-        next: () => {
-          this.snackBar.open( '✅ Usuario actualizado con éxito', 'Cerrar', { duration: 3000 } );
-          this.router.navigate( ['/admin/users'] );
-        },
-        error: err => {
-          this.snackBar.open( '❌ Error al actualizar usuario', 'Cerrar', { duration: 3000 } );
-          console.error( err );
-        },
-      } );
-    } else {
+    // Subida de imagen + datos
+    const update$ = this.selectedFile && this.isEditMode
+      ? this.userService.updateUserPicture( this.userId, this.selectedFile )
+      : this.isEditMode
+        ? this.userService.updateUserByAdmin( this.userId, dto )
+        : this.userService.registerUserByAdmin( dto );
 
-      this.userService.registerUserByAdmin( dto ).subscribe( {
-        next: user => {
+    update$.subscribe( {
+      next: ( updatedUser: UserResponseDto ) => {
+        if ( this.isEditMode ) {
+          // Si había otros cambios además de la foto
+          if ( !this.selectedFile ) {
+            this.finalizeUpdate( updatedUser );
+          } else if ( dto.name || dto.surname || dto.secondSurname || dto.email ) {
+            this.userService.updateUserByAdmin( this.userId, dto ).subscribe( userUpdated => {
+              this.finalizeUpdate( userUpdated );
+            } );
+          } else {
+            this.finalizeUpdate( updatedUser );
+          }
+        } else {
           this.registerSuccess = true;
           this.registerError = '';
           this.userForm.reset();
           this.snackBar.open( '✅ Usuario creado con éxito', 'Cerrar', { duration: 3000 } );
           this.router.navigate( ['/admin/users'] );
-        },
-        error: err => {
-          this.registerError = err.error?.message || 'Error al crear el usuario';
-          this.registerSuccess = false;
         }
-      } );
-    }
+      },
+      error: err => {
+        this.registerError = err.error?.message || 'Error al guardar usuario';
+        this.registerSuccess = false;
+        console.error( err );
+      }
+    } );
+  }
+
+  private finalizeUpdate ( user: UserResponseDto ) {
+    this.user = user;
+    this.previewImage = user.picture;
+    this.selectedFile = undefined;
+    this.isEditMode = false;
+    this.snackBar.open( '✅ Usuario actualizado con éxito', 'Cerrar', { duration: 3000 } );
+    this.router.navigate( ['/admin/users'] );
   }
 }

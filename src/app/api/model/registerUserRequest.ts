@@ -20,6 +20,7 @@ export interface RegisterUserRequestDto {
     password?: string;
     role?: RegisterUserRequestDto.RoleEnum;
     companyId?: number;
+    picture?: string;
 }
 export namespace RegisterUserRequestDto {
     export const RoleEnum = {

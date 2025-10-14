@@ -9,9 +9,7 @@
  */
 
 
-export interface SortObjectDto { 
-    sorted?: boolean;
-    unsorted?: boolean;
-    empty?: boolean;
+export interface UpdateUserPictureRequestDto { 
+    file: Blob;
 }
 
