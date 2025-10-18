@@ -4,7 +4,9 @@ api.base.service.ts
 api.module.ts
 api/api.ts
 api/authController.service.ts
+api/companyCompensationController.service.ts
 api/companyController.service.ts
+api/companyEmissionController.service.ts
 api/coordinateController.service.ts
 api/landController.service.ts
 api/pingController.service.ts
@@ -15,9 +17,16 @@ encoder.ts
 git_push.sh
 index.ts
 model/authResponse.ts
+model/companyCompensationEntity.ts
+model/companyCompensationRequest.ts
+model/companyCompensationResponse.ts
+model/companyEmissionEntity.ts
+model/companyEmissionRequest.ts
+model/companyEmissionResponse.ts
 model/companyEntity.ts
 model/companyRequest.ts
 model/companyResponse.ts
+model/companyUpdateRequest.ts
 model/coordinateEntity.ts
 model/forgotPasswordRequest.ts
 model/landEntity.ts

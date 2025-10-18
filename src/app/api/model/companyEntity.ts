@@ -7,8 +7,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CompanyCompensationEntityDto } from './companyCompensationEntity';
 import { LandEntityDto } from './landEntity';
 import { UserEntityDto } from './userEntity';
+import { CompanyEmissionEntityDto } from './companyEmissionEntity';
 
 
 export interface CompanyEntityDto { 
@@ -20,5 +22,7 @@ export interface CompanyEntityDto {
     picture?: string;
     lands?: Array<LandEntityDto>;
     createdAt?: string;
+    emissions?: Array<CompanyEmissionEntityDto>;
+    compensations?: Array<CompanyCompensationEntityDto>;
 }
 

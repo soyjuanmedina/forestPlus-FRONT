@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { CompanyControllerService } from '../api';
+import { CompanyControllerService, CompanyUpdateRequestDto } from '../api';
 import { CompanyResponseDto } from '../api/model/companyResponse';
 
 @Injectable( {
@@ -75,8 +75,14 @@ export class CompanyService {
   }
 
   /** 🔹 Actualizar compañía */
-  updateCompany ( id: number, company: { name: string; address?: string } ): Observable<CompanyResponseDto> {
-    return this.companyController.updateCompany( id, company ).pipe(
+  updateCompany ( id: number, company: { name: string; address?: string; adminId?: number } ): Observable<CompanyResponseDto> {
+    // Convertimos tu objeto simple al DTO generado
+    const updateDto: CompanyUpdateRequestDto = {
+      name: company.name,
+      address: company.address
+    };
+
+    return this.companyController.updateCompany( id, updateDto ).pipe(
       map( updated => {
         if ( this.companySubject.value?.id === updated.id ) {
           this.updateCurrentCompany( updated );
