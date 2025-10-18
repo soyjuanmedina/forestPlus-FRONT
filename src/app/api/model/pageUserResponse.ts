@@ -13,16 +13,16 @@ import { SortObjectDto } from './sortObject';
 
 
 export interface PageUserResponseDto { 
-    totalPages?: number;
     totalElements?: number;
-    first?: boolean;
-    last?: boolean;
-    numberOfElements?: number;
-    pageable?: PageableObjectDto;
+    totalPages?: number;
     size?: number;
     content?: Array<UserResponseDto>;
     number?: number;
     sort?: SortObjectDto;
+    first?: boolean;
+    last?: boolean;
+    numberOfElements?: number;
+    pageable?: PageableObjectDto;
     empty?: boolean;
 }
 

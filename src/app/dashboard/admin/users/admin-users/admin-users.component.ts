@@ -71,9 +71,17 @@ export class AdminUsersComponent implements OnInit {
 
     this.userService.getUsers( page, size, sort, undefined, companyIdFilter ).subscribe( {
       next: ( data ) => {
-        this.users.data = data.content ?? [];
+        const content = data.content ?? [];
+
+        // ❌ Excluir el usuario actual
+        const filteredUsers = content.filter( u => u.id !== currentUser?.id );
+
+        this.users.data = filteredUsers;
+
         if ( this.paginator ) {
-          this.paginator.length = data.totalElements ?? data.content?.length ?? 0;
+          this.paginator.length = data.totalElements
+            ? data.totalElements - 1 // Restar el actual si estaba incluido
+            : filteredUsers.length;
         }
       },
       error: ( err ) => {
@@ -81,6 +89,7 @@ export class AdminUsersComponent implements OnInit {
       }
     } );
   }
+
 
   onEdit ( user: UserResponseDto ): void {
     this.router.navigate( ['/admin/user-form/', user.id] );

@@ -67,9 +67,26 @@ export class UserFormComponent implements OnInit {
       companyId: [''],
     } );
 
+    // Validación dinámica de companyId según rol
+    this.userForm.get( 'role' )?.valueChanges.subscribe( ( role: RolesEnum ) => {
+      const companyControl = this.userForm.get( 'companyId' );
+
+      if ( role === RolesEnum.COMPANY_USER ) {
+        companyControl?.setValidators( [Validators.required] );
+        companyControl?.enable(); // activo para COMPANY_USER
+      } else {
+        companyControl?.clearValidators();
+        companyControl?.setValue( '' );
+        companyControl?.disable(); // desactivo para COMPANY_ADMIN
+      }
+      companyControl?.updateValueAndValidity();
+    } );
+
     // Cargar compañías
     this.companyService.getAllCompanies().subscribe( {
-      next: data => this.companies = data,
+      next: data => {
+        this.companies = data.filter( c => !!c.admin );
+      },
       error: err => console.error( 'Error cargando compañías', err )
     } );
 
@@ -121,6 +138,7 @@ export class UserFormComponent implements OnInit {
   }
 
   onSubmit (): void {
+
     if ( this.userForm.invalid ) return;
 
     const dto: RegisterUserRequestDto = this.userForm.getRawValue();
