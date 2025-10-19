@@ -9,7 +9,7 @@
     "build:prod": "ng build --configuration production --base-href /forestplus-angular-frontend/",
     "watch": "ng build --watch --configuration development",
     "gen-api": "openapi-generator-cli generate -i http://localhost:8080/v3/api-docs -g typescript-angular -o ./src/app/api --additional-properties=ngVersion=17,modelSuffix=Dto",
-    "test": "ng update @angular/core@20 @angular/cli@20"
+    "test": "ng update @angular/core@19 @angular/cli@19"
   },
   "private": true,
   "dependencies": {
