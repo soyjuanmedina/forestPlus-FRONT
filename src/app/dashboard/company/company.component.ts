@@ -12,6 +12,8 @@ import { CompanyService } from '../../services/company.service';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Chart, ChartConfiguration, Plugin, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
+import { CompanyCompensationRequestDto, CompanyResponseDto } from '../../api';
+import { CompanyCompensationService } from '../../services/company-compensation.service';
 
 @Component( {
   selector: 'app-company',
@@ -54,10 +56,12 @@ export class CompanyComponent implements OnInit, AfterViewInit {
     compensadoRef: string,
     netoRef: string
   }[] = [];
+  company: CompanyResponseDto | null = null;
 
   constructor (
     private userService: UserService,
-    private companyService: CompanyService
+    private companyService: CompanyService,
+    private companyCompensationService: CompanyCompensationService
   ) {
     // Registrar controllers de Chart.js
     Chart.register( DoughnutController, ArcElement, Tooltip, Legend );
@@ -155,36 +159,37 @@ export class CompanyComponent implements OnInit, AfterViewInit {
 
     const sorted = [...this.user.company.co2].sort( ( a, b ) => b.year - a.year );
 
-    // Generamos referencias únicas para cada canvas
     this.co2Years = sorted.map( y => ( {
       ...y,
       emitidoRef: `emitido-${y.year}`,
       compensadoRef: `compensado-${y.year}`,
       netoRef: `neto-${y.year}`,
-      net: ( y.emissions?.total || 0 ) - ( y.compensations?.total || 0 )
+      net: ( y.totalEmissions || 0 ) - ( y.totalCompensations || 0 ),
+      editEmissions: y.totalEmissions || 0,
+      editCompensations: y.totalCompensations || 0,
+      editMode: false
     } ) );
 
-    // Esperamos a que Angular pinte el HTML
     setTimeout( () => {
       this.co2Years.forEach( y => {
         ( ['emitidoRef', 'compensadoRef', 'netoRef'] as const ).forEach( key => {
           const canvasEl = document.getElementById( y[key] ) as HTMLCanvasElement;
           if ( canvasEl ) {
             const value =
-              key === 'emitidoRef' ? y.emissions.total :
-                key === 'compensadoRef' ? y.compensations.total :
+              key === 'emitidoRef' ? y.totalEmissions :
+                key === 'compensadoRef' ? y.totalCompensations :
                   y.net;
             const color =
               key === 'emitidoRef' ? '#fc4d03ff' :
                 key === 'compensadoRef' ? '#89de8cff' :
                   '#2c80c5cf';
-
             this.createDonutChart( canvasEl, value, color );
           }
         } );
       } );
     } );
   }
+
 
 
   toggleEdit (): void {
@@ -243,5 +248,120 @@ export class CompanyComponent implements OnInit, AfterViewInit {
     this.selectedFile = undefined;
     this.previewImage = undefined;
   }
+
+
+  // Activar/desactivar edición por año
+  toggleEditCO2 ( y: any ) {
+    if ( !y.editMode ) {
+      // Guardamos copia para poder cancelar
+      y._backup = { emissions: y.emissions, compensations: y.compensations };
+    } else {
+      // Cancelar: restauramos valores
+      if ( y._backup ) {
+        y.emissions = y._backup.emissions;
+        y.compensations = y._backup.compensations;
+      }
+      // Volvemos a pintar los charts
+      setTimeout( () => this.paintCO2Charts( y ), 0 );
+    }
+    y.editMode = !y.editMode;
+  }
+
+  paintCO2Charts ( y: any ) {
+    const emitted = y.emissions || 0;
+    const compensated = y.compensations || 0;
+    const net = emitted - compensated;
+
+    const canvasIds = ['emitidoRef', 'compensadoRef', 'netoRef'] as const;
+    canvasIds.forEach( key => {
+      const canvasEl = document.getElementById( y[key] ) as HTMLCanvasElement;
+      if ( !canvasEl ) return;
+      const value = key === 'emitidoRef' ? emitted : key === 'compensadoRef' ? compensated : net;
+      const color = key === 'emitidoRef' ? '#fc4d03ff' : key === 'compensadoRef' ? '#89de8cff' : '#2c80c5cf';
+      this.createDonutChart( canvasEl, value, color );
+    } );
+  }
+
+
+  // Guardar cambios de un año (aquí puedes llamar al servicio)
+  saveCO2 ( year: any ) {
+    this.company = this.user?.company;
+    if ( !this.company?.id ) return;
+
+    // Calcular neto localmente
+    year.net = ( year.emissions || 0 ) - ( year.compensations.total || 0 );
+
+    const dto: CompanyCompensationRequestDto = {
+      companyId: this.company.id,
+      year: year.year,
+      totalCompensations: year.compensations.total || 0
+    };
+
+    // Llamar al servicio: si tiene id, actualiza; si no, crea
+
+    console.log( 'compensationId', year.compensations );
+    const compensationId = year.compensations?.id;
+
+    this.companyCompensationService.saveCompensation( dto, compensationId ).subscribe( {
+      next: res => {
+        console.log( 'Compensación guardada', res );
+        year.editMode = false;
+
+        // Guardar id si era nuevo
+        if ( !year.compensations?.id ) year.compensations.id = res.id;
+
+        this.renderCO2Charts();
+        this.companyCompensationService.updateLocal( res );
+      },
+      error: err => console.error( 'Error guardando compensación', err )
+    } );
+  }
+
+
+
+  // Añadir un nuevo año
+  addNewYear () {
+    const nextYear = Math.max( ...this.co2Years.map( y => y.year ) ) + 1;
+    const newYear = {
+      year: nextYear,
+      totalEmissions: 0,
+      totalCompensations: 0,
+      net: 0,
+      emitidoRef: `emitido-${nextYear}`,
+      compensadoRef: `compensado-${nextYear}`,
+      netoRef: `neto-${nextYear}`,
+      editMode: true
+    };
+    this.co2Years.push( newYear );
+    setTimeout( () => this.renderCO2Charts(), 0 );
+  }
+
+  // Función para redibujar todos los gráficos
+  renderCO2Charts () {
+    this.co2Years.forEach( ( y, i ) => {
+      ( ['emitidoRef', 'compensadoRef', 'netoRef'] as const ).forEach( key => {
+        const canvasEl = document.getElementById( y[key] ) as HTMLCanvasElement;
+        if ( !canvasEl ) return;
+
+        // Ajustamos el tamaño
+        canvasEl.width = i === 0 ? 200 : 80;
+        canvasEl.height = i === 0 ? 200 : 80;
+
+        const value =
+          key === 'emitidoRef' ? y.emissions :
+            key === 'compensadoRef' ? y.compensations :
+              y.net;
+
+        const color =
+          key === 'emitidoRef' ? '#fc4d03ff' :
+            key === 'compensadoRef' ? '#89de8cff' :
+              '#2c80c5cf';
+
+        this.createDonutChart( canvasEl, value, color );
+      } );
+    } );
+  }
+
+
 
 }
