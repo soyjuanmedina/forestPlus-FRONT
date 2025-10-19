@@ -1,0 +1,22 @@
+.charts-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 2rem;
+}
+
+canvas {
+  max-width: 150px;
+  max-height: 150px;
+}
+
+
+canvas.donut-large {
+  width: 200px !important;
+  height: 200px !important;
+}
+
+canvas.donut-small {
+  width: 80px !important;
+  height: 80px !important;
+}

@@ -34,42 +34,40 @@
     </form>
   </ng-template>
 
-  <div class="w-full mt-6" *ngIf="lastCO2Year">
-    <h3 class="text-lg font-semibold">Emisiones del último año</h3>
-    <p class="text-gray-400">{{ lastCO2Year.year }}</p>
 
 
+  <div class="w-full mt-6" *ngIf="co2Years?.length">
 
-    <div class="flex gap-8 justify-center items-center">
-      <div class="flex flex-col items-center">
-        <canvas baseChart [data]="emitidoData" [labels]="emitidoLabels" [chartType]="emitidoType"
-          [options]="emitidoOptions">
-        </canvas>
-        <p>{{ lastCO2Year?.emissions?.total ?? 0 }} t CO₂ emitido</p>
+    <!-- Recorremos cada año -->
+    <div *ngFor="let y of co2Years; let i = index" class="mb-8">
+
+      <!-- Título especial solo para el primero -->
+      <div *ngIf="i === 0">
+        <h3 class="text-lg font-semibold">Emisiones del último año registrado</h3>
+        <h4 class="text-lg font-semibold">{{ y.year }}</h4>
       </div>
 
-      <div class="flex flex-col items-center">
-        <canvas baseChart [data]="compensadoData" [labels]="compensadoLabels"
-          [chartType]="compensadoType" [options]="compensadoOptions">
-        </canvas>
-        <p>{{ lastCO2Year?.compensations?.total ?? 0 }} t CO₂ compensado</p>
+      <!-- Título para años anteriores -->
+      <div *ngIf="i > 0" class="text-left font-semibold mb-2">
+        Emisiones del año - {{ y.year }}
       </div>
 
-      <div class="flex flex-col items-center">
-        <canvas baseChart [data]="netoData" [labels]="netoLabels" [chartType]="netoType"
-          [options]="netoOptions">
-        </canvas>
-        <p>{{ totalCO2 ?? 0 }} t CO₂ neto</p>
+      <div class="co2-container">
+        <div class="charts-container">
+          <canvas [id]="y.emitidoRef" [ngClass]="i === 0 ? 'donut-large' : 'donut-small'"></canvas>
+          <canvas [id]="y.compensadoRef"
+            [ngClass]="i === 0 ? 'donut-large' : 'donut-small'"></canvas>
+          <canvas [id]="y.netoRef" [ngClass]="i === 0 ? 'donut-large' : 'donut-small'"></canvas>
+        </div>
       </div>
     </div>
 
 
-
-
-
-
-
-
   </div>
+
+
+
+
+
 
 </mat-card>

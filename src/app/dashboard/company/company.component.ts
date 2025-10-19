@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -11,7 +11,8 @@ import { UserService } from '../../services/user.service';
 import { CompanyService } from '../../services/company.service';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { BaseChartDirective } from 'ng2-charts';
+import { Chart, ChartConfiguration, Plugin, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
+
 @Component( {
   selector: 'app-company',
   standalone: true,
@@ -22,13 +23,17 @@ import { BaseChartDirective } from 'ng2-charts';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule,
-    BaseChartDirective
+    MatIconModule
   ],
   templateUrl: './company.component.html',
   styleUrls: ['./company.component.scss']
 } )
-export class CompanyComponent implements OnInit {
+export class CompanyComponent implements OnInit, AfterViewInit {
+
+  @ViewChild( 'emitidoChart' ) emitidoCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild( 'compensadoChart' ) compensadoCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild( 'netoChart' ) netoCanvas!: ElementRef<HTMLCanvasElement>;
+
   user: any;
   editMode = false;
   editData: any = {};
@@ -38,22 +43,25 @@ export class CompanyComponent implements OnInit {
   lastCO2Year?: any;
   totalCO2?: number;
 
-  emitidoData = [10, 90];      // [valor, resto]
-  emitidoLabels = ['Emitido', 'Resto'];
-  emitidoType = 'doughnut';
+  co2Years: any[] = [];
 
-  compensadoData = [5, 95];
-  compensadoLabels = ['Compensado', 'Resto'];
-  compensadoType = 'doughnut';
-
-  netoData = [3, 97];
-  netoLabels = ['Neto', 'Resto'];
-  netoType = 'doughnut';
+  previousCO2: {
+    year: number,
+    emissions: number,
+    compensations: number,
+    net: number,
+    emitidoRef: string,
+    compensadoRef: string,
+    netoRef: string
+  }[] = [];
 
   constructor (
     private userService: UserService,
     private companyService: CompanyService
-  ) { }
+  ) {
+    // Registrar controllers de Chart.js
+    Chart.register( DoughnutController, ArcElement, Tooltip, Legend );
+  }
 
   ngOnInit (): void {
     this.userService.getUser().subscribe( user => {
@@ -69,10 +77,118 @@ export class CompanyComponent implements OnInit {
     } );
   }
 
+  ngAfterViewInit () {
+    // Los charts se crearán desde updateLastCO2Year()
+  }
+
+  private createDonutChart ( canvas: HTMLCanvasElement, value: number, color: string ) {
+    const ctx = canvas.getContext( '2d' );
+    if ( !ctx ) return;
+
+    const centerTextPlugin: Plugin<'doughnut', any> = {
+      id: 'centerText',
+      beforeDraw: ( chart ) => {
+        const { ctx, width, height } = chart;
+        if ( !ctx ) return;
+
+        ctx.save();
+
+        const val = chart.data.datasets[0].data[0];
+        const line1 = `${val}`;
+        const line2 = 'Toneladas de CO₂';
+
+        const fontSize1 = ( height / 100 ) * 20;
+        ctx.font = `${fontSize1}px sans-serif`;
+        ctx.fillStyle = '#333';
+        ctx.textBaseline = 'middle';
+        const textX1 = width / 2 - ctx.measureText( line1 ).width / 2;
+        const textY1 = height / 2 - 10;
+        ctx.fillText( line1, textX1, textY1 );
+
+        const fontSize2 = ( height / 100 ) * 8;
+        ctx.font = `${fontSize2}px sans-serif`;
+        ctx.fillStyle = '#666';
+        const textX2 = width / 2 - ctx.measureText( line2 ).width / 2;
+        const textY2 = height / 2 + 15;
+        ctx.fillText( line2, textX2, textY2 );
+
+        ctx.restore();
+      }
+    };
+
+    const data = {
+      datasets: [{
+        data: [0, 100], // Empieza en 0
+        backgroundColor: [color, '#e0e0e0'],
+        cutout: '75%',
+        borderWidth: 0
+      }]
+    };
+
+    const options: ChartConfiguration<'doughnut'>['options'] = {
+      responsive: true,
+      animation: {
+        animateRotate: true,
+        animateScale: true,
+        duration: 3000
+      },
+      plugins: { legend: { display: false }, tooltip: { enabled: false } }
+    };
+
+    const chart = new Chart( ctx, {
+      type: 'doughnut',
+      data,
+      options,
+      plugins: [centerTextPlugin]
+    } );
+
+    // Animar al valor real
+    setTimeout( () => {
+      chart.data.datasets[0].data[0] = value;
+      chart.data.datasets[0].data[1] = Math.max( 100 - value, 0 );
+      chart.update();
+    }, 50 );
+  }
+
+  private updateLastCO2Year () {
+    if ( !this.user?.company?.co2?.length ) return;
+
+    const sorted = [...this.user.company.co2].sort( ( a, b ) => b.year - a.year );
+
+    // Generamos referencias únicas para cada canvas
+    this.co2Years = sorted.map( y => ( {
+      ...y,
+      emitidoRef: `emitido-${y.year}`,
+      compensadoRef: `compensado-${y.year}`,
+      netoRef: `neto-${y.year}`,
+      net: ( y.emissions?.total || 0 ) - ( y.compensations?.total || 0 )
+    } ) );
+
+    // Esperamos a que Angular pinte el HTML
+    setTimeout( () => {
+      this.co2Years.forEach( y => {
+        ( ['emitidoRef', 'compensadoRef', 'netoRef'] as const ).forEach( key => {
+          const canvasEl = document.getElementById( y[key] ) as HTMLCanvasElement;
+          if ( canvasEl ) {
+            const value =
+              key === 'emitidoRef' ? y.emissions.total :
+                key === 'compensadoRef' ? y.compensations.total :
+                  y.net;
+            const color =
+              key === 'emitidoRef' ? '#fc4d03ff' :
+                key === 'compensadoRef' ? '#89de8cff' :
+                  '#2c80c5cf';
+
+            this.createDonutChart( canvasEl, value, color );
+          }
+        } );
+      } );
+    } );
+  }
+
+
   toggleEdit (): void {
-    if ( this.user?.company ) {
-      this.editData = { ...this.user.company };
-    }
+    if ( this.user?.company ) this.editData = { ...this.user.company };
     this.editMode = !this.editMode;
   }
 
@@ -126,20 +242,6 @@ export class CompanyComponent implements OnInit {
     this.editMode = false;
     this.selectedFile = undefined;
     this.previewImage = undefined;
-  }
-
-  private updateLastCO2Year () {
-    if ( !this.user?.company?.co2?.length ) {
-      this.lastCO2Year = undefined;
-      this.totalCO2 = undefined;
-      return;
-    }
-
-    const sorted = [...this.user.company.co2].sort( ( a, b ) => b.year - a.year );
-    this.lastCO2Year = sorted[0];
-    const emitted = this.lastCO2Year.emissions?.total || 0;
-    const compensated = this.lastCO2Year.compensations?.total || 0;
-    this.totalCO2 = emitted - compensated;
   }
 
 }
