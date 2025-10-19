@@ -9,7 +9,7 @@
     "build:prod": "ng build --configuration production --base-href /forestplus-angular-frontend/",
     "watch": "ng build --watch --configuration development",
     "gen-api": "openapi-generator-cli generate -i http://localhost:8080/v3/api-docs -g typescript-angular -o ./src/app/api --additional-properties=ngVersion=17,modelSuffix=Dto",
-    "test": "ng generate component dashboard/company"
+    "test": "ng update @angular/core@20 @angular/cli@20"
   },
   "private": true,
   "dependencies": {
@@ -27,6 +27,7 @@
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",
     "jwt-decode": "^4.0.0",
+    "ng2-charts": "^7.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"

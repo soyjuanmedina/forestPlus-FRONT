@@ -1,4 +1,6 @@
 export * from './authResponse';
+export * from './companyCO2ValueDTO';
+export * from './companyCO2YearDTO';
 export * from './companyCompensationEntity';
 export * from './companyCompensationRequest';
 export * from './companyCompensationResponse';

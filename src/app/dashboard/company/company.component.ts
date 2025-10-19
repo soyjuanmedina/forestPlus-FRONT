@@ -11,7 +11,7 @@ import { UserService } from '../../services/user.service';
 import { CompanyService } from '../../services/company.service';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-
+import { BaseChartDirective } from 'ng2-charts';
 @Component( {
   selector: 'app-company',
   standalone: true,
@@ -22,7 +22,8 @@ import { catchError } from 'rxjs/operators';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule
+    MatIconModule,
+    BaseChartDirective
   ],
   templateUrl: './company.component.html',
   styleUrls: ['./company.component.scss']
@@ -34,6 +35,21 @@ export class CompanyComponent implements OnInit {
   selectedFile?: File;
   previewImage?: string;
 
+  lastCO2Year?: any;
+  totalCO2?: number;
+
+  emitidoData = [10, 90];      // [valor, resto]
+  emitidoLabels = ['Emitido', 'Resto'];
+  emitidoType = 'doughnut';
+
+  compensadoData = [5, 95];
+  compensadoLabels = ['Compensado', 'Resto'];
+  compensadoType = 'doughnut';
+
+  netoData = [3, 97];
+  netoLabels = ['Neto', 'Resto'];
+  netoType = 'doughnut';
+
   constructor (
     private userService: UserService,
     private companyService: CompanyService
@@ -42,8 +58,13 @@ export class CompanyComponent implements OnInit {
   ngOnInit (): void {
     this.userService.getUser().subscribe( user => {
       this.user = user;
-      if ( user?.company ) {
-        this.editData = { ...user.company };
+      if ( user?.company?.id ) {
+        this.companyService.getCompanyById( user.company.id )
+          .subscribe( company => {
+            this.user.company = company;
+            this.editData = { ...company };
+            this.updateLastCO2Year();
+          } );
       }
     } );
   }
@@ -59,10 +80,8 @@ export class CompanyComponent implements OnInit {
     const file: File = event.target.files[0];
     if ( file ) {
       this.selectedFile = file;
-
-      // Preview
       const reader = new FileReader();
-      reader.onload = e => this.previewImage = reader.result as string;
+      reader.onload = () => this.previewImage = reader.result as string;
       reader.readAsDataURL( file );
     }
   }
@@ -70,11 +89,7 @@ export class CompanyComponent implements OnInit {
   saveChanges (): void {
     if ( !this.user?.company?.id ) return;
 
-    const updateDto = {
-      name: this.editData.name,
-      address: this.editData.address
-    };
-
+    const updateDto = { name: this.editData.name, address: this.editData.address };
     const requests = [];
 
     if ( this.selectedFile ) {
@@ -99,16 +114,32 @@ export class CompanyComponent implements OnInit {
     forkJoin( requests ).subscribe( results => {
       const updatedCompany = results[results.length - 1];
       this.finalizeUpdate( updatedCompany );
+      this.updateLastCO2Year();
     } );
   }
 
   private finalizeUpdate ( updatedCompany: any ) {
     if ( this.user ) {
       this.user.company = updatedCompany;
-      this.userService.updateCurrentUser( this.user ); // actualizar BehaviorSubject
+      this.userService.updateCurrentUser( this.user );
     }
     this.editMode = false;
     this.selectedFile = undefined;
     this.previewImage = undefined;
   }
+
+  private updateLastCO2Year () {
+    if ( !this.user?.company?.co2?.length ) {
+      this.lastCO2Year = undefined;
+      this.totalCO2 = undefined;
+      return;
+    }
+
+    const sorted = [...this.user.company.co2].sort( ( a, b ) => b.year - a.year );
+    this.lastCO2Year = sorted[0];
+    const emitted = this.lastCO2Year.emissions?.total || 0;
+    const compensated = this.lastCO2Year.compensations?.total || 0;
+    this.totalCO2 = emitted - compensated;
+  }
+
 }

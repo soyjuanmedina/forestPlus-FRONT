@@ -17,6 +17,8 @@ encoder.ts
 git_push.sh
 index.ts
 model/authResponse.ts
+model/companyCO2ValueDTO.ts
+model/companyCO2YearDTO.ts
 model/companyCompensationEntity.ts
 model/companyCompensationRequest.ts
 model/companyCompensationResponse.ts
