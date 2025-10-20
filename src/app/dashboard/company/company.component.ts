@@ -85,7 +85,12 @@ export class CompanyComponent implements OnInit, AfterViewInit {
     // Los charts se crearán desde updateLastCO2Year()
   }
 
-  private createDonutChart ( canvas: HTMLCanvasElement, value: number, color: string ) {
+  private createDonutChart (
+    canvas: HTMLCanvasElement,
+    value: number,
+    color: string,
+    totalEmissions: number
+  ) {
     const ctx = canvas.getContext( '2d' );
     if ( !ctx ) return;
 
@@ -97,8 +102,7 @@ export class CompanyComponent implements OnInit, AfterViewInit {
 
         ctx.save();
 
-        const val = chart.data.datasets[0].data[0];
-        const line1 = `${val}`;
+        const line1 = `${value}`; // 👈 mostramos el valor real aquí
         const line2 = 'Toneladas de CO₂';
 
         const fontSize1 = ( height / 100 ) * 20;
@@ -117,16 +121,24 @@ export class CompanyComponent implements OnInit, AfterViewInit {
         ctx.fillText( line2, textX2, textY2 );
 
         ctx.restore();
-      }
+      },
     };
 
+    const base = totalEmissions > 0 ? totalEmissions : 1;
+    const isEmissions = value === totalEmissions;
+
+    // si value = totalEmissions => 100%
+    const initialPercent = isEmissions ? 100 : ( value / base ) * 100;
+
     const data = {
-      datasets: [{
-        data: [0, 100], // Empieza en 0
-        backgroundColor: [color, '#e0e0e0'],
-        cutout: '75%',
-        borderWidth: 0
-      }]
+      datasets: [
+        {
+          data: [initialPercent, 100 - initialPercent],
+          backgroundColor: [color, '#e0e0e0'],
+          cutout: '75%',
+          borderWidth: 0,
+        },
+      ],
     };
 
     const options: ChartConfiguration<'doughnut'>['options'] = {
@@ -134,25 +146,19 @@ export class CompanyComponent implements OnInit, AfterViewInit {
       animation: {
         animateRotate: true,
         animateScale: true,
-        duration: 3000
+        duration: isEmissions ? 0 : 3000, // 👈 emisiones no se anima
       },
-      plugins: { legend: { display: false }, tooltip: { enabled: false } }
+      plugins: { legend: { display: false }, tooltip: { enabled: false } },
     };
 
-    const chart = new Chart( ctx, {
+    new Chart( ctx, {
       type: 'doughnut',
       data,
       options,
-      plugins: [centerTextPlugin]
+      plugins: [centerTextPlugin],
     } );
-
-    // Animar al valor real
-    setTimeout( () => {
-      chart.data.datasets[0].data[0] = value;
-      chart.data.datasets[0].data[1] = Math.max( 100 - value, 0 );
-      chart.update();
-    }, 50 );
   }
+
 
   private updateLastCO2Year () {
     if ( !this.user?.company?.co2?.length ) return;
@@ -183,7 +189,7 @@ export class CompanyComponent implements OnInit, AfterViewInit {
               key === 'emitidoRef' ? '#fc4d03ff' :
                 key === 'compensadoRef' ? '#89de8cff' :
                   '#2c80c5cf';
-            this.createDonutChart( canvasEl, value, color );
+            this.createDonutChart( canvasEl, value, color, y.emissions || y.totalEmissions || 0 );
           }
         } );
       } );
@@ -278,7 +284,7 @@ export class CompanyComponent implements OnInit, AfterViewInit {
       if ( !canvasEl ) return;
       const value = key === 'emitidoRef' ? emitted : key === 'compensadoRef' ? compensated : net;
       const color = key === 'emitidoRef' ? '#fc4d03ff' : key === 'compensadoRef' ? '#89de8cff' : '#2c80c5cf';
-      this.createDonutChart( canvasEl, value, color );
+      this.createDonutChart( canvasEl, value, color, emitted );
     } );
   }
 
@@ -357,11 +363,26 @@ export class CompanyComponent implements OnInit, AfterViewInit {
             key === 'compensadoRef' ? '#89de8cff' :
               '#2c80c5cf';
 
-        this.createDonutChart( canvasEl, value, color );
+        this.createDonutChart( canvasEl, value, color, y.emissions || y.totalEmissions || 0 );
       } );
     } );
   }
 
+  getNetColorClass ( totalEmissions: number, totalCompensations: number ): string {
+    const net = totalEmissions - totalCompensations;
 
+    // Evitamos dividir por 0
+    const ratio = totalEmissions > 0 ? net / totalEmissions : 1;
+
+    if ( ratio < 0.5 ) return 'net-yellow';       // menos del 50%
+    if ( ratio <= 1 ) return 'net-red';     // entre 50% y 100%
+    return 'net-green';                       // más del 100% o 0 emisiones
+  }
+
+  getCompensatedPercentage ( totalEmissions: number, totalCompensations: number ): string {
+    if ( !totalEmissions || totalEmissions === 0 ) return '0';
+    const percent = ( totalCompensations / totalEmissions ) * 100;
+    return percent.toFixed( 0 ); // redondea a entero
+  }
 
 }

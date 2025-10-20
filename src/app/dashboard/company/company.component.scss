@@ -1,22 +1,116 @@
+/* 📊 Contenedor general de los gráficos */
 .charts-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: flex-start; /* alinear por arriba para consistencia */
+  gap: 5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap; /* permite que los donuts bajen en móviles */
+}
+
+/* 🧭 Wrapper individual de cada donut */
+.donut-wrapper {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  min-width: 120px;   /* ancho mínimo para mobile */
+  max-width: 200px;   /* ancho máximo en desktop */
+  gap: 0.5rem;        /* espacio entre label, canvas y texto */
+  justify-content: flex-start;
+  padding: 0 0.5rem;  /* margen interno para móviles */
 }
 
-canvas {
-  max-width: 150px;
-  max-height: 150px;
+/* 🏷️ Etiqueta del donut */
+.donut-label {
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  font-weight: 500;
+  text-align: center;
 }
 
-
-canvas.donut-large {
-  width: 200px !important;
-  height: 200px !important;
+/* 💰 Donut central con número neto */
+.donut-neto {
+  width: 100%;
+  max-width: 125px;
+  height: auto;
+  font-size: clamp(1.5rem, 4vw, 3rem); /* se adapta a la pantalla */
+  font-weight: 700;
+  color: #333;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-canvas.donut-small {
-  width: 80px !important;
-  height: 80px !important;
+/* 🪙 Unidad o texto pequeño debajo del número */
+.donut-neto-unit {
+  font-size: clamp(0.7rem, 2vw, 1rem);
+  font-weight: 400;
+  color: #666;
+  margin-top: 0.25rem;
+  text-align: center;
+}
+
+/* Línea informativa adicional */
+.donut-neto-info {
+  font-size: clamp(0.6rem, 1.5vw, 0.9rem);
+  color: #666;
+  margin-top: 0.25rem;
+  text-align: center;
+  line-height: 1.2;
+  white-space: normal;      /* permite wrap */
+  word-break: normal;       /* evita cortar palabras */
+  overflow-wrap: break-word; 
+}
+
+/* Colores según porcentaje neto */
+.net-red { color: #ff4d4f; }
+.net-yellow { color: #faad14; }
+.net-green { color: #52c41a; }
+
+/* Canvas grandes y pequeños */
+canvas.donut-large { width: 100%; max-width: 200px !important; height: auto !important; }
+canvas.donut-small { width: 80px !important; height: 80px !important; }
+
+/* Años anteriores */
+.co2-year-row .charts-container {
+  justify-content: flex-start; /* ⬅ alinear a la izquierda */
+  flex-wrap: wrap;
+}
+
+/* Wrapper individual de cada donut (pequeño) */
+.co2-year-row .donut-wrapper {
+  min-width: 60px; /* igual que el canvas pequeño */
+  max-width: 80px;
+  gap: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Valor Neto de años anteriores */
+.co2-year-row .donut-neto {
+  width: 60px;
+  height: 60px;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+}
+.co2-year-row .donut-neto-unit {
+  font-size: clamp(0.6rem, 1.5vw, 0.75rem);
+}
+.co2-year-row .donut-neto-info {
+  font-size: clamp(0.5rem, 1.2vw, 0.7rem);
+  max-width: 70px;
+  text-align: center;
+}
+
+/* Responsividad general para móviles */
+@media (max-width: 600px) {
+  .charts-container {
+    gap: 2rem;
+  }
+  .donut-wrapper {
+    min-width: 100px;
+    max-width: 140px;
+  }
 }
