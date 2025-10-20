@@ -40,6 +40,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+    display: block;       /* asegura que margin funcione correctamente */
+  margin-top:  2.5rem;
 }
 
 /* 🪙 Unidad o texto pequeño debajo del número */

@@ -12,8 +12,8 @@ import { CompanyService } from '../../services/company.service';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Chart, ChartConfiguration, Plugin, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
-import { CompanyCompensationRequestDto, CompanyResponseDto } from '../../api';
-import { CompanyCompensationService } from '../../services/company-compensation.service';
+import { CompanyCO2YearlyRequestDto, CompanyResponseDto } from '../../api';
+import { CompanyCo2Service } from '../../services/company-co2.service';
 
 @Component( {
   selector: 'app-company',
@@ -45,6 +45,9 @@ export class CompanyComponent implements OnInit, AfterViewInit {
   lastCO2Year?: any;
   totalCO2?: number;
 
+  chartsMap: { [key: string]: Chart } = {};
+
+
   co2Years: any[] = [];
 
   previousCO2: {
@@ -61,7 +64,7 @@ export class CompanyComponent implements OnInit, AfterViewInit {
   constructor (
     private userService: UserService,
     private companyService: CompanyService,
-    private companyCompensationService: CompanyCompensationService
+    private companyCo2Service: CompanyCo2Service
   ) {
     // Registrar controllers de Chart.js
     Chart.register( DoughnutController, ArcElement, Tooltip, Legend );
@@ -94,6 +97,11 @@ export class CompanyComponent implements OnInit, AfterViewInit {
     const ctx = canvas.getContext( '2d' );
     if ( !ctx ) return;
 
+    // 🔹 destruir chart previo si existe
+    if ( this.chartsMap[canvas.id] ) {
+      this.chartsMap[canvas.id].destroy();
+    }
+
     const centerTextPlugin: Plugin<'doughnut', any> = {
       id: 'centerText',
       beforeDraw: ( chart ) => {
@@ -101,10 +109,8 @@ export class CompanyComponent implements OnInit, AfterViewInit {
         if ( !ctx ) return;
 
         ctx.save();
-
-        const line1 = `${value}`; // 👈 mostramos el valor real aquí
+        const line1 = `${value}`;
         const line2 = 'Toneladas de CO₂';
-
         const fontSize1 = ( height / 100 ) * 20;
         ctx.font = `${fontSize1}px sans-serif`;
         ctx.fillStyle = '#333';
@@ -126,8 +132,6 @@ export class CompanyComponent implements OnInit, AfterViewInit {
 
     const base = totalEmissions > 0 ? totalEmissions : 1;
     const isEmissions = value === totalEmissions;
-
-    // si value = totalEmissions => 100%
     const initialPercent = isEmissions ? 100 : ( value / base ) * 100;
 
     const data = {
@@ -146,18 +150,20 @@ export class CompanyComponent implements OnInit, AfterViewInit {
       animation: {
         animateRotate: true,
         animateScale: true,
-        duration: isEmissions ? 0 : 3000, // 👈 emisiones no se anima
+        duration: isEmissions ? 0 : 3000,
       },
       plugins: { legend: { display: false }, tooltip: { enabled: false } },
     };
 
-    new Chart( ctx, {
+    // 🔹 crear chart y guardarlo
+    this.chartsMap[canvas.id] = new Chart( ctx, {
       type: 'doughnut',
       data,
       options,
       plugins: [centerTextPlugin],
     } );
   }
+
 
 
   private updateLastCO2Year () {
@@ -289,37 +295,40 @@ export class CompanyComponent implements OnInit, AfterViewInit {
   }
 
 
-  // Guardar cambios de un año (aquí puedes llamar al servicio)
   saveCO2 ( year: any ) {
-    this.company = this.user?.company;
-    if ( !this.company?.id ) return;
+    if ( !this.user?.company?.id ) return;
 
-    // Calcular neto localmente
-    year.net = ( year.emissions || 0 ) - ( year.compensations.total || 0 );
+    // Usar los valores editados
+    const totalEmissions = year.editEmissions ?? 0;
+    const totalCompensations = year.editCompensations ?? 0;
 
-    const dto: CompanyCompensationRequestDto = {
-      companyId: this.company.id,
+    // Calcular neto local
+    year.net = totalEmissions - totalCompensations;
+
+    // DTO
+    const dto: CompanyCO2YearlyRequestDto = {
       year: year.year,
-      totalCompensations: year.compensations.total || 0
+      totalEmissions: totalEmissions,
+      totalCompensations: totalCompensations
     };
 
-    // Llamar al servicio: si tiene id, actualiza; si no, crea
-
-    console.log( 'compensationId', year.compensations );
-    const compensationId = year.compensations?.id;
-
-    this.companyCompensationService.saveCompensation( dto, compensationId ).subscribe( {
-      next: res => {
-        console.log( 'Compensación guardada', res );
+    this.companyCo2Service.save( this.user.company.id, dto ).subscribe( {
+      next: ( res ) => {
         year.editMode = false;
 
-        // Guardar id si era nuevo
-        if ( !year.compensations?.id ) year.compensations.id = res.id;
+        // Actualizar id si es nuevo
+        if ( !year.id ) year.id = res.id;
 
+        // 🔹 Actualizar los valores principales para que los charts los usen
+        year.emissions = totalEmissions;        // 🔹 aquí
+        year.compensations = totalCompensations; // 🔹 aquí
+        year.totalEmissions = totalEmissions;
+        year.totalCompensations = totalCompensations;
+
+        // 🔹 Redibujar los charts con los valores actualizados
         this.renderCO2Charts();
-        this.companyCompensationService.updateLocal( res );
       },
-      error: err => console.error( 'Error guardando compensación', err )
+      error: ( err ) => console.error( 'Error guardando CO₂', err )
     } );
   }
 

@@ -7,8 +7,8 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { CompanyCO2YearDTODto } from './companyCO2YearDTO';
 import { UserSummaryResponseDto } from './userSummaryResponse';
+import { CompanyCO2YearlyResponseDto } from './companyCO2YearlyResponse';
 
 
 export interface CompanyResponseDto { 
@@ -19,6 +19,6 @@ export interface CompanyResponseDto {
     admin?: UserSummaryResponseDto;
     users?: Array<UserSummaryResponseDto>;
     createdAt?: string;
-    co2?: Array<CompanyCO2YearDTODto>;
+    co2?: Array<CompanyCO2YearlyResponseDto>;
 }
 
