@@ -64,14 +64,20 @@ export class LoginComponent {
     if ( this.loginForm.valid ) {
       const { email, password } = this.loginForm.value;
 
-
       this.authService.login( { email, password } ).subscribe( {
-        next: ( user: UserResponseDto ) => {
-          this.userService.updateCurrentUser( user );
-          if ( user.forcePasswordChange ) {
-            // Redirige al reset password
+        next: ( response: AuthResponseDto ) => {
+          const user = response.user;
+          if ( !user ) {
+            console.error( 'No se recibió el usuario en la respuesta' );
+            return;
+          }
+
+          // Ya no hace falta llamar a userService.updateCurrentUser(user)
+          // porque AuthService se encarga de actualizar BehaviorSubject y localStorage
+
+          if ( response.forcePasswordChange ) {
             this.router.navigate( ['/reset-password'], {
-              queryParams: { email: user.email } // opcional, para rellenar el formulario
+              queryParams: { email: user.email }
             } );
           } else {
             this.router.navigateByUrl( '/' );
@@ -81,6 +87,7 @@ export class LoginComponent {
       } );
     }
   }
+
 
   private handleLoginError ( err: any ) {
     console.error( err );

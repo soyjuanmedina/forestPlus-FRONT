@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RegisterUserRequestDto, UserResponseDto } from '../../../../../api';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { CompanyService } from '../../../../../services/company.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { UserService } from '../../../../../services/user.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { ROLES, RolesEnum } from '../../../../../models/roles';
 import { MatIconModule } from '@angular/material/icon';
+
+import { RegisterUserRequestDto, UserResponseDto } from '../../../../../api';
+import { CompanyService } from '../../../../../services/company.service';
+import { UserService } from '../../../../../services/user.service';
+import { AuthService } from '../../../../../services/auth.service';
+import { ROLES, RolesEnum } from '../../../../../models/roles';
 
 @Component( {
   selector: 'app-user-form',
@@ -27,16 +28,18 @@ export class UserFormComponent implements OnInit {
   registerError = '';
   isEditMode = false;
   userId!: number;
-  currentUserRole: string | null = '';
+  currentUser?: UserResponseDto;
   selectedFile?: File;
   previewImage?: string;
   user?: UserResponseDto;
+  isSelfEdit = false;
 
   RolesEnum = RolesEnum;
 
   constructor (
     private fb: FormBuilder,
     private userService: UserService,
+    private authService: AuthService,
     private companyService: CompanyService,
     private router: Router,
     private snackBar: MatSnackBar,
@@ -44,9 +47,9 @@ export class UserFormComponent implements OnInit {
   ) { }
 
   ngOnInit (): void {
-    this.currentUserRole = this.userService.getCurrentUser()?.role ?? null;
+    this.currentUser = this.authService.getUser() ?? undefined;
 
-    // 🆔 Si hay id en la ruta → estamos editando
+    // 🆔 Si hay id en la ruta → modo edición
     this.route.paramMap.subscribe( params => {
       const id = params.get( 'id' );
       if ( id ) {
@@ -62,22 +65,21 @@ export class UserFormComponent implements OnInit {
       surname: ['', Validators.required],
       secondSurname: [''],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength( 6 )]],
-      role: [null as RolesEnum | null, Validators.required],
+      password: ['', [Validators.minLength( 6 )]],
+      role: [null as RolesEnum | null],
       companyId: [''],
     } );
 
     // Validación dinámica de companyId según rol
     this.userForm.get( 'role' )?.valueChanges.subscribe( ( role: RolesEnum ) => {
       const companyControl = this.userForm.get( 'companyId' );
-
       if ( role === RolesEnum.COMPANY_USER ) {
         companyControl?.setValidators( [Validators.required] );
-        companyControl?.enable(); // activo para COMPANY_USER
+        companyControl?.enable();
       } else {
         companyControl?.clearValidators();
         companyControl?.setValue( '' );
-        companyControl?.disable(); // desactivo para COMPANY_ADMIN
+        companyControl?.disable();
       }
       companyControl?.updateValueAndValidity();
     } );
@@ -89,18 +91,6 @@ export class UserFormComponent implements OnInit {
       },
       error: err => console.error( 'Error cargando compañías', err )
     } );
-
-    // Validación dinámica de campo companyId según el rol
-    this.userForm.get( 'role' )?.valueChanges.subscribe( ( role: RolesEnum ) => {
-      const companyControl = this.userForm.get( 'companyId' );
-      if ( role === RolesEnum.COMPANY_ADMIN || role === RolesEnum.COMPANY_USER ) {
-        companyControl?.setValidators( [Validators.required] );
-      } else {
-        companyControl?.clearValidators();
-        companyControl?.setValue( '' );
-      }
-      companyControl?.updateValueAndValidity();
-    } );
   }
 
   private loadUser ( id: number ) {
@@ -108,6 +98,8 @@ export class UserFormComponent implements OnInit {
       next: ( user: UserResponseDto ) => {
         this.user = user;
         this.previewImage = user.picture;
+        this.isSelfEdit = this.currentUser?.id === this.userId;
+
         this.userForm.patchValue( {
           name: user.name,
           surname: user.surname,
@@ -116,11 +108,15 @@ export class UserFormComponent implements OnInit {
           role: user.role,
           companyId: user.company?.id ?? '',
         } );
-        this.userForm.get( 'email' )?.disable();
-        if ( this.isEditMode &&
-          this.userService.getCurrentUser()?.role === RolesEnum.COMPANY_ADMIN &&
-          this.userService.getCurrentUser()?.id === this.userId ) {
+
+        if ( this.isSelfEdit ) {
+          // Si es self edit, limitar campos
           this.userForm.get( 'role' )?.disable();
+          this.userForm.get( 'companyId' )?.disable();
+          this.userForm.get( 'password' )?.disable();
+        } else {
+          // Admin no puede cambiar email
+          this.userForm.get( 'email' )?.disable();
         }
       },
       error: err => console.error( '❌ Error al cargar usuario', err )
@@ -132,44 +128,30 @@ export class UserFormComponent implements OnInit {
     if ( file ) {
       this.selectedFile = file;
       const reader = new FileReader();
-      reader.onload = () => this.previewImage = reader.result as string;
+      reader.onload = () => ( this.previewImage = reader.result as string );
       reader.readAsDataURL( file );
     }
   }
 
   onSubmit (): void {
-
     if ( this.userForm.invalid ) return;
 
     const dto: RegisterUserRequestDto = this.userForm.getRawValue();
+    let update$;
 
-    // Subida de imagen + datos
-    const update$ = this.selectedFile && this.isEditMode
-      ? this.userService.updateUserPicture( this.userId, this.selectedFile )
-      : this.isEditMode
-        ? this.userService.updateUserByAdmin( this.userId, dto )
-        : this.userService.registerUserByAdmin( dto );
+    if ( this.selectedFile && this.isEditMode ) {
+      update$ = this.userService.updateUserPicture( this.userId, this.selectedFile );
+    } else if ( this.isEditMode ) {
+      update$ = this.isSelfEdit
+        ? this.userService.updateUser( this.userId, dto )
+        : this.userService.updateUserByAdmin( this.userId, dto );
+    } else {
+      update$ = this.userService.registerUserByAdmin( dto );
+    }
 
     update$.subscribe( {
       next: ( updatedUser: UserResponseDto ) => {
-        if ( this.isEditMode ) {
-          // Si había otros cambios además de la foto
-          if ( !this.selectedFile ) {
-            this.finalizeUpdate( updatedUser );
-          } else if ( dto.name || dto.surname || dto.secondSurname || dto.email ) {
-            this.userService.updateUserByAdmin( this.userId, dto ).subscribe( userUpdated => {
-              this.finalizeUpdate( userUpdated );
-            } );
-          } else {
-            this.finalizeUpdate( updatedUser );
-          }
-        } else {
-          this.registerSuccess = true;
-          this.registerError = '';
-          this.userForm.reset();
-          this.snackBar.open( '✅ Usuario creado con éxito', 'Cerrar', { duration: 3000 } );
-          this.router.navigate( ['/admin/users'] );
-        }
+        this.finalizeUpdate( updatedUser );
       },
       error: err => {
         this.registerError = err.error?.message || 'Error al guardar usuario';
@@ -183,8 +165,14 @@ export class UserFormComponent implements OnInit {
     this.user = user;
     this.previewImage = user.picture;
     this.selectedFile = undefined;
-    this.isEditMode = false;
     this.snackBar.open( '✅ Usuario actualizado con éxito', 'Cerrar', { duration: 3000 } );
-    this.router.navigate( ['/admin/users'] );
+
+    if ( this.isSelfEdit ) {
+      // 👉 ahora actualizamos el usuario logueado desde AuthService
+      this.authService.updateCurrentUser( user );
+      this.router.navigate( ['/profile'] );
+    } else {
+      this.router.navigate( ['/admin/users'] );
+    }
   }
 }

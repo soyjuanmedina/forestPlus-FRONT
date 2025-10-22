@@ -35,8 +35,7 @@ export const routes: Routes = [
       {
         path: 'admin',
         component: AdminPageComponent,
-        canActivate: [RoleGuard],
-        data: { roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] },
+        canActivate: [AuthGuard],
         children: [
           {
             path: 'users',
@@ -57,8 +56,7 @@ export const routes: Routes = [
             loadComponent: () =>
               import( './dashboard/admin/users/admin-users/user-form/user-form.component' )
                 .then( m => m.UserFormComponent ),
-            canActivate: [RoleGuard],
-            data: { roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] }
+            canActivate: [AuthGuard]
           },
           {
             path: 'companies',
