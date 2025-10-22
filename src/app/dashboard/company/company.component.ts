@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 
 import { UserService } from '../../services/user.service';
 import { CompanyService } from '../../services/company.service';
@@ -25,12 +26,13 @@ import { CompanyCo2Service } from '../../services/company-co2.service';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule
+    MatIconModule,
+    MatSelectModule
   ],
   templateUrl: './company.component.html',
   styleUrls: ['./company.component.scss']
 } )
-export class CompanyComponent implements OnInit, AfterViewInit {
+export class CompanyComponent implements OnInit {
 
   @ViewChild( 'emitidoChart' ) emitidoCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild( 'compensadoChart' ) compensadoCanvas!: ElementRef<HTMLCanvasElement>;
@@ -60,6 +62,9 @@ export class CompanyComponent implements OnInit, AfterViewInit {
     netoRef: string
   }[] = [];
   company: CompanyResponseDto | null = null;
+  newYearValue?: number;
+  availableYears: number[] = [];
+  selectedYear?: number;
 
   constructor (
     private userService: UserService,
@@ -79,13 +84,25 @@ export class CompanyComponent implements OnInit, AfterViewInit {
             this.user.company = company;
             this.editData = { ...company };
             this.updateLastCO2Year();
+            this.updateAvailableYears();
           } );
       }
     } );
   }
 
-  ngAfterViewInit () {
-    // Los charts se crearán desde updateLastCO2Year()
+  updateAvailableYears () {
+    const currentYear = new Date().getFullYear();
+    const existingYears = this.co2Years.map( y => y.year );
+    this.availableYears = [];
+
+    for ( let y = 2020; y <= currentYear; y++ ) {
+      if ( !existingYears.includes( y ) ) {
+        this.availableYears.push( y );
+      }
+    }
+
+    // orden descendente (más reciente primero)
+    this.availableYears.sort( ( a, b ) => b - a );
   }
 
   private createDonutChart (
@@ -335,21 +352,54 @@ export class CompanyComponent implements OnInit, AfterViewInit {
 
 
   // Añadir un nuevo año
-  addNewYear () {
-    const nextYear = Math.max( ...this.co2Years.map( y => y.year ) ) + 1;
-    const newYear = {
-      year: nextYear,
+  addNewYear ( year?: number ) {
+    if ( !year || !this.user?.company?.id ) return;
+
+    const newYear: {
+      id?: number;
+      year: number;
+      totalEmissions: number;
+      totalCompensations: number;
+      net: number;
+      emitidoRef: string;
+      compensadoRef: string;
+      netoRef: string;
+      editMode: boolean;
+      editEmissions: number;
+      editCompensations: number;
+    } = {
+      year,
       totalEmissions: 0,
       totalCompensations: 0,
       net: 0,
-      emitidoRef: `emitido-${nextYear}`,
-      compensadoRef: `compensado-${nextYear}`,
-      netoRef: `neto-${nextYear}`,
-      editMode: true
+      emitidoRef: `emitido-${year}`,
+      compensadoRef: `compensado-${year}`,
+      netoRef: `neto-${year}`,
+      editMode: true,
+      editEmissions: 0,
+      editCompensations: 0
     };
-    this.co2Years.push( newYear );
-    setTimeout( () => this.renderCO2Charts(), 0 );
+
+    const dto: CompanyCO2YearlyRequestDto = {
+      year,
+      totalEmissions: 0,
+      totalCompensations: 0
+    };
+
+    this.companyCo2Service.save( this.user.company.id, dto ).subscribe( {
+      next: ( res ) => {
+        newYear.id = res.id; // ✅ ahora no da error
+        this.co2Years.push( newYear );
+        this.co2Years.sort( ( a, b ) => b.year - a.year );
+        this.selectedYear = undefined;
+        this.updateAvailableYears();
+        setTimeout( () => this.renderCO2Charts(), 0 );
+      },
+      error: ( err ) => console.error( 'Error guardando nuevo año CO₂', err )
+    } );
   }
+
+
 
   // Función para redibujar todos los gráficos
   renderCO2Charts () {

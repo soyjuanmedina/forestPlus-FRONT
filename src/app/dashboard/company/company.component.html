@@ -178,10 +178,34 @@
 
     </div>
 
-    <!-- Botón para añadir un nuevo año -->
-    <div *ngIf="user.role === 'COMPANY_ADMIN'" class="flex justify-end mt-4">
-      <button mat-raised-button color="accent" (click)="addNewYear()">Añadir año</button>
+    <!-- Sección para añadir un nuevo año -->
+    <!-- AÑADIR NUEVO AÑO -->
+    <div *ngIf="user.role === 'COMPANY_ADMIN'" class="flex flex-col items-end mt-6 gap-3">
+
+      <div class="w-full text-left mb-2 text-lg font-semibold text-gray-700">
+        Añadir otro año
+      </div>
+
+      <div class="flex items-center gap-3 w-full md:w-1/2">
+
+        <!-- Selector de año -->
+        <mat-form-field appearance="outline" class="flex-1">
+          <mat-label>Selecciona un año</mat-label>
+          <mat-select [(ngModel)]="selectedYear" name="selectedYear">
+            <mat-option *ngFor="let year of availableYears" [value]="year">{{ year }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Botón añadir -->
+        <button mat-raised-button color="accent" [disabled]="!selectedYear"
+          (click)="addNewYear(selectedYear)" class="whitespace-nowrap">
+          Añadir año
+        </button>
+
+      </div>
     </div>
+
+
   </div>
 
 </mat-card>
