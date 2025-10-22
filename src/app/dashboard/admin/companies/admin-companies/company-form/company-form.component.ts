@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { catchError, forkJoin, of } from 'rxjs';
-import { CompanyResponseDto, CompanyCO2YearlyRequestDto } from '../../../../../api';
+import { CompanyResponseDto, CompanyCO2YearlyRequestDto, UserResponseDto } from '../../../../../api';
 import { CompanyService } from '../../../../../services/company.service';
 import { CompanyCo2Service } from '../../../../../services/company-co2.service';
 import { Chart, ChartConfiguration, Plugin, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
+import { UserService } from '../../../../../services/user.service';
 
 interface LocalCO2Year {
   year: number;
@@ -51,11 +52,14 @@ export class CompanyFormComponent implements OnInit {
   chartsMap: { [key: string]: Chart } = {};
   availableYears: number[] = [];
   selectedYear?: number;
+  user?: UserResponseDto | null;
 
   constructor (
     private companyService: CompanyService,
     private companyCo2Service: CompanyCo2Service,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
+    private userService: UserService
   ) {
     Chart.register( DoughnutController, ArcElement, Tooltip, Legend );
   }
@@ -63,6 +67,11 @@ export class CompanyFormComponent implements OnInit {
   ngOnInit () {
     const id = Number( this.route.snapshot.paramMap.get( 'id' ) );
     if ( !id ) return;
+
+    // Obtenemos el usuario para saber su rol
+    this.userService.getUser().subscribe( user => {
+      this.user = user;
+    } );
 
     this.companyService.getCompanyById( id ).subscribe( c => {
       this.company = c;
@@ -279,4 +288,74 @@ export class CompanyFormComponent implements OnInit {
     for ( let y = 2020; y <= currentYear; y++ ) if ( !existingYears.includes( y ) ) this.availableYears.push( y );
     this.availableYears.sort( ( a, b ) => b - a );
   }
+
+  getNetColorClass ( totalEmissions: number, totalCompensations: number ): string {
+    const net = totalEmissions - totalCompensations;
+    const ratio = totalEmissions > 0 ? net / totalEmissions : 1;
+    if ( ratio < 0.5 ) return 'net-yellow';
+    if ( ratio <= 1 ) return 'net-red';
+    return 'net-green';
+  }
+
+
+  getCompensatedPercentage ( totalEmissions: number, totalCompensations: number ): string {
+    if ( !totalEmissions ) return '0';
+    return ( ( totalCompensations / totalEmissions ) * 100 ).toFixed( 0 );
+  }
+
+  saveCompany () {
+    if ( !this.company?.id ) return;
+
+    const requests = [];
+
+    // ✅ Actualizar logo si se seleccionó una nueva imagen
+    if ( this.selectedFile ) {
+      requests.push(
+        this.companyService.updateCompanyPicture( this.company.id, this.selectedFile )
+          .pipe( catchError( err => {
+            console.error( 'Error actualizando imagen', err );
+            return of( this.company );
+          } ) )
+      );
+    }
+
+    // ✅ Actualizar nombre o dirección
+    if ( this.editData.name !== this.company.name || this.editData.address !== this.company.address ) {
+      requests.push(
+        this.companyService.updateCompany( this.company.id, {
+          name: this.editData.name,
+          address: this.editData.address
+        } ).pipe( catchError( err => {
+          console.error( 'Error actualizando empresa', err );
+          return of( this.company );
+        } ) )
+      );
+    }
+
+    // 🚫 Si no hay cambios, no hacemos nada
+    if ( !requests.length ) return;
+
+    forkJoin( requests ).subscribe( results => {
+      const updatedCompany = results[results.length - 1];
+      this.company = updatedCompany;
+      this.editData = { ...updatedCompany };
+      this.selectedFile = undefined;
+      this.previewImage = undefined;
+      this.prepareCO2Years();
+      this.updateAvailableYears();
+    } );
+  }
+
+  cancel () {
+    if ( !this.user ) return;
+
+    if ( this.user.role === 'ADMIN' ) {
+      this.router.navigate( ['/admin/companies'] );
+    } else if ( this.user.role === 'COMPANY_ADMIN' ) {
+      this.router.navigate( ['/dashboard/company'] );
+    } else {
+      this.router.navigate( ['/'] ); // fallback
+    }
+  }
+
 }

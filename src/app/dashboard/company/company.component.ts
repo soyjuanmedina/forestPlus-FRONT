@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { Chart, ChartConfiguration, Plugin, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
+import { RouterModule, Router } from '@angular/router';
+import { Chart, DoughnutController, ArcElement, Tooltip, Legend, Plugin } from 'chart.js';
 import { UserService } from '../../services/user.service';
-import { RouterModule } from '@angular/router';
+import { CompanyService } from '../../services/company.service';
 
 @Component( {
   selector: 'app-company',
@@ -12,14 +13,20 @@ import { RouterModule } from '@angular/router';
   imports: [CommonModule, MatCardModule, MatButtonModule, RouterModule],
   templateUrl: './company.component.html'
 } )
-export class CompanyComponent implements OnInit {
+export class CompanyComponent implements OnInit, AfterViewInit {
 
   user: any;
-  previewImage?: string;
+  company: any;
   co2Years: any[] = [];
   chartsMap: { [key: string]: Chart } = {};
+  previewImage?: string;
 
-  constructor ( private userService: UserService ) {
+  constructor (
+    private userService: UserService,
+    private companyService: CompanyService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {
     Chart.register( DoughnutController, ArcElement, Tooltip, Legend );
   }
 
@@ -27,21 +34,46 @@ export class CompanyComponent implements OnInit {
     this.userService.getUser().subscribe( user => {
       this.user = user;
 
-      if ( user?.company?.co2?.length ) {
-        const sorted = [...user.company.co2]
-          .filter( y => y.year !== undefined )
-          .sort( ( a, b ) => ( b.year! - a.year! ) );
-        this.co2Years = sorted.map( y => ( {
-          ...y,
-          net: ( y.totalEmissions || 0 ) - ( y.totalCompensations || 0 ),
-          emitidoRef: `emitido-${y.year}`,
-          compensadoRef: `compensado-${y.year}`,
-          netoRef: `neto-${y.year}`
-        } ) );
-
-        setTimeout( () => this.renderCO2Charts(), 0 );
+      if ( user?.company?.id ) {
+        this.companyService.getCompanyById( user.company.id ).subscribe( c => {
+          this.company = c;
+          this.prepareCO2Years();
+        } );
       }
     } );
+  }
+
+  ngAfterViewInit (): void {
+    if ( this.co2Years?.length ) {
+      setTimeout( () => this.renderCO2Charts(), 50 );
+    }
+  }
+
+  prepareCO2Years (): void {
+    if ( !this.company?.co2?.length ) return;
+
+    const sorted = [...this.company.co2]
+      .filter( y => y.year !== undefined )
+      .sort( ( a, b ) => b.year! - a.year! );
+
+    this.co2Years = sorted.map( y => ( {
+      ...y,
+      totalEmissions: y.totalEmissions || 0,
+      totalCompensations: y.totalCompensations || 0,
+      net: ( y.totalEmissions || 0 ) - ( y.totalCompensations || 0 ),
+      emitidoRef: `emitido-${y.year}`,
+      compensadoRef: `compensado-${y.year}`,
+      netoRef: `neto-${y.year}`, // importante
+    } ) );
+
+    this.cdr.detectChanges();
+    setTimeout( () => this.renderCO2Charts(), 100 );
+  }
+
+  goToEditForm () {
+    if ( this.user?.company?.id ) {
+      this.router.navigate( ['/company/form', this.user.company.id] );
+    }
   }
 
   renderCO2Charts () {
@@ -50,16 +82,21 @@ export class CompanyComponent implements OnInit {
         const canvasEl = document.getElementById( y[key] ) as HTMLCanvasElement;
         if ( !canvasEl ) return;
 
-        canvasEl.width = i === 0 ? 200 : 80;
-        canvasEl.height = i === 0 ? 200 : 80;
+        const size = i === 0 ? 200 : 80;
+        canvasEl.width = size;
+        canvasEl.height = size;
 
-        const value = key === 'emitidoRef' ? y.totalEmissions :
-          key === 'compensadoRef' ? y.totalCompensations :
-            y.net;
+        const value = key === 'emitidoRef'
+          ? y.totalEmissions
+          : key === 'compensadoRef'
+            ? y.totalCompensations
+            : y.net;
 
-        const color = key === 'emitidoRef' ? '#fc4d03ff' :
-          key === 'compensadoRef' ? '#89de8cff' :
-            '#2c80c5cf';
+        const color = key === 'emitidoRef'
+          ? '#fc4d03ff'
+          : key === 'compensadoRef'
+            ? '#89de8cff'
+            : '#2c80c5cf';
 
         this.createDonutChart( canvasEl, value, color, y.totalEmissions || 1 );
       } );
@@ -72,39 +109,45 @@ export class CompanyComponent implements OnInit {
 
     if ( this.chartsMap[canvas.id] ) this.chartsMap[canvas.id].destroy();
 
-    const centerTextPlugin: Plugin<'doughnut', any> = {
+    const percent = ( value / ( totalEmissions > 0 ? totalEmissions : 1 ) ) * 100;
+
+    const data = {
+      datasets: [{
+        data: [percent, 100 - percent],
+        backgroundColor: [color, '#e0e0e0'],
+        cutout: '75%',
+        borderWidth: 0
+      }]
+    };
+
+    // Plugin para dibujar texto en el centro
+    const centerTextPlugin: Plugin<'doughnut'> = {
       id: 'centerText',
-      beforeDraw: ( chart ) => {
+      beforeDraw: chart => {
         const { ctx, width, height } = chart;
         if ( !ctx ) return;
         ctx.save();
-
         ctx.font = `${( height / 100 ) * 20}px sans-serif`;
         ctx.fillStyle = '#333';
         ctx.textBaseline = 'middle';
         ctx.fillText( `${value}`, width / 2 - ctx.measureText( `${value}` ).width / 2, height / 2 - 10 );
-
         ctx.font = `${( height / 100 ) * 8}px sans-serif`;
         ctx.fillStyle = '#666';
         ctx.fillText( 'Toneladas de CO₂', width / 2 - ctx.measureText( 'Toneladas de CO₂' ).width / 2, height / 2 + 15 );
-
         ctx.restore();
       }
     };
 
-    const percent = ( value / ( totalEmissions > 0 ? totalEmissions : 1 ) ) * 100;
-
-    const data = {
-      datasets: [{ data: [percent, 100 - percent], backgroundColor: [color, '#e0e0e0'], cutout: '75%', borderWidth: 0 }]
-    };
-
-    const options: ChartConfiguration<'doughnut'>['options'] = {
-      responsive: true,
-      animation: { animateRotate: true, animateScale: true, duration: 1000 },
-      plugins: { legend: { display: false }, tooltip: { enabled: false } }
-    };
-
-    this.chartsMap[canvas.id] = new Chart( ctx, { type: 'doughnut', data, options, plugins: [centerTextPlugin] } );
+    this.chartsMap[canvas.id] = new Chart( ctx, {
+      type: 'doughnut',
+      data,
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
+        animation: { animateRotate: true, animateScale: true }
+      },
+      plugins: [centerTextPlugin]
+    } );
   }
 
   getNetColorClass ( totalEmissions: number, totalCompensations: number ): string {

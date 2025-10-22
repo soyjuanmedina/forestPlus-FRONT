@@ -3,82 +3,85 @@
   <!-- PERFIL DE LA COMPAÑÍA -->
   <img [src]="previewImage || user.company.picture || 'assets/company_profile.png'" alt="Logo"
     class="w-24 h-24 rounded-full shadow-lg mb-4" />
-
   <h2 class="text-xl font-semibold">{{ user.company.name }}</h2>
   <p class="text-gray-500">{{ user.company.address }}</p>
 
-  <!-- BOTÓN EDITAR: Navega a CompanyFormComponent -->
+  <!-- Botón Editar -->
   <div class="flex gap-2 mt-4" *ngIf="user.role === 'COMPANY_ADMIN'">
-    <button mat-raised-button color="primary" [routerLink]="['/company/form', user.company.id]">
+    <a mat-raised-button color="primary" [routerLink]="['/company/form', user.company.id]">
       Editar
-    </button>
+    </a>
   </div>
 
   <!-- CO2 -->
   <div class="w-full mt-6" *ngIf="co2Years?.length">
 
-    <!-- ÚLTIMO AÑO (GRANDE) -->
-    <div *ngIf="co2Years.length" class="mb-8">
-      <h3 class="text-lg font-semibold">Registros de CO₂ del último año registrado</h3>
+    <!-- PRIMER AÑO (GRANDE) -->
+    <div class="mb-8">
+      <h3 class="text-lg font-semibold">Último año registrado</h3>
       <h4 class="text-lg font-semibold">{{ co2Years[0].year }}</h4>
 
-      <div class="co2-container">
-        <div class="charts-container">
-          <div class="donut-wrapper">
-            <div class="donut-label">Emisiones</div>
-            <canvas [id]="co2Years[0].emitidoRef" class="donut-large"></canvas>
-          </div>
+      <div class="co2-container flex justify-center gap-4 mt-4 items-center">
+        <!-- Emisiones -->
+        <div class="donut-wrapper">
+          <div class="donut-label">Emisiones</div>
+          <canvas [id]="co2Years[0].emitidoRef" class="donut-large"></canvas>
+        </div>
 
-          <div class="donut-wrapper">
-            <div class="donut-label">Compensaciones</div>
-            <canvas [id]="co2Years[0].compensadoRef" class="donut-large"></canvas>
-          </div>
+        <!-- Compensaciones -->
+        <div class="donut-wrapper">
+          <div class="donut-label">Compensaciones</div>
+          <canvas [id]="co2Years[0].compensadoRef" class="donut-large"></canvas>
+        </div>
 
-          <div class="donut-wrapper">
-            <div class="donut-label">Valor Neto</div>
-            <div class="donut-neto"
-              [ngClass]="getNetColorClass(co2Years[0].totalEmissions, co2Years[0].totalCompensations)">
-              {{ co2Years[0].totalEmissions - co2Years[0].totalCompensations | number:'1.0-0' }}
-            </div>
-            <div class="donut-neto-unit">Toneladas de CO₂</div>
-            <div class="donut-neto-info">
-              (has compensado el {{ getCompensatedPercentage(co2Years[0].totalEmissions,
-              co2Years[0].totalCompensations) }}% de tus emisiones)
-            </div>
+        <!-- Valor Neto -->
+        <div class="donut-wrapper neto-wrapper">
+          <div class="donut-label">Valor Neto</div>
+          <div class="donut-neto  text-4xl font-bold"
+            [ngClass]="getNetColorClass(co2Years[0].totalEmissions, co2Years[0].totalCompensations)">
+            {{ co2Years[0].totalEmissions - co2Years[0].totalCompensations | number:'1.0-0' }}
+          </div>
+          <div class="donut-neto-unit">Toneladas de CO₂</div>
+          <div class="donut-neto-info">
+            (Compensaste el {{ getCompensatedPercentage(co2Years[0].totalEmissions,
+            co2Years[0].totalCompensations) }}% de tus emisiones)
           </div>
         </div>
       </div>
     </div>
 
     <!-- AÑOS ANTERIORES -->
-    <div class="mt-6" *ngIf="co2Years.length > 1">
+    <div *ngIf="co2Years.length > 1" class="mt-6">
       <h3 class="text-left font-semibold mb-2">Años anteriores</h3>
 
       <div *ngFor="let y of co2Years.slice(1)"
         class="co2-year-row flex flex-col items-start gap-2 mb-4 w-full">
-        <div class="flex justify-between w-full items-center mb-1">
-          <div class="w-16 text-left font-bold">{{ y.year }}</div>
-        </div>
+        <div class="flex items-center gap-4 w-full">
+          <div class="w-16 font-bold">{{ y.year }}</div>
 
-        <div class="charts-container w-full justify-start">
-          <div class="donut-wrapper">
-            <canvas [id]="y.emitidoRef" class="donut-small"></canvas>
-          </div>
-          <div class="donut-wrapper">
-            <canvas [id]="y.compensadoRef" class="donut-small"></canvas>
-          </div>
-          <div class="donut-wrapper">
-            <div class="donut-neto"
-              [ngClass]="getNetColorClass(y.totalEmissions, y.totalCompensations)">
-              {{ y.totalEmissions - y.totalCompensations | number:'1.0-0' }}
+          <!-- Donuts -->
+          <div class="co2-container flex gap-4 items-center">
+            <div class="donut-wrapper">
+              <canvas [id]="y.emitidoRef" class="donut-small"></canvas>
             </div>
-            <div class="donut-neto-info">
-              Compensaste el {{ getCompensatedPercentage(y.totalEmissions, y.totalCompensations) }}%
-              de tus emisiones
+            <div class="donut-wrapper">
+              <canvas [id]="y.compensadoRef" class="donut-small"></canvas>
+            </div>
+            <div class="donut-wrapper neto-wrapper">
+              <div class="donut-neto"
+                [ngClass]="getNetColorClass(y.totalEmissions, y.totalCompensations)">
+                {{ y.totalEmissions - y.totalCompensations | number:'1.0-0' }}
+              </div>
+              <div class="donut-neto-unit">Toneladas de CO₂</div>
+              <div class="donut-neto-info">
+                Compensaste el {{ getCompensatedPercentage(y.totalEmissions, y.totalCompensations)
+                }}% de tus emisiones
+              </div>
             </div>
           </div>
         </div>
       </div>
+
     </div>
 
   </div>

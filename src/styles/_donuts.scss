@@ -1,0 +1,126 @@
+/* === DONUTS Y GRÁFICOS CO₂ (COMPARTIDO) === */
+
+/* 📊 Contenedor general de los gráficos */
+.co2-container {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* centra verticalmente los elementos dentro */
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+/* 🧭 Wrapper individual de cada donut */
+.donut-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  padding: 0 0.5rem;
+}
+
+/* 🏷️ Etiqueta del donut */
+.donut-label {
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+/* 💰 Donut central con número neto */
+.donut-neto {
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  max-width: 125px;
+  margin-top: 1.5rem;
+}
+
+/* 🪙 Unidad o texto pequeño debajo del número */
+.donut-neto-unit {
+  font-size: clamp(0.7rem, 2vw, 1rem);
+  font-weight: 400;
+  color: #666;
+  margin-top: 0.25rem;
+  text-align: center;
+}
+
+/* Línea informativa adicional */
+.donut-neto-info {
+  font-size: clamp(0.6rem, 1.5vw, 0.9rem);
+  color: #555;
+  margin-top: 0.25rem;
+  text-align: center;
+  line-height: 1.2;
+  max-width: 140px;
+  word-wrap: break-word;
+}
+
+/* Canvas grandes y pequeños */
+canvas.donut-large {
+  width: 100%;
+  max-width: 200px !important;
+  height: auto !important;
+}
+canvas.donut-small {
+  width: 80px !important;
+  height: 80px !important;
+}
+
+/* Años anteriores */
+.co2-year-row .co2-container {
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.co2-year-row .donut-wrapper {
+  min-width: 60px;
+  max-width: 80px;
+  gap: 0.25rem;
+}
+
+.co2-year-row .donut-neto {
+  width: 60px;
+  height: 60px;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.co2-year-row .donut-neto-unit {
+  font-size: clamp(0.6rem, 1.5vw, 0.75rem);
+}
+
+.co2-year-row .donut-neto-info {
+  font-size: clamp(0.5rem, 1.2vw, 0.7rem);
+  max-width: 70px;
+  word-wrap: break-word;
+}
+
+/* Ajuste para centrar número neto con los donuts grandes */
+.neto-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 📱 Responsivo */
+@media (max-width: 600px) {
+  .co2-container {
+    gap: 1.5rem;
+  }
+  .donut-wrapper {
+    min-width: 100px;
+    max-width: 140px;
+  }
+  .donut-neto {
+    font-size: clamp(1.2rem, 4vw, 2.5rem);
+  }
+}
