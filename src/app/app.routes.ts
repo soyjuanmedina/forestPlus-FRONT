@@ -9,18 +9,20 @@ import { AuthGuard } from './guards/auth.guard';
 import { EmailVerifyComponent } from './pages/email-verify/email-verify.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { RoleGuard } from './guards/role.guard';
+import { RolesEnum } from './models/roles';
 import { AdminPageComponent } from './dashboard/admin/admin-page/admin-page.component';
 import { AdminUsersComponent } from './dashboard/admin/users/admin-users/admin-users.component';
-import { RolesEnum } from './models/roles';
-import { CompanyComponent } from './dashboard/company/company.component';
 import { AdminCompaniesComponent } from './dashboard/admin/companies/admin-companies/admin-companies.component';
+import { CompanyComponent } from './dashboard/company/company.component';
 
 export const routes: Routes = [
+  // Public routes
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'verify-email', component: EmailVerifyComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
 
+  // Dashboard routes
   {
     path: '',
     component: DashboardComponent,
@@ -29,16 +31,33 @@ export const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'profile', component: ProfileComponent },
-      { path: 'profile/edit/:id', loadComponent: () => import( './dashboard/users/user-form/user-form.component' ).then( m => m.UserFormComponent ), canActivate: [AuthGuard] },
-      { path: 'company', component: CompanyComponent },
+      {
+        path: 'profile/edit/:id',
+        loadComponent: () =>
+          import( './dashboard/users/user-form/user-form.component' ).then( m => m.UserFormComponent ),
+        canActivate: [AuthGuard]
+      },
+      { path: 'company', component: CompanyComponent }, // perfil de compañía
+
+      // Nueva ruta de edición de compañía (igual que profile/edit)
+      {
+        path: 'company/form/:id',
+        loadComponent: () =>
+          import( './dashboard/admin/companies/admin-companies/company-form/company-form.component' )
+            .then( m => m.CompanyFormComponent ),
+        canActivate: [RoleGuard],
+        data: { roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] }
+      },
+
       { path: 'settings', component: SettingsComponent },
 
-      // 👇 Sección Admin protegida por roles
+      // Admin section
       {
         path: 'admin',
         component: AdminPageComponent,
         canActivate: [AuthGuard],
         children: [
+          // Users
           {
             path: 'users',
             component: AdminUsersComponent,
@@ -48,19 +67,19 @@ export const routes: Routes = [
           {
             path: 'user-form',
             loadComponent: () =>
-              import( './dashboard/users/user-form/user-form.component' )
-                .then( m => m.UserFormComponent ),
+              import( './dashboard/users/user-form/user-form.component' ).then( m => m.UserFormComponent ),
             canActivate: [RoleGuard],
             data: { roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] }
           },
           {
             path: 'user-form/:id',
             loadComponent: () =>
-              import( './dashboard/users/user-form/user-form.component' )
-                .then( m => m.UserFormComponent ),
+              import( './dashboard/users/user-form/user-form.component' ).then( m => m.UserFormComponent ),
             canActivate: [RoleGuard],
             data: { roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] }
           },
+
+          // Companies
           {
             path: 'companies',
             component: AdminCompaniesComponent,
@@ -88,5 +107,6 @@ export const routes: Routes = [
     ]
   },
 
+  // Fallback
   { path: '**', redirectTo: 'login' }
 ];

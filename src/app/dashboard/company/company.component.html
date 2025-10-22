@@ -4,208 +4,82 @@
   <img [src]="previewImage || user.company.picture || 'assets/company_profile.png'" alt="Logo"
     class="w-24 h-24 rounded-full shadow-lg mb-4" />
 
-  <!-- MODO LECTURA / EDICIÓN DEL PERFIL -->
-  <ng-container *ngIf="!editMode; else editForm">
-    <h2 class="text-xl font-semibold">{{ user.company.name }}</h2>
-    <p class="text-gray-500">{{ user.company.address }}</p>
+  <h2 class="text-xl font-semibold">{{ user.company.name }}</h2>
+  <p class="text-gray-500">{{ user.company.address }}</p>
 
-    <div class="flex gap-2 mt-4" *ngIf="user.role === 'COMPANY_ADMIN'">
-      <button mat-raised-button color="primary" (click)="toggleEdit()">Editar</button>
-    </div>
-  </ng-container>
-
-  <ng-template #editForm>
-    <form (ngSubmit)="saveChanges()" class="w-full">
-      <mat-form-field appearance="outline" class="w-full mb-2">
-        <mat-label>Nombre de la empresa</mat-label>
-        <input matInput [(ngModel)]="editData.name" name="name" />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="w-full mb-2">
-        <mat-label>Dirección</mat-label>
-        <input matInput [(ngModel)]="editData.address" name="address" />
-      </mat-form-field>
-
-      <div class="flex gap-2 mt-4 justify-center">
-        <button mat-raised-button color="primary" type="submit">Guardar</button>
-        <button mat-stroked-button color="warn" type="button"
-          (click)="toggleEdit()">Cancelar</button>
-      </div>
-    </form>
-  </ng-template>
+  <!-- BOTÓN EDITAR: Navega a CompanyFormComponent -->
+  <div class="flex gap-2 mt-4" *ngIf="user.role === 'COMPANY_ADMIN'">
+    <button mat-raised-button color="primary" [routerLink]="['/company/form', user.company.id]">
+      Editar
+    </button>
+  </div>
 
   <!-- CO2 -->
   <div class="w-full mt-6" *ngIf="co2Years?.length">
 
-    <!-- PRIMER AÑO (GRANDE) -->
+    <!-- ÚLTIMO AÑO (GRANDE) -->
     <div *ngIf="co2Years.length" class="mb-8">
-      <h3 class="text-lg font-semibold">Registros de C02 del último año registrado</h3>
+      <h3 class="text-lg font-semibold">Registros de CO₂ del último año registrado</h3>
       <h4 class="text-lg font-semibold">{{ co2Years[0].year }}</h4>
-
-      <div class="flex justify-end mb-2" *ngIf="user.role === 'COMPANY_ADMIN'">
-        <button mat-stroked-button color="primary" (click)="toggleEditCO2(co2Years[0])">
-          {{ co2Years[0].editMode ? 'Cancelar' : 'Editar' }}
-        </button>
-      </div>
-
-      <div *ngIf="co2Years[0].editMode" class="flex gap-2 justify-center mb-4">
-        <mat-form-field appearance="outline" class="w-1/2">
-          <mat-label>Emisiones</mat-label>
-          <input matInput type="number" [(ngModel)]="co2Years[0].editEmissions"
-            name="emissions-{{co2Years[0].year}}" />
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="w-1/2">
-          <mat-label>Compensaciones</mat-label>
-          <input matInput type="number" [(ngModel)]="co2Years[0].editCompensations"
-            name="compensations-{{co2Years[0].year}}" />
-        </mat-form-field>
-        <button mat-raised-button color="primary" (click)="saveCO2(co2Years[0])">Guardar</button>
-      </div>
 
       <div class="co2-container">
         <div class="charts-container">
-          <!-- Emisiones -->
           <div class="donut-wrapper">
             <div class="donut-label">Emisiones</div>
             <canvas [id]="co2Years[0].emitidoRef" class="donut-large"></canvas>
           </div>
 
-          <!-- Compensaciones -->
           <div class="donut-wrapper">
             <div class="donut-label">Compensaciones</div>
             <canvas [id]="co2Years[0].compensadoRef" class="donut-large"></canvas>
           </div>
 
-          <!-- Valor Neto -->
           <div class="donut-wrapper">
             <div class="donut-label">Valor Neto</div>
-
             <div class="donut-neto"
               [ngClass]="getNetColorClass(co2Years[0].totalEmissions, co2Years[0].totalCompensations)">
               {{ co2Years[0].totalEmissions - co2Years[0].totalCompensations | number:'1.0-0' }}
             </div>
-
             <div class="donut-neto-unit">Toneladas de CO₂</div>
-
-            <!-- Línea de porcentaje -->
             <div class="donut-neto-info">
-              (has compensado el
-              {{ getCompensatedPercentage(co2Years[0].totalEmissions,
-              co2Years[0].totalCompensations) }}%
-              de tus emisiones)
+              (has compensado el {{ getCompensatedPercentage(co2Years[0].totalEmissions,
+              co2Years[0].totalCompensations) }}% de tus emisiones)
             </div>
           </div>
-
-
-
         </div>
-
       </div>
-
     </div>
 
     <!-- AÑOS ANTERIORES -->
     <div class="mt-6" *ngIf="co2Years.length > 1">
       <h3 class="text-left font-semibold mb-2">Años anteriores</h3>
 
-
-
-
       <div *ngFor="let y of co2Years.slice(1)"
         class="co2-year-row flex flex-col items-start gap-2 mb-4 w-full">
-
-        <!-- Fila con año y inputs/botón -->
         <div class="flex justify-between w-full items-center mb-1">
           <div class="w-16 text-left font-bold">{{ y.year }}</div>
-
-          <!-- Inputs de edición -->
-          <div *ngIf="user.role === 'COMPANY_ADMIN' && y.editMode"
-            class="flex w-full gap-2 items-end mb-2">
-            <mat-form-field appearance="outline" class="flex-1">
-              <mat-label>Emisiones</mat-label>
-              <input matInput type="number" [(ngModel)]="y.editEmissions"
-                name="emissions-{{y.year}}" />
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="flex-1">
-              <mat-label>Compensaciones</mat-label>
-              <input matInput type="number" [(ngModel)]="y.editCompensations"
-                name="compensations-{{y.year}}" />
-            </mat-form-field>
-
-            <div class="flex gap-2">
-              <button mat-raised-button color="primary" (click)="saveCO2(y)">Guardar</button>
-              <button mat-stroked-button color="warn" (click)="toggleEditCO2(y)">Cancelar</button>
-            </div>
-          </div>
-
-          <!-- Botón editar si no está en modo edición -->
-          <button *ngIf="user.role === 'COMPANY_ADMIN' && !y.editMode" mat-stroked-button
-            color="primary" (click)="toggleEditCO2(y)">
-            Editar
-          </button>
         </div>
 
-        <!-- Donuts -->
         <div class="charts-container w-full justify-start">
-          <!-- Emisiones -->
           <div class="donut-wrapper">
             <canvas [id]="y.emitidoRef" class="donut-small"></canvas>
           </div>
-
-          <!-- Compensaciones -->
           <div class="donut-wrapper">
             <canvas [id]="y.compensadoRef" class="donut-small"></canvas>
           </div>
-
-          <!-- Valor Neto -->
           <div class="donut-wrapper">
             <div class="donut-neto"
               [ngClass]="getNetColorClass(y.totalEmissions, y.totalCompensations)">
               {{ y.totalEmissions - y.totalCompensations | number:'1.0-0' }}
             </div>
             <div class="donut-neto-info">
-              Compensaste el
-              {{ getCompensatedPercentage(y.totalEmissions, y.totalCompensations) }}%
+              Compensaste el {{ getCompensatedPercentage(y.totalEmissions, y.totalCompensations) }}%
               de tus emisiones
             </div>
           </div>
         </div>
-
-      </div>
-
-
-
-    </div>
-
-    <!-- Sección para añadir un nuevo año -->
-    <!-- AÑADIR NUEVO AÑO -->
-    <div *ngIf="user.role === 'COMPANY_ADMIN'" class="flex flex-col items-end mt-6 gap-3">
-
-      <div class="w-full text-left mb-2 text-lg font-semibold text-gray-700">
-        Añadir otro año
-      </div>
-
-      <div class="flex items-center gap-3 w-full md:w-1/2">
-
-        <!-- Selector de año -->
-        <mat-form-field appearance="outline" class="flex-1">
-          <mat-label>Selecciona un año</mat-label>
-          <mat-select [(ngModel)]="selectedYear" name="selectedYear">
-            <mat-option *ngFor="let year of availableYears" [value]="year">{{ year }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <!-- Botón añadir -->
-        <button mat-raised-button color="accent" [disabled]="!selectedYear"
-          (click)="addNewYear(selectedYear)" class="whitespace-nowrap">
-          Añadir año
-        </button>
-
       </div>
     </div>
-
 
   </div>
-
 </mat-card>
