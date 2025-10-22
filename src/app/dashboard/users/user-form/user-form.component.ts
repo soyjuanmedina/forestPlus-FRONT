@@ -5,12 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
-
-import { RegisterUserRequestDto, UserResponseDto } from '../../../../../api';
-import { CompanyService } from '../../../../../services/company.service';
-import { UserService } from '../../../../../services/user.service';
-import { AuthService } from '../../../../../services/auth.service';
-import { ROLES, RolesEnum } from '../../../../../models/roles';
+import { ROLES, RolesEnum } from '../../../models/roles';
+import { RegisterUserRequestDto, UserResponseDto } from '../../../api';
+import { UserService } from '../../../services/user.service';
+import { AuthService } from '../../../services/auth.service';
+import { CompanyService } from '../../../services/company.service';
 
 @Component( {
   selector: 'app-user-form',

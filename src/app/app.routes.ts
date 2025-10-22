@@ -20,6 +20,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'verify-email', component: EmailVerifyComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
+
   {
     path: '',
     component: DashboardComponent,
@@ -28,6 +29,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'profile', component: ProfileComponent },
+      { path: 'profile/edit/:id', loadComponent: () => import( './dashboard/users/user-form/user-form.component' ).then( m => m.UserFormComponent ), canActivate: [AuthGuard] },
       { path: 'company', component: CompanyComponent },
       { path: 'settings', component: SettingsComponent },
 
@@ -46,7 +48,7 @@ export const routes: Routes = [
           {
             path: 'user-form',
             loadComponent: () =>
-              import( './dashboard/admin/users/admin-users/user-form/user-form.component' )
+              import( './dashboard/users/user-form/user-form.component' )
                 .then( m => m.UserFormComponent ),
             canActivate: [RoleGuard],
             data: { roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] }
@@ -54,9 +56,10 @@ export const routes: Routes = [
           {
             path: 'user-form/:id',
             loadComponent: () =>
-              import( './dashboard/admin/users/admin-users/user-form/user-form.component' )
+              import( './dashboard/users/user-form/user-form.component' )
                 .then( m => m.UserFormComponent ),
-            canActivate: [AuthGuard]
+            canActivate: [RoleGuard],
+            data: { roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] }
           },
           {
             path: 'companies',
@@ -84,5 +87,6 @@ export const routes: Routes = [
       }
     ]
   },
+
   { path: '**', redirectTo: 'login' }
 ];

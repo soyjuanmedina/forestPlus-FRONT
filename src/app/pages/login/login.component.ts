@@ -65,25 +65,16 @@ export class LoginComponent {
       const { email, password } = this.loginForm.value;
 
       this.authService.login( { email, password } ).subscribe( {
-        next: ( response: AuthResponseDto ) => {
-          const user = response.user;
-          if ( !user ) {
-            console.error( 'No se recibió el usuario en la respuesta' );
-            return;
-          }
+        next: user => {
+          if ( !user ) return;
 
-          // Ya no hace falta llamar a userService.updateCurrentUser(user)
-          // porque AuthService se encarga de actualizar BehaviorSubject y localStorage
-
-          if ( response.forcePasswordChange ) {
-            this.router.navigate( ['/reset-password'], {
-              queryParams: { email: user.email }
-            } );
+          if ( user.forcePasswordChange ) {
+            this.router.navigate( ['/reset-password'], { queryParams: { email: user.email } } );
           } else {
-            this.router.navigateByUrl( '/' );
+            this.router.navigateByUrl( '/' ); // ahora sí funcionará
           }
         },
-        error: ( err ) => this.handleLoginError( err )
+        error: err => this.handleLoginError( err )
       } );
     }
   }
