@@ -72,7 +72,7 @@ export class CompanyComponent implements OnInit, AfterViewInit {
 
   goToEditForm () {
     if ( this.user?.company?.id ) {
-      this.router.navigate( ['/company/form', this.user.company.id] );
+      this.router.navigate( ['/company/edit', this.user.company.id] );
     }
   }
 

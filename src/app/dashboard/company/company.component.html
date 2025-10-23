@@ -8,9 +8,9 @@
 
   <!-- Botón Editar -->
   <div class="flex gap-2 mt-4" *ngIf="user.role === 'COMPANY_ADMIN'">
-    <a mat-raised-button color="primary" [routerLink]="['/company/form', user.company.id]">
+    <button mat-raised-button color="primary" (click)="goToEditForm()">
       Editar
-    </a>
+    </button>
   </div>
 
   <!-- CO2 -->

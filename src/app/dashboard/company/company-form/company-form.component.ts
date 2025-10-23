@@ -8,11 +8,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { catchError, forkJoin, of } from 'rxjs';
-import { CompanyResponseDto, CompanyCO2YearlyRequestDto, UserResponseDto } from '../../../../../api';
-import { CompanyService } from '../../../../../services/company.service';
-import { CompanyCo2Service } from '../../../../../services/company-co2.service';
+import { CompanyResponseDto, CompanyCO2YearlyRequestDto, UserResponseDto } from '../../../api';
+import { CompanyService } from '../../../services/company.service';
+import { CompanyCo2Service } from '../../../services/company-co2.service';
 import { Chart, ChartConfiguration, Plugin, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
-import { UserService } from '../../../../../services/user.service';
+import { UserService } from '../../../services/user.service';
 
 interface LocalCO2Year {
   year: number;
@@ -352,9 +352,9 @@ export class CompanyFormComponent implements OnInit {
     if ( this.user.role === 'ADMIN' ) {
       this.router.navigate( ['/admin/companies'] );
     } else if ( this.user.role === 'COMPANY_ADMIN' ) {
-      this.router.navigate( ['/dashboard/company'] );
+      this.router.navigate( ['/company'] );
     } else {
-      this.router.navigate( ['/'] ); // fallback
+      this.router.navigate( ['/home'] ); // fallback coherente dentro del dashboard
     }
   }
 
