@@ -22,7 +22,7 @@ jobs:
         run: npm ci
 
       - name: Build Angular app
-        run: npm run build -- --configuration=production --base-href /forestplus/
+        run: npm run build -- --configuration=production --base-href /
 
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
@@ -41,16 +41,9 @@ jobs:
             set ssl:verify-certificate no
             open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
 
-            # Crear carpeta forestplus si no existe
-            mkdir -p /appservers/apache-tomcat-10x/webapps/forestplus
+            # Limpiar directorio static
+            rm -rf /appservers/apache-tomcat-10x/webapps/ROOT/WEB-INF/classes/static/* || true
 
-            # Limpiar solo los archivos y carpetas que vamos a subir
-            cls /appservers/apache-tomcat-10x/webapps/forestplus/assets || true
-            cls /appservers/apache-tomcat-10x/webapps/forestplus/chunks || true
-            cls /appservers/apache-tomcat-10x/webapps/forestplus/*.js || true
-            cls /appservers/apache-tomcat-10x/webapps/forestplus/*.css || true
-            cls /appservers/apache-tomcat-10x/webapps/forestplus/index.html || true
-
-            # Subir build Angular a /forestplus
-            mirror -R --verbose dist/forest-plus/browser /appservers/apache-tomcat-10x/webapps/forestplus
+            # Subir build Angular a static
+            mirror -R --verbose dist/forest-plus/browser /appservers/apache-tomcat-10x/webapps/ROOT/WEB-INF/classes/static
           "
