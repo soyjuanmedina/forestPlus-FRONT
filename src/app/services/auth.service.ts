@@ -6,6 +6,7 @@ import { RegisterUserRequestDto } from '../api/model/registerUserRequest';
 import { UserResponseDto } from '../api/model/userResponse';
 import { ResetPasswordRequestDto } from '../api/model/resetPasswordRequest';
 import { AuthControllerService, MessageResponseDto } from '../api';
+import { Router } from '@angular/router';
 
 @Injectable( {
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class AuthService {
   private userSubject = new BehaviorSubject<UserResponseDto | null>( null );
   user$ = this.userSubject.asObservable();
 
-  constructor ( private authApi: AuthControllerService ) {
+  constructor ( private authApi: AuthControllerService, private router: Router ) {
     // Cargar usuario desde localStorage si existe
     const storedUser = localStorage.getItem( 'forestPlus_user' );
     if ( storedUser ) {
@@ -32,6 +33,7 @@ export class AuthService {
     localStorage.removeItem( 'forestPlus_token' );
     localStorage.removeItem( 'forestPlus_user' );
     this.userSubject.next( null );
+    this.router.navigate( ['/login'] );
   }
 
   /** Obtener usuario actual */

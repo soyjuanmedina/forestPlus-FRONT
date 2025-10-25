@@ -18,10 +18,10 @@ export class AuthInterceptorFactory {
 
       return next( authReq ).pipe(
         catchError( err => {
-          if ( err.status === 401 ) {
+          if ( err.status === 401 || err.status === 403 ) {
             const refreshToken = localStorage.getItem( 'forestPlus_refresh_token' );
+
             if ( refreshToken ) {
-              // Llamamos al método refreshToken de tu AuthService
               return from( this.authService.refreshToken() ).pipe(
                 switchMap( resp => {
                   // Guardamos nuevos tokens
@@ -37,14 +37,19 @@ export class AuthInterceptorFactory {
                 catchError( refreshErr => {
                   // Si falla refresh, cerramos sesión
                   this.authService.logout();
+                  // 🔴 IMPORTANTE: devolver un error para cortar el flujo
                   return throwError( () => refreshErr );
                 } )
               );
             } else {
               // No hay refresh token -> logout
               this.authService.logout();
+              // 🔴 IMPORTANTE: devolver un error para cerrar el observable
+              return throwError( () => err );
             }
           }
+
+          // Otros errores
           return throwError( () => err );
         } )
       );
