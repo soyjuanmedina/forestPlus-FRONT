@@ -41,12 +41,16 @@ jobs:
             set ssl:verify-certificate no
             open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
 
-            # Solo sincronizar assets si existe
-            cls dist/forest-plus/browser/assets && mirror -R --delete --verbose dist/forest-plus/browser/assets /appservers/apache-tomcat-10x/webapps/assets
+            # Crear ROOT si no existe
+            mkdir -p /appservers/apache-tomcat-10x/webapps/ROOT
 
-            # Solo sincronizar chunks si existe
-            cls dist/forest-plus/browser/chunks && mirror -R --delete --verbose dist/forest-plus/browser/chunks /appservers/apache-tomcat-10x/webapps/chunks
+            # Limpiar solo las carpetas y archivos de Angular dentro de ROOT
+            cls /appservers/apache-tomcat-10x/webapps/ROOT/assets || true
+            cls /appservers/apache-tomcat-10x/webapps/ROOT/chunks || true
+            cls /appservers/apache-tomcat-10x/webapps/ROOT/*.js || true
+            cls /appservers/apache-tomcat-10x/webapps/ROOT/*.css || true
+            cls /appservers/apache-tomcat-10x/webapps/ROOT/index.html || true
 
-            # Sincronizar el resto (evitando borrar carpetas remotas como ROOT)
-            mirror -R --verbose dist/forest-plus/browser /appservers/apache-tomcat-10x/webapps --exclude-glob assets --exclude-glob chunks
+            # Subir build Angular a ROOT
+            mirror -R --verbose dist/forest-plus/browser /appservers/apache-tomcat-10x/webapps/ROOT
           "
