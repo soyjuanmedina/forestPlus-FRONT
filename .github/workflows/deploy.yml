@@ -40,5 +40,13 @@ jobs:
             set ftp:passive-mode true
             set ssl:verify-certificate no
             open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
-            mirror -R --delete --verbose dist/forest-plus/browser /appservers/apache-tomcat-10x/webapps
+
+            # Solo eliminar y sincronizar assets si existe
+            mirror -R --delete --verbose dist/forest-plus/browser/assets /appservers/apache-tomcat-10x/webapps/assets || true
+
+            # Solo eliminar y sincronizar chunks si existe
+            mirror -R --delete --verbose dist/forest-plus/browser/chunks /appservers/apache-tomcat-10x/webapps/chunks || true
+
+            # Sincronizar todo lo demás sin eliminar otras carpetas remotas
+            mirror -R --verbose --ignore-existing dist/forest-plus/browser /appservers/apache-tomcat-10x/webapps
           "
