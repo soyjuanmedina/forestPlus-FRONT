@@ -35,3 +35,4 @@ jobs:
           passive: true
           server-dir: /appservers/apache-tomcat-10x/webapps/          # cambia esta ruta si tu hosting usa otra
           local-dir: dist/forest-plus/browser/
+          max-retries: 3
