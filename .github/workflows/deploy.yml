@@ -31,6 +31,6 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
-          security: strict
+          security: loose
           server-dir: /appservers/apache-tomcat-10x/webapps/          # cambia esta ruta si tu hosting usa otra
           local-dir: dist/forest-plus/browser/
