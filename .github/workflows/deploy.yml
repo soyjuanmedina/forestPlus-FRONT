@@ -41,16 +41,16 @@ jobs:
             set ssl:verify-certificate no
             open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
 
-            # Crear ROOT si no existe
-            mkdir -p /appservers/apache-tomcat-10x/webapps/ROOT
+            # Crear carpeta forestplus si no existe
+            mkdir -p /appservers/apache-tomcat-10x/webapps/forestplus
 
-            # Limpiar solo las carpetas y archivos de Angular dentro de ROOT
-            cls /appservers/apache-tomcat-10x/webapps/ROOT/assets || true
-            cls /appservers/apache-tomcat-10x/webapps/ROOT/chunks || true
-            cls /appservers/apache-tomcat-10x/webapps/ROOT/*.js || true
-            cls /appservers/apache-tomcat-10x/webapps/ROOT/*.css || true
-            cls /appservers/apache-tomcat-10x/webapps/ROOT/index.html || true
+            # Limpiar solo los archivos de Angular dentro de forestplus
+            cls /appservers/apache-tomcat-10x/webapps/forestplus/assets || true
+            cls /appservers/apache-tomcat-10x/webapps/forestplus/chunks || true
+            cls /appservers/apache-tomcat-10x/webapps/forestplus/*.js || true
+            cls /appservers/apache-tomcat-10x/webapps/forestplus/*.css || true
+            cls /appservers/apache-tomcat-10x/webapps/forestplus/index.html || true
 
-            # Subir build Angular a ROOT
-            mirror -R --verbose dist/forest-plus/browser /appservers/apache-tomcat-10x/webapps/ROOT
+            # Subir build Angular a forestplus
+            mirror -R --verbose dist/forest-plus/browser /appservers/apache-tomcat-10x/webapps/forestplus
           "
