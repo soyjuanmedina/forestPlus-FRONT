@@ -38,7 +38,7 @@ jobs:
           protocol: ftps
           security: loose
           server-dir: /appservers/apache-tomcat-10x/webapps/
-          local-dir: dist/forest-plus/browser
+          local-dir: dist/forest-plus/browser/
           exclude: "assets/**,chunks/**"
           dangerous-clean-slate: true   # solo para el primer deploy
 
@@ -52,7 +52,7 @@ jobs:
           protocol: ftps
           security: loose
           server-dir: /appservers/apache-tomcat-10x/webapps/assets
-          local-dir: dist/forest-plus/browser/assets
+          local-dir: dist/forest-plus/browser/assets/
 
       # 7️⃣ Deploy chunks
       - name: Deploy chunks
@@ -64,4 +64,4 @@ jobs:
           protocol: ftps
           security: loose
           server-dir: /appservers/apache-tomcat-10x/webapps/chunks
-          local-dir: dist/forest-plus/browser/chunks
+          local-dir: dist/forest-plus/browser/chunks/
