@@ -95,6 +95,11 @@ export class AdminUsersComponent implements OnInit {
     this.router.navigate( ['/admin/user-form/', user.id] );
   }
 
+  addUser (): void {
+    console.log( 'addUser', );
+    this.router.navigate( ['/admin/user-form'] );
+  }
+
   onDelete ( user: any ): void {
     const dialogRef = this.dialog.open( ConfirmDialogComponent, {
       width: '400px',

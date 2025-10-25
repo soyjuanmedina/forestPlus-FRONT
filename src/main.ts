@@ -1,4 +1,3 @@
-// main.ts
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { provideHttpClient, withInterceptors, HttpInterceptorFn } from '@angular/common/http';
@@ -6,14 +5,14 @@ import { importProvidersFrom, inject } from '@angular/core';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from './app/i18n/translate.loader';
 import { HttpClient } from '@angular/common/http';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withHashLocation } from '@angular/router';
 import { routes } from './app/app.routes';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { loadingInterceptor } from './app/interceptors/loading.interceptor';
 import { AuthService } from './app/services/auth.service';
 import { provideApi } from './app/api';
 import { environment } from './environments/environment';
-import { catchError, switchMap, throwError, from } from 'rxjs';
+import { catchError, switchMap, throwError } from 'rxjs';
 
 // Loader de traducciones
 export function HttpLoaderFactory ( http: HttpClient ) {
@@ -23,8 +22,6 @@ export function HttpLoaderFactory ( http: HttpClient ) {
 // Interceptor de auth
 export const authInterceptor: HttpInterceptorFn = ( req, next ) => {
   const authService = inject( AuthService );
-  console.log( '[AuthInterceptor] interceptando request:', req.url );
-
   const token = localStorage.getItem( 'forestPlus_token' );
   const authReq = token ? req.clone( { setHeaders: { Authorization: `Bearer ${token}` } } ) : req;
 
@@ -32,7 +29,6 @@ export const authInterceptor: HttpInterceptorFn = ( req, next ) => {
     catchError( err => {
       if ( err.status === 401 || err.status === 403 ) {
         const refreshToken = localStorage.getItem( 'forestPlus_refresh_token' );
-
         if ( refreshToken ) {
           return authService.refreshToken().pipe(
             switchMap( resp => {
@@ -40,26 +36,22 @@ export const authInterceptor: HttpInterceptorFn = ( req, next ) => {
                 localStorage.setItem( 'forestPlus_token', resp.token );
                 localStorage.setItem( 'forestPlus_refresh_token', resp.refreshToken );
               } else {
-                authService.logout(); // no tenemos token válido → logout
+                authService.logout();
                 return throwError( () => new Error( 'Refresh token inválido' ) );
               }
-
-              const retryReq = req.clone( {
-                setHeaders: { Authorization: `Bearer ${resp.token}` }
-              } );
+              const retryReq = req.clone( { setHeaders: { Authorization: `Bearer ${resp.token}` } } );
               return next( retryReq );
             } ),
             catchError( refreshErr => {
-              authService.logout(); // limpia tokens y redirige al login
+              authService.logout();
               return throwError( () => refreshErr );
             } )
           );
         } else {
-          authService.logout(); // no hay refresh token, redirige al login
+          authService.logout();
           return throwError( () => err );
         }
       }
-
       return throwError( () => err );
     } )
   );
@@ -69,7 +61,7 @@ export const authInterceptor: HttpInterceptorFn = ( req, next ) => {
 bootstrapApplication( AppComponent, {
   providers: [
     provideApi( environment.apiBaseUrl ),
-    provideRouter( routes ),
+    provideRouter( routes, withHashLocation() ), // 🔑 con hash
     importProvidersFrom(
       BrowserAnimationsModule,
       TranslateModule.forRoot( {
