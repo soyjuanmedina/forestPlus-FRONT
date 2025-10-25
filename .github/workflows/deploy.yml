@@ -39,7 +39,7 @@ jobs:
           security: loose
           server-dir: /appservers/apache-tomcat-10x/webapps/
           local-dir: dist/forest-plus/browser/
-          exclude: "assets/**,chunks/**"
+          exclude: "assets/**"
           dangerous-clean-slate: true   # solo para el primer deploy
 
       # 6️⃣ Deploy assets
