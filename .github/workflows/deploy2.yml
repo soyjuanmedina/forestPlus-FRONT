@@ -1,0 +1,67 @@
+name: Build and Deploy Angular App
+
+on:
+  push:
+    branches:
+      - main  # o master, según tu rama principal
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Clonar el repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Instalar Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # 3️⃣ Instalar dependencias
+      - name: Install dependencies
+        run: npm ci
+
+      # 4️⃣ Build Angular producción
+      - name: Build Angular app
+        run: npm run build -- --configuration=production
+
+      # 5️⃣ Deploy archivos principales
+      - name: Deploy main files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          security: loose
+          server-dir: /appservers/apache-tomcat-10x/webapps/
+          local-dir: dist/forest-plus/browser/
+          exclude: "assets/**"
+          dangerous-clean-slate: true   # solo para el primer deploy
+
+      # 6️⃣ Deploy assets
+      - name: Deploy assets
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          security: loose
+          server-dir: /appservers/apache-tomcat-10x/webapps/assets/
+          local-dir: dist/forest-plus/browser/assets/
+
+      # 7️⃣ Deploy chunks
+      - name: Deploy chunks
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          security: loose
+          server-dir: /appservers/apache-tomcat-10x/webapps/chunks/
+          local-dir: dist/forest-plus/browser/chunks/
