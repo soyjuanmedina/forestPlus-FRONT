@@ -51,7 +51,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           security: loose
-          server-dir: /appservers/apache-tomcat-10x/webapps/assets
+          server-dir: /appservers/apache-tomcat-10x/webapps/assets/
           local-dir: dist/forest-plus/browser/assets/
 
       # 7️⃣ Deploy chunks
@@ -63,5 +63,5 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           security: loose
-          server-dir: /appservers/apache-tomcat-10x/webapps/chunks
+          server-dir: /appservers/apache-tomcat-10x/webapps/chunks/
           local-dir: dist/forest-plus/browser/chunks/
