@@ -41,12 +41,12 @@ jobs:
             set ssl:verify-certificate no
             open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
 
-            # Solo eliminar y sincronizar assets si existe
-            mirror -R --delete --verbose dist/forest-plus/browser/assets /appservers/apache-tomcat-10x/webapps/assets || true
+            # Solo sincronizar assets si existe
+            cls dist/forest-plus/browser/assets && mirror -R --delete --verbose dist/forest-plus/browser/assets /appservers/apache-tomcat-10x/webapps/assets
 
-            # Solo eliminar y sincronizar chunks si existe
-            mirror -R --delete --verbose dist/forest-plus/browser/chunks /appservers/apache-tomcat-10x/webapps/chunks || true
+            # Solo sincronizar chunks si existe
+            cls dist/forest-plus/browser/chunks && mirror -R --delete --verbose dist/forest-plus/browser/chunks /appservers/apache-tomcat-10x/webapps/chunks
 
-            # Sincronizar todo lo demás sin eliminar otras carpetas remotas
-            mirror -R --verbose --ignore-existing dist/forest-plus/browser /appservers/apache-tomcat-10x/webapps
+            # Sincronizar el resto (evitando borrar carpetas remotas como ROOT)
+            mirror -R --verbose dist/forest-plus/browser /appservers/apache-tomcat-10x/webapps --exclude-glob assets --exclude-glob chunks
           "
