@@ -34,6 +34,7 @@ export class CompanyComponent implements OnInit, AfterViewInit {
     this.userService.getUser().subscribe( user => {
       this.user = user;
 
+      console.log( 'user', user );
       if ( user?.company?.id ) {
         this.companyService.getCompanyById( user.company.id ).subscribe( c => {
           this.company = c;
@@ -71,8 +72,9 @@ export class CompanyComponent implements OnInit, AfterViewInit {
   }
 
   goToEditForm () {
+    console.log( 'this.user?.company?.id', this.user?.company?.id );
     if ( this.user?.company?.id ) {
-      this.router.navigate( ['/company/edit', this.user.company.id] );
+      this.router.navigate( ['/company/form', this.user.company.id] );
     }
   }
 

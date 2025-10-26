@@ -13,6 +13,7 @@ import { CompanyService } from '../../../services/company.service';
 import { CompanyCo2Service } from '../../../services/company-co2.service';
 import { Chart, ChartConfiguration, Plugin, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
 import { UserService } from '../../../services/user.service';
+import { MatIconModule } from '@angular/material/icon';
 
 interface LocalCO2Year {
   year: number;
@@ -38,7 +39,8 @@ interface LocalCO2Year {
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    MatIconModule
   ],
   templateUrl: './company-form.component.html',
 } )
@@ -68,11 +70,10 @@ export class CompanyFormComponent implements OnInit {
     const id = Number( this.route.snapshot.paramMap.get( 'id' ) );
     if ( !id ) return;
 
-    // Obtenemos el usuario para saber su rol
-    this.userService.getUser().subscribe( user => {
-      this.user = user;
-    } );
+    // Obtener usuario para rol
+    this.userService.getUser().subscribe( user => this.user = user );
 
+    // Obtener compañía
     this.companyService.getCompanyById( id ).subscribe( c => {
       this.company = c;
       this.editData = { ...c };
@@ -81,32 +82,41 @@ export class CompanyFormComponent implements OnInit {
     } );
   }
 
-  onFileSelected ( event: any ) {
+  // -----------------------
+  // Logo / Imagen
+  // -----------------------
+  onCompanyFileSelected ( event: any ) {
     const file: File = event.target.files[0];
     if ( !file ) return;
     this.selectedFile = file;
+
     const reader = new FileReader();
     reader.onload = () => this.previewImage = reader.result as string;
     reader.readAsDataURL( file );
   }
 
-  saveChanges () {
+  // -----------------------
+  // Guardar compañía
+  // -----------------------
+  saveCompany () {
     if ( !this.company?.id ) return;
     const requests = [];
 
+    // Actualizar logo si hay cambio
     if ( this.selectedFile ) {
       requests.push(
         this.companyService.updateCompanyPicture( this.company.id, this.selectedFile )
-          .pipe( catchError( err => { console.error( err ); return of( this.company ); } ) )
+          .pipe( catchError( err => { console.error( 'Error actualizando imagen', err ); return of( this.company ); } ) )
       );
     }
 
-    if ( this.editData.name || this.editData.address ) {
+    // Actualizar nombre/dirección
+    if ( this.editData.name !== this.company.name || this.editData.address !== this.company.address ) {
       requests.push(
         this.companyService.updateCompany( this.company.id, {
           name: this.editData.name,
           address: this.editData.address
-        } ).pipe( catchError( err => { console.error( err ); return of( this.company ); } ) )
+        } ).pipe( catchError( err => { console.error( 'Error actualizando empresa', err ); return of( this.company ); } ) )
       );
     }
 
@@ -121,6 +131,18 @@ export class CompanyFormComponent implements OnInit {
       this.prepareCO2Years();
       this.updateAvailableYears();
     } );
+  }
+
+  cancel () {
+    if ( !this.user ) return;
+
+    if ( this.user.role === 'ADMIN' ) {
+      this.router.navigate( ['/admin/companies'] );
+    } else if ( this.user.role === 'COMPANY_ADMIN' ) {
+      this.router.navigate( ['/company'] );
+    } else {
+      this.router.navigate( ['/home'] );
+    }
   }
 
   // -----------------------
@@ -168,11 +190,7 @@ export class CompanyFormComponent implements OnInit {
     const totalCompensations = y.editCompensations ?? 0;
     y.net = totalEmissions - totalCompensations;
 
-    const dto: CompanyCO2YearlyRequestDto = {
-      year: y.year,
-      totalEmissions,
-      totalCompensations
-    };
+    const dto: CompanyCO2YearlyRequestDto = { year: y.year, totalEmissions, totalCompensations };
 
     this.companyCo2Service.save( this.company.id, dto ).subscribe( {
       next: res => {
@@ -203,11 +221,7 @@ export class CompanyFormComponent implements OnInit {
       editCompensations: 0
     };
 
-    const dto: CompanyCO2YearlyRequestDto = {
-      year,
-      totalEmissions: 0,
-      totalCompensations: 0
-    };
+    const dto: CompanyCO2YearlyRequestDto = { year, totalEmissions: 0, totalCompensations: 0 };
 
     this.companyCo2Service.save( this.company.id, dto ).subscribe( {
       next: res => {
@@ -248,23 +262,23 @@ export class CompanyFormComponent implements OnInit {
     const base = totalEmissions > 0 ? totalEmissions : 1;
     const percent = ( value / base ) * 100;
     const data = { datasets: [{ data: [percent, 100 - percent], backgroundColor: [color, '#e0e0e0'], cutout: '75%', borderWidth: 0 }] };
-    const options: ChartConfiguration<'doughnut'>['options'] = { responsive: true, animation: { animateRotate: true, animateScale: true, duration: 1000 }, plugins: { legend: { display: false }, tooltip: { enabled: false } } };
+    const options: ChartConfiguration<'doughnut'>['options'] = {
+      responsive: true,
+      animation: { animateRotate: true, animateScale: true, duration: 1000 },
+      plugins: { legend: { display: false }, tooltip: { enabled: false } }
+    };
 
     this.chartsMap[canvas.id] = new Chart( ctx, { type: 'doughnut', data, options, plugins: [centerTextPlugin] } );
   }
 
-
   renderCO2Charts () {
-    type CO2ChartKey = 'emitidoRef' | 'compensadoRef' | 'netoRef';
-    const chartKeys: CO2ChartKey[] = ['emitidoRef', 'compensadoRef', 'netoRef'];
+    const chartKeys: ( 'emitidoRef' | 'compensadoRef' | 'netoRef' )[] = ['emitidoRef', 'compensadoRef', 'netoRef'];
 
     this.co2Years.forEach( ( y, i ) => {
       const size = i === 0 ? 200 : 80;
-
-      chartKeys.forEach( ( key ) => {
+      chartKeys.forEach( key => {
         const canvasEl = document.getElementById( y[key] ) as HTMLCanvasElement | null;
         if ( !canvasEl ) return;
-
         canvasEl.width = size;
         canvasEl.height = size;
 
@@ -297,65 +311,8 @@ export class CompanyFormComponent implements OnInit {
     return 'net-green';
   }
 
-
   getCompensatedPercentage ( totalEmissions: number, totalCompensations: number ): string {
     if ( !totalEmissions ) return '0';
     return ( ( totalCompensations / totalEmissions ) * 100 ).toFixed( 0 );
   }
-
-  saveCompany () {
-    if ( !this.company?.id ) return;
-
-    const requests = [];
-
-    // ✅ Actualizar logo si se seleccionó una nueva imagen
-    if ( this.selectedFile ) {
-      requests.push(
-        this.companyService.updateCompanyPicture( this.company.id, this.selectedFile )
-          .pipe( catchError( err => {
-            console.error( 'Error actualizando imagen', err );
-            return of( this.company );
-          } ) )
-      );
-    }
-
-    // ✅ Actualizar nombre o dirección
-    if ( this.editData.name !== this.company.name || this.editData.address !== this.company.address ) {
-      requests.push(
-        this.companyService.updateCompany( this.company.id, {
-          name: this.editData.name,
-          address: this.editData.address
-        } ).pipe( catchError( err => {
-          console.error( 'Error actualizando empresa', err );
-          return of( this.company );
-        } ) )
-      );
-    }
-
-    // 🚫 Si no hay cambios, no hacemos nada
-    if ( !requests.length ) return;
-
-    forkJoin( requests ).subscribe( results => {
-      const updatedCompany = results[results.length - 1];
-      this.company = updatedCompany;
-      this.editData = { ...updatedCompany };
-      this.selectedFile = undefined;
-      this.previewImage = undefined;
-      this.prepareCO2Years();
-      this.updateAvailableYears();
-    } );
-  }
-
-  cancel () {
-    if ( !this.user ) return;
-
-    if ( this.user.role === 'ADMIN' ) {
-      this.router.navigate( ['/admin/companies'] );
-    } else if ( this.user.role === 'COMPANY_ADMIN' ) {
-      this.router.navigate( ['/company'] );
-    } else {
-      this.router.navigate( ['/home'] ); // fallback coherente dentro del dashboard
-    }
-  }
-
 }

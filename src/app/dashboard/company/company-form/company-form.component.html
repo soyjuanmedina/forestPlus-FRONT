@@ -1,6 +1,19 @@
 <mat-card class="p-6 rounded-2xl shadow-md bg-white max-w-3xl mx-auto">
   <h1 class="text-2xl font-bold mb-6 text-center">Editar Compañía</h1>
 
+  <!-- 🖼 Avatar / Imagen de la compañía -->
+  <div class="md:col-span-2 flex flex-col items-center mb-6">
+    <img [src]="previewImage || editData.picture || 'assets/logo-white.png'"
+      alt="Logo de la compañía" class="w-24 h-24 rounded-full shadow-lg mb-2" />
+
+    <label
+      class="cursor-pointer bg-gray-200 hover:bg-gray-300 p-2 rounded-full flex items-center gap-2">
+      <mat-icon>photo_camera</mat-icon>
+      <span>Seleccionar imagen</span>
+      <input type="file" accept="image/*" (change)="onCompanyFileSelected($event)" hidden />
+    </label>
+  </div>
+
   <!-- 🏢 Datos generales de la compañía -->
   <div class="flex flex-col md:flex-row gap-4 mb-6">
     <mat-form-field appearance="outline" class="flex-1">
@@ -135,9 +148,6 @@
         <mat-option *ngFor="let y of availableYears" [value]="y">{{ y }}</mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-raised-button color="primary" (click)="addNewYear(selectedYear)">Añadir
-      año</button>
+    <button mat-raised-button color="primary" (click)="addNewYear(selectedYear)">Añadir año</button>
   </div>
-
-
 </mat-card>
