@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { BehaviorSubject, from, Observable, of, throwError } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { AuthResponseDto } from '../api/model/authResponse';
 import { RegisterUserRequestDto } from '../api/model/registerUserRequest';
 import { UserResponseDto } from '../api/model/userResponse';
@@ -70,14 +70,21 @@ export class AuthService {
   }
 
   /** Login con email/usuario + password */
-  login ( registerUserRequestDto: RegisterUserRequestDto ): Observable<UserResponseDto> {
-    return this.authApi.login( registerUserRequestDto ).pipe(
-      map( ( resp: AuthResponseDto ) => {
-        if ( !resp.user ) {
-          throw new Error( 'No se recibió el usuario en la respuesta del login' );
+  login ( dto: RegisterUserRequestDto ): Observable<UserResponseDto> {
+    return this.authApi.login( dto ).pipe(
+      switchMap( ( resp: AuthResponseDto ) => {
+        if ( !resp.user ) throw new Error( 'No se recibió el usuario en la respuesta del login' );
+
+        // Convertimos Blob a JSON si hace falta y esperamos
+        if ( resp.user instanceof Blob ) {
+          return from( resp.user.text() ).pipe(
+            map( text => JSON.parse( text ) as UserResponseDto ),
+            tap( parsedUser => this.setUser( parsedUser, resp.token ) )
+          );
+        } else {
+          this.setUser( resp.user, resp.token );
+          return of( resp.user );
         }
-        this.setUser( resp.user, resp.token );
-        return resp.user;
       } ),
       catchError( err => {
         console.error( 'Error login', err );

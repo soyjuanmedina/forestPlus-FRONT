@@ -52,18 +52,16 @@ export class LoginComponent {
     } );
 
     this.loginForm.valueChanges.subscribe( () => this.loginError = null );
-  }
 
-  checkAccessKey () {
-    const token = localStorage.getItem( 'forestplus_token' ); // mismo nombre que usas al guardar token
-
-    if ( token ) {
-      // Ya hay token, acceso concedido automáticamente
+    if ( !environment.production ) {
       this.accessGranted = true;
       this.error = false;
       return;
     }
 
+  }
+
+  checkAccessKey () {
     // No hay token, comprobamos la clave de desarrollo
     if ( this.accessKey === environment.devAccessKey ) {
       this.accessGranted = true;
@@ -96,7 +94,6 @@ export class LoginComponent {
           if ( user.forcePasswordChange ) {
             this.router.navigate( ['/reset-password'], { queryParams: { email: user.email } } );
           } else {
-            console.log( 'user', user );
             this.router.navigateByUrl( '/' ); // ahora sí funcionará
           }
         },

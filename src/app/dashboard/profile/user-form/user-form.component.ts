@@ -34,6 +34,8 @@ export class UserFormComponent implements OnInit {
   isSelfEdit = false;
 
   RolesEnum = RolesEnum;
+  isCompanyAdmin = false;
+  showCompanySelector = false;
 
   constructor (
     private fb: FormBuilder,
@@ -47,16 +49,10 @@ export class UserFormComponent implements OnInit {
 
   ngOnInit (): void {
     this.currentUser = this.authService.getUser() ?? undefined;
+    this.isCompanyAdmin = this.currentUser?.role === RolesEnum.COMPANY_ADMIN;
 
-    // 🆔 Si hay id en la ruta → modo edición
-    this.route.paramMap.subscribe( params => {
-      const id = params.get( 'id' );
-      if ( id ) {
-        this.isEditMode = true;
-        this.userId = +id;
-        this.loadUser( this.userId );
-      }
-    } );
+    // Variable que controla la visibilidad del selector
+    this.showCompanySelector = false;
 
     // Inicializamos el formulario
     this.userForm = this.fb.group( {
@@ -65,25 +61,81 @@ export class UserFormComponent implements OnInit {
       secondSurname: [''],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.minLength( 6 )]],
-      role: [null as RolesEnum | null],
+      role: [null as RolesEnum | null, Validators.required],
       companyId: [''],
     } );
 
-    // Validación dinámica de companyId según rol
-    this.userForm.get( 'role' )?.valueChanges.subscribe( ( role: RolesEnum ) => {
-      const companyControl = this.userForm.get( 'companyId' );
-      if ( role === RolesEnum.COMPANY_USER ) {
-        companyControl?.setValidators( [Validators.required] );
-        companyControl?.enable();
-      } else {
-        companyControl?.clearValidators();
-        companyControl?.setValue( '' );
-        companyControl?.disable();
+    // Si hay id → modo edición
+    this.route.paramMap.subscribe( ( params ) => {
+      const id = params.get( 'id' );
+      if ( id ) {
+        this.isEditMode = true;
+        this.userId = +id;
+        this.loadUser( this.userId );
       }
-      companyControl?.updateValueAndValidity();
     } );
 
-    // Cargar compañías
+    // Cargar roles permitidos según el rol actual
+    this.configureAvailableRoles();
+
+    // Comportamiento especial para COMPANY_ADMIN
+    if ( this.isCompanyAdmin ) {
+      this.showCompanySelector = true;
+      this.userForm.get( 'companyId' )?.disable();
+
+      // Cargamos las compañías y luego seteamos la suya
+      this.companyService.getAllCompanies().subscribe( {
+        next: ( data ) => {
+          this.companies = data.filter( c => !!c.admin );
+
+          const companyId = this.currentUser?.company?.id;
+          if ( companyId ) {
+            this.userForm.patchValue( { companyId } );
+          }
+        },
+        error: ( err ) => console.error( 'Error cargando compañías', err )
+      } );
+    } else {
+      this.loadCompanies();
+    }
+
+    // Validación dinámica del campo companyId según el rol
+    this.userForm.get( 'role' )?.valueChanges.subscribe( ( role: RolesEnum ) => {
+      const companyControl = this.userForm.get( 'companyId' );
+
+      if ( role === RolesEnum.COMPANY_USER || this.isCompanyAdmin ) {
+        this.showCompanySelector = true; // 👈 Mostrar selector
+        companyControl?.setValidators( [Validators.required] );
+        if ( !this.isCompanyAdmin ) companyControl?.enable();
+      } else {
+        this.showCompanySelector = false; // 👈 Ocultar selector
+        companyControl?.clearValidators();
+        if ( !this.isCompanyAdmin ) {
+          companyControl?.setValue( '' );
+          companyControl?.disable();
+        }
+      }
+
+      companyControl?.updateValueAndValidity();
+    } );
+  }
+
+
+  private configureAvailableRoles () {
+    if ( !this.currentUser ) return;
+
+    if ( this.currentUser.role === RolesEnum.ADMIN ) {
+      // Super Admin puede ver todos los roles
+      this.roles = ROLES;
+    } else if ( this.currentUser.role === RolesEnum.COMPANY_ADMIN ) {
+      // Company Admin solo puede crear COMPANY_ADMIN o COMPANY_USER
+      this.roles = ROLES.filter(
+        r => r.value === RolesEnum.COMPANY_ADMIN || r.value === RolesEnum.COMPANY_USER
+      );
+    }
+  }
+
+  private loadCompanies () {
     this.companyService.getAllCompanies().subscribe( {
       next: data => {
         this.companies = data.filter( c => !!c.admin );
@@ -136,6 +188,12 @@ export class UserFormComponent implements OnInit {
     if ( this.userForm.invalid ) return;
 
     const dto: RegisterUserRequestDto = this.userForm.getRawValue();
+
+    // Si es COMPANY_ADMIN, forzamos su companyId
+    if ( this.isCompanyAdmin ) {
+      dto.companyId = this.currentUser?.company?.id ?? undefined;
+    }
+
     let update$;
 
     if ( this.selectedFile && this.isEditMode ) {
@@ -167,7 +225,6 @@ export class UserFormComponent implements OnInit {
     this.snackBar.open( '✅ Usuario actualizado con éxito', 'Cerrar', { duration: 3000 } );
 
     if ( this.isSelfEdit ) {
-      // 👉 ahora actualizamos el usuario logueado desde AuthService
       this.authService.updateCurrentUser( user );
       this.router.navigate( ['/profile'] );
     } else {
