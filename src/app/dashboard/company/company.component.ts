@@ -33,8 +33,6 @@ export class CompanyComponent implements OnInit, AfterViewInit {
   ngOnInit (): void {
     this.userService.getUser().subscribe( user => {
       this.user = user;
-
-      console.log( 'user', user );
       if ( user?.company?.id ) {
         this.companyService.getCompanyById( user.company.id ).subscribe( c => {
           this.company = c;
