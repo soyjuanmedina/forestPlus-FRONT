@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
@@ -14,7 +14,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from '../../../../shared/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { RolesEnum } from '../../../../models/roles';
-
 
 @Component( {
   selector: 'app-admin-users',
@@ -33,74 +32,85 @@ import { RolesEnum } from '../../../../models/roles';
     MatSortModule
   ]
 } )
-export class AdminUsersComponent implements OnInit {
+export class AdminUsersComponent implements OnInit, AfterViewInit {
   users = new MatTableDataSource<UserResponseDto>();
   displayedColumns: string[] = ['name', 'email', 'role', 'actions'];
+  totalPages: number = 1;
+  currentPage = 0;
+  pageSize = 15;
 
   @ViewChild( MatPaginator ) paginator!: MatPaginator;
   @ViewChild( MatSort ) sort!: MatSort;
 
-  constructor ( private userService: UserService,
+  constructor (
+    private userService: UserService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private router: Router ) { }
+    private router: Router
+  ) { }
 
   ngOnInit (): void {
-    this.loadUsers();
+    // No se llama aquí a loadUsers porque paginator aún no existe
   }
 
   ngAfterViewInit (): void {
     this.users.paginator = this.paginator;
     this.users.sort = this.sort;
+    this.loadUsers(); // Sí llamamos aquí
   }
 
   loadUsers (): void {
-    const page = this.paginator?.pageIndex ?? 0;
-    const size = this.paginator?.pageSize ?? 10;
-    const sort = this.sort && this.sort.active && this.sort.direction
+    const page = this.currentPage;
+    const size = this.pageSize;
+    const sort = this.sort?.active && this.sort?.direction
       ? `${this.sort.active},${this.sort.direction}`
       : 'id,asc';
 
-    // Obtener el usuario actual
     const currentUser = this.userService.getCurrentUser();
-
-    // Solo filtrar por companyId si es COMPANY_ADMIN
     const companyIdFilter = currentUser?.role === RolesEnum.COMPANY_ADMIN
       ? currentUser.company?.id
       : undefined;
 
     this.userService.getUsers( page, size, sort, undefined, companyIdFilter ).subscribe( {
-      next: ( data ) => {
-        const content = data.content ?? [];
-
-        // ❌ Excluir el usuario actual
-        const filteredUsers = content.filter( u => u.id !== currentUser?.id );
-
+      next: data => {
+        const filteredUsers = ( data.content ?? [] ).filter( u => u.id !== currentUser?.id );
         this.users.data = filteredUsers;
 
-        if ( this.paginator ) {
-          this.paginator.length = data.totalElements
-            ? data.totalElements - 1 // Restar el actual si estaba incluido
-            : filteredUsers.length;
-        }
+        const totalElements = data.totalElements ?? filteredUsers.length;
+        this.totalPages = Math.ceil( totalElements / size );
       },
-      error: ( err ) => {
-        console.error( '❌ Error al cargar usuarios', err );
-      }
+      error: err => console.error( '❌ Error al cargar usuarios', err )
     } );
   }
 
+
+  previousPage (): void {
+    if ( this.currentPage > 0 ) {
+      this.currentPage--;
+      this.loadUsers();
+    }
+  }
+
+  nextPage (): void {
+    if ( this.currentPage + 1 < this.totalPages ) {
+      this.currentPage++;
+      this.loadUsers();
+    }
+  }
 
   onEdit ( user: UserResponseDto ): void {
     this.router.navigate( ['/admin/user-form/', user.id] );
   }
 
   addUser (): void {
-    console.log( 'addUser', );
     this.router.navigate( ['/admin/user-form'] );
   }
 
-  onDelete ( user: any ): void {
+  onView ( user: UserResponseDto ): void {
+    this.router.navigate( ['/profile', user.id] );
+  }
+
+  onDelete ( user: UserResponseDto ): void {
     const dialogRef = this.dialog.open( ConfirmDialogComponent, {
       width: '400px',
       data: {
@@ -114,10 +124,11 @@ export class AdminUsersComponent implements OnInit {
         this.userService.deleteUser( user.id ).subscribe( {
           next: () => {
             this.snackBar.open( '✅ Usuario eliminado', 'Cerrar', { duration: 3000 } );
+            this.currentPage = 0;
             this.loadUsers();
           },
-          error: ( err ) => {
-            console.error( 'Error al eliminar usuario', err );
+          error: err => {
+            console.error( '❌ Error al eliminar usuario', err );
             this.snackBar.open( '❌ Error al eliminar usuario', 'Cerrar', { duration: 3000 } );
           }
         } );

@@ -32,6 +32,11 @@ export const routes: Routes = [
       { path: 'home', component: HomeComponent },
       { path: 'profile', component: ProfileComponent },
       {
+        path: 'profile/:id',
+        component: ProfileComponent,
+        canActivate: [AuthGuard]
+      },
+      {
         path: 'profile/edit/:id',
         loadComponent: () =>
           import( './dashboard/profile/user-form/user-form.component' ).then( m => m.UserFormComponent ),

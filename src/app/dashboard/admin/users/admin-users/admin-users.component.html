@@ -8,38 +8,45 @@
     </button>
   </div>
 
-  <table mat-table [dataSource]="users" matSort>
+  <div class="flex flex-col gap-4">
+    <div *ngFor="let user of users.data"
+      class="border rounded p-4 shadow-sm flex justify-between items-center w-full">
 
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
-      <td mat-cell *matCellDef="let user">{{ user.name }} {{ user.surname }}</td>
-    </ng-container>
+      <!-- Texto a la izquierda -->
+      <div class="flex flex-col text-left">
+        <div class="font-semibold text-lg">{{ user.name }} {{ user.surname }}</div>
+        <div class="text-gray-600">{{ user.email }}</div>
+        <div class="text-gray-500">{{ user.role || '—' }}</div>
+      </div>
 
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
-      <td mat-cell *matCellDef="let user">{{ user.email }}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="role">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Rol</th>
-      <td mat-cell *matCellDef="let user">{{ user.role || '—' }}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>Acciones</th>
-      <td mat-cell *matCellDef="let user" class="space-x-2">
-        <button mat-icon-button color="primary" (click)="onEdit(user)">
+      <!-- Botones a la derecha -->
+      <div class="flex gap-2">
+        <button mat-mini-fab (click)="onView(user)"
+          class="bg-green-500 hover:bg-green-600 text-white">
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <!-- Editar: verde -->
+        <button mat-mini-fab (click)="onEdit(user)"
+          class="bg-green-500 hover:bg-green-600 text-white">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button color="warn" (click)="onDelete(user)">
+
+        <!-- Eliminar: rojo suave -->
+        <button mat-mini-fab (click)="onDelete(user)"
+          class="bg-red-400 hover:bg-red-500 text-white">
           <mat-icon>delete</mat-icon>
         </button>
-      </td>
-    </ng-container>
+      </div>
+    </div>
+  </div>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
-
-  <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+  <div class="mt-4 flex justify-center items-center gap-2">
+    <button mat-stroked-button (click)="previousPage()" [disabled]="currentPage === 0">
+      Anterior
+    </button>
+    <span>{{ currentPage + 1 }} / {{ totalPages }}</span>
+    <button mat-stroked-button (click)="nextPage()" [disabled]="currentPage + 1 >= totalPages">
+      Siguiente
+    </button>
+  </div>
 </mat-card>

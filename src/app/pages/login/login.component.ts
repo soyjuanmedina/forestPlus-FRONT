@@ -5,8 +5,9 @@ import { AuthService } from '../../services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
-import { AuthResponseDto, UserResponseDto } from '../../api';
 import { UserService } from '../../services/user.service';
+import { environment } from '../../../environments/environment';
+import { FormsModule } from '@angular/forms';
 
 @Component( {
   selector: 'app-login',
@@ -14,6 +15,7 @@ import { UserService } from '../../services/user.service';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     TranslateModule,
     RouterModule
   ],
@@ -29,13 +31,16 @@ export class LoginComponent {
   unverifiedEmail: string | null = null;
   success = false;
   forgotMode = false;
+  accessGranted = false;
+  accessKey = '';
+  error = false;
+
 
   constructor (
     private fb: FormBuilder,
     private router: Router,
     private translate: TranslateService,
-    private authService: AuthService,
-    private userService: UserService
+    private authService: AuthService
   ) {
     this.loginForm = this.fb.group( {
       email: ['', [Validators.required, Validators.email]],
@@ -47,6 +52,15 @@ export class LoginComponent {
     } );
 
     this.loginForm.valueChanges.subscribe( () => this.loginError = null );
+  }
+
+  checkAccessKey () {
+    if ( this.accessKey === environment.devAccessKey ) {
+      this.accessGranted = true;
+      this.error = false;
+    } else {
+      this.error = true;
+    }
   }
 
   toggleForgotMode () {
