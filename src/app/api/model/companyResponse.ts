@@ -16,7 +16,6 @@ export interface CompanyResponseDto {
     name?: string;
     address?: string;
     picture?: string;
-    admin?: UserSummaryResponseDto;
     users?: Array<UserSummaryResponseDto>;
     createdAt?: string;
     co2?: Array<CompanyCO2YearlyResponseDto>;

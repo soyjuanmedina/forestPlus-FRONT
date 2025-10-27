@@ -99,12 +99,15 @@ export class CompanyCo2YearlyControllerService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createOrUpdate(companyId: number, companyCO2YearlyRequestDto?: CompanyCO2YearlyRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<CompanyCO2YearlyResponseDto>;
-    public createOrUpdate(companyId: number, companyCO2YearlyRequestDto?: CompanyCO2YearlyRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CompanyCO2YearlyResponseDto>>;
-    public createOrUpdate(companyId: number, companyCO2YearlyRequestDto?: CompanyCO2YearlyRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CompanyCO2YearlyResponseDto>>;
-    public createOrUpdate(companyId: number, companyCO2YearlyRequestDto?: CompanyCO2YearlyRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public createOrUpdate(companyId: number, companyCO2YearlyRequestDto: CompanyCO2YearlyRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<CompanyCO2YearlyResponseDto>;
+    public createOrUpdate(companyId: number, companyCO2YearlyRequestDto: CompanyCO2YearlyRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CompanyCO2YearlyResponseDto>>;
+    public createOrUpdate(companyId: number, companyCO2YearlyRequestDto: CompanyCO2YearlyRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CompanyCO2YearlyResponseDto>>;
+    public createOrUpdate(companyId: number, companyCO2YearlyRequestDto: CompanyCO2YearlyRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (companyId === null || companyId === undefined) {
             throw new Error('Required parameter companyId was null or undefined when calling createOrUpdate.');
+        }
+        if (companyCO2YearlyRequestDto === null || companyCO2YearlyRequestDto === undefined) {
+            throw new Error('Required parameter companyCO2YearlyRequestDto was null or undefined when calling createOrUpdate.');
         }
 
         let localVarHeaders = this.defaultHeaders;

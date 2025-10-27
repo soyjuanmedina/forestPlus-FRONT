@@ -12,7 +12,6 @@
 export interface CompanyRequestDto { 
     name?: string;
     address?: string;
-    adminId?: number;
     picture?: string;
 }
 

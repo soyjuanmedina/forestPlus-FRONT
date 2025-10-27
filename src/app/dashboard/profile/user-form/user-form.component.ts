@@ -86,7 +86,9 @@ export class UserFormComponent implements OnInit {
       // Cargamos las compañías y luego seteamos la suya
       this.companyService.getAllCompanies().subscribe( {
         next: ( data ) => {
-          this.companies = data.filter( c => !!c.admin );
+          this.companies = data.filter(
+            c => c.users?.some( u => u.role === RolesEnum.COMPANY_ADMIN )
+          );
 
           const companyId = this.currentUser?.company?.id;
           if ( companyId ) {
@@ -138,7 +140,9 @@ export class UserFormComponent implements OnInit {
   private loadCompanies () {
     this.companyService.getAllCompanies().subscribe( {
       next: data => {
-        this.companies = data.filter( c => !!c.admin );
+        this.companies = data.filter(
+          c => c.users?.some( u => u.role === RolesEnum.COMPANY_ADMIN )
+        );
       },
       error: err => console.error( 'Error cargando compañías', err )
     } );

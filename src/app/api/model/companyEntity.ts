@@ -16,7 +16,6 @@ export interface CompanyEntityDto {
     id?: number;
     name?: string;
     address?: string;
-    admin?: UserEntityDto;
     users?: Array<UserEntityDto>;
     picture?: string;
     lands?: Array<LandEntityDto>;

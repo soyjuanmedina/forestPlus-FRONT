@@ -19,6 +19,8 @@ export class UserService {
     private authService: AuthService
   ) { }
 
+  user$ = this.authService.user$;
+
   getUser (): Observable<UserResponseDto | null> {
     return this.authService.user$;
   }

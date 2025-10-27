@@ -14,5 +14,16 @@ export interface UserSummaryResponseDto {
     name?: string;
     surname?: string;
     email?: string;
+    role?: UserSummaryResponseDto.RoleEnum;
 }
+export namespace UserSummaryResponseDto {
+    export const RoleEnum = {
+        Admin: 'ADMIN',
+        User: 'USER',
+        CompanyAdmin: 'COMPANY_ADMIN',
+        CompanyUser: 'COMPANY_USER'
+    } as const;
+    export type RoleEnum = typeof RoleEnum[keyof typeof RoleEnum];
+}
+
 

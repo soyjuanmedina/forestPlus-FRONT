@@ -12,7 +12,7 @@ import { UserResponseDto } from '../../api';
     TranslateModule
   ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrls: ['./home.component.scss']
 } )
 export class HomeComponent implements OnInit {
   userName: string = '';
@@ -20,8 +20,16 @@ export class HomeComponent implements OnInit {
   constructor ( private userService: UserService ) { }
 
   ngOnInit (): void {
-    this.userService.getUser().subscribe( ( user: UserResponseDto | null ) => {
-      this.userName = user?.name || '';
+    // Nos suscribimos al BehaviorSubject del usuario actual
+    this.userService.user$.subscribe( ( user: UserResponseDto | null ) => {
+      if ( user ) {
+        this.userName = user.name;
+
+        // Aquí puedes cargar datos adicionales de la compañía si hace falta,
+        // pero solo cuando el usuario ya está definido y hay token
+        // Ejemplo:
+        // this.userService.getCompany(user.company.id).subscribe(...)
+      }
     } );
   }
 }
