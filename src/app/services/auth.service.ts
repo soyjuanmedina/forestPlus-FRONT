@@ -177,6 +177,15 @@ export class AuthService {
       } )
     );
   }
+  /** Obtener rol del usuario actual */
+  get currentUserRole (): UserResponseDto.RoleEnum | null {
+    return this.userSubject.value?.role ?? null;
+  }
 
+  /** Obtener el ID de la compañía del usuario actual */
+  get currentUserCompanyId (): number | null {
+    const user = this.userSubject.value;
+    return user?.company?.id ?? null; // accede a company.id si existe, sino null
+  }
 
 }

@@ -1,37 +1,51 @@
-<mat-card class="p-6 rounded-2xl shadow-md bg-white max-w-3xl mx-auto">
-  <h1 class="text-2xl font-bold mb-6 text-center">Editar Compañía</h1>
+<div *ngIf="company" class="mt-5 p-6 rounded-2xl shadow-md bg-white max-w-3xl mx-auto">
+  <form [formGroup]="companyForm" (ngSubmit)="onSubmitCompany()">
+    <h1 class="text-2xl font-bold mb-6 text-center">
+      {{ company.id ? 'Editar Compañía' : 'Nueva Compañía' }}
+    </h1>
 
-  <!-- 🖼 Avatar / Imagen de la compañía -->
-  <div class="md:col-span-2 flex flex-col items-center mb-6">
-    <img [src]="previewImage || editData.picture || 'assets/logo-white.png'"
-      alt="Logo de la compañía" class="w-24 h-24 rounded-full shadow-lg mb-2" />
+    <!-- 🖼 Logo de la compañía -->
+    <div class="md:col-span-2 flex flex-col items-center mb-6">
+      <img [src]="previewImage || company.picture || 'assets/logo-white.png'"
+        alt="Logo de la compañía" class="w-24 h-24 rounded-full shadow-lg mb-2 object-cover" />
 
-    <label
-      class="cursor-pointer bg-gray-200 hover:bg-gray-300 p-2 rounded-full flex items-center gap-2">
-      <mat-icon>photo_camera</mat-icon>
-      <span>Seleccionar imagen</span>
-      <input type="file" accept="image/*" (change)="onCompanyFileSelected($event)" hidden />
-    </label>
-  </div>
+      <label
+        class="cursor-pointer bg-gray-200 hover:bg-gray-300 p-2 rounded-full flex items-center gap-2">
+        <span class="material-icons">photo_camera</span>
+        <span>Seleccionar imagen</span>
+        <input type="file" accept="image/*" (change)="onCompanyFileSelected($event)" hidden />
+      </label>
+    </div>
 
-  <!-- 🏢 Datos generales de la compañía -->
-  <div class="flex flex-col md:flex-row gap-4 mb-6">
-    <mat-form-field appearance="outline" class="flex-1">
-      <mat-label>Nombre</mat-label>
-      <input matInput [(ngModel)]="editData.name" name="name" required />
-    </mat-form-field>
+    <!-- 🏢 Datos generales -->
+    <div class="flex flex-col md:flex-row gap-4 mb-6">
+      <div class="flex-1">
+        <label for="name" class="block text-gray-700 font-medium mb-1">Nombre</label>
+        <input id="name" type="text" formControlName="name" required
+          class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
+                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="Nombre de la compañía" />
+      </div>
 
-    <mat-form-field appearance="outline" class="flex-1">
-      <mat-label>Dirección</mat-label>
-      <input matInput [(ngModel)]="editData.address" name="address" />
-    </mat-form-field>
-  </div>
+      <div class="flex-1">
+        <label for="address" class="block text-gray-700 font-medium mb-1">Dirección</label>
+        <input id="address" type="text" formControlName="address"
+          class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
+                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="Dirección" />
+      </div>
+    </div>
 
-  <!-- Botones -->
-  <div class="flex justify-end gap-4 mt-4">
-    <button mat-stroked-button color="warn" (click)="cancel()">Cancelar</button>
-    <button mat-raised-button color="primary" (click)="saveCompany()">Guardar empresa</button>
-  </div>
+    <!-- Botones -->
+    <div class="flex justify-end gap-4 mt-4">
+      <button type="button" (click)="cancel()"
+        class="px-4 py-2 rounded-xl border border-red-500 text-red-500 hover:bg-red-50 transition">
+        Cancelar
+      </button>
+      <button type="submit"
+        class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition">
+        Guardar empresa
+      </button>
+    </div>
+  </form>
 
   <hr class="my-6" />
 
@@ -40,100 +54,107 @@
     <h2 class="text-xl font-bold mb-4 text-center">Emisiones de CO₂ por año</h2>
 
     <!-- Último año -->
-    <div class="mb-8 border p-4 rounded shadow-sm">
+    <div class="mb-8 border p-4 rounded-xl shadow-sm bg-gray-50">
       <h3 class="font-semibold mb-2">Último año registrado: {{ co2Years[0].year }}</h3>
 
-      <!-- Botón editar -->
       <div class="flex justify-end mb-2">
-        <button mat-stroked-button color="primary" (click)="toggleEditCO2(co2Years[0])">
+        <button (click)="toggleEditCO2(co2Years[0])"
+          class="px-3 py-1 rounded-xl border border-blue-500 text-blue-500 hover:bg-blue-50 transition">
           {{ co2Years[0].editMode ? 'Cancelar' : 'Editar' }}
         </button>
       </div>
 
-      <!-- Formulario edición -->
-      <div *ngIf="co2Years[0].editMode" class="flex gap-4 mb-2 justify-center">
-        <mat-form-field appearance="outline">
-          <mat-label>Emitido</mat-label>
-          <input matInput type="number" [(ngModel)]="co2Years[0].editEmissions" />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Compensado</mat-label>
-          <input matInput type="number" [(ngModel)]="co2Years[0].editCompensations" />
-        </mat-form-field>
-        <button mat-raised-button color="primary" (click)="saveCO2(co2Years[0])">Guardar</button>
+      <div *ngIf="co2Years[0].editMode" class="flex flex-wrap gap-4 mb-4 justify-center">
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">Emitido</label>
+          <input type="number" [(ngModel)]="co2Years[0].editEmissions"
+            class="w-32 rounded-xl border border-gray-300 px-3 py-1 shadow-sm
+                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
+        </div>
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">Compensado</label>
+          <input type="number" [(ngModel)]="co2Years[0].editCompensations"
+            class="w-32 rounded-xl border border-gray-300 px-3 py-1 shadow-sm
+                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
+        </div>
+        <button (click)="saveCO2(co2Years[0])"
+          class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition">
+          Guardar
+        </button>
       </div>
 
-      <!-- Visualización de datos -->
-      <div class="flex gap-4 justify-center mb-2 items-center">
-        <!-- Emitido -->
-        <div class="donut-wrapper text-center">
-          <div class="donut-label">Emitido</div>
+      <div class="flex flex-wrap gap-4 justify-center items-center">
+        <div class="text-center">
+          <div class="font-medium">Emitido</div>
           <canvas [id]="co2Years[0].emitidoRef" class="donut-large"></canvas>
         </div>
-
-        <!-- Compensado -->
-        <div class="donut-wrapper text-center">
-          <div class="donut-label">Compensado</div>
+        <div class="text-center">
+          <div class="font-medium">Compensado</div>
           <canvas [id]="co2Years[0].compensadoRef" class="donut-large"></canvas>
         </div>
-
-        <!-- Valor Neto -->
-        <div class="donut-wrapper neto-wrapper text-center">
-          <div class="donut-label">Valor Neto</div>
-          <div class="donut-neto text-4xl font-bold"
+        <div class="text-center">
+          <div class="font-medium">Valor Neto</div>
+          <div class="text-4xl font-bold"
             [ngClass]="getNetColorClass(co2Years[0].totalEmissions, co2Years[0].totalCompensations)">
-            {{ co2Years[0].totalEmissions - co2Years[0].totalCompensations | number:'1.0-0' }}
+            {{ co2Years[0].totalEmissions - co2Years[0].totalCompensations | number: '1.0-0' }}
           </div>
-          <div class="donut-neto-unit">Toneladas de CO₂</div>
-          <div class="donut-neto-info">
-            (has compensado el {{ getCompensatedPercentage(co2Years[0].totalEmissions,
-            co2Years[0].totalCompensations) }}% de tus emisiones)
+          <div class="text-gray-600 text-sm">Toneladas de CO₂</div>
+          <div class="text-xs text-gray-500 mt-1">
+            (Has compensado el {{ getCompensatedPercentage(co2Years[0].totalEmissions,
+            co2Years[0].totalCompensations) }}%)
           </div>
         </div>
       </div>
     </div>
 
     <!-- Años anteriores -->
-    <div *ngFor="let y of co2Years.slice(1)" class="mb-6 border p-4 rounded shadow-sm">
+    <div *ngFor="let y of co2Years.slice(1)"
+      class="mb-6 border p-4 rounded-xl shadow-sm bg-gray-50">
       <h3 class="font-semibold mb-2">Año {{ y.year }}</h3>
 
-      <!-- Botón editar -->
       <div class="flex justify-end mb-2">
-        <button mat-stroked-button color="primary" (click)="toggleEditCO2(y)">
+        <button (click)="toggleEditCO2(y)"
+          class="px-3 py-1 rounded-xl border border-blue-500 text-blue-500 hover:bg-blue-50 transition">
           {{ y.editMode ? 'Cancelar' : 'Editar' }}
         </button>
       </div>
 
-      <!-- Formulario edición -->
-      <div *ngIf="y.editMode" class="flex gap-4 mb-2 justify-center">
-        <mat-form-field appearance="outline">
-          <mat-label>Emitido</mat-label>
-          <input matInput type="number" [(ngModel)]="y.editEmissions" />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Compensado</mat-label>
-          <input matInput type="number" [(ngModel)]="y.editCompensations" />
-        </mat-form-field>
-        <button mat-raised-button color="primary" (click)="saveCO2(y)">Guardar</button>
+      <div *ngIf="y.editMode" class="flex flex-wrap gap-4 mb-4 justify-center">
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">Emitido</label>
+          <input type="number" [(ngModel)]="y.editEmissions"
+            class="w-32 rounded-xl border border-gray-300 px-3 py-1 shadow-sm
+                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
+        </div>
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">Compensado</label>
+          <input type="number" [(ngModel)]="y.editCompensations"
+            class="w-32 rounded-xl border border-gray-300 px-3 py-1 shadow-sm
+                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
+        </div>
+        <button (click)="saveCO2(y)"
+          class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition">
+          Guardar
+        </button>
       </div>
 
-      <!-- Visualización de datos -->
-      <div class="flex gap-4 justify-center mb-2 items-center">
-        <div class="donut-wrapper text-center">
+      <div class="flex flex-wrap gap-4 justify-center items-center">
+        <div class="text-center">
+          <div class="font-medium">Emitido</div>
           <canvas [id]="y.emitidoRef" class="donut-small"></canvas>
         </div>
-        <div class="donut-wrapper text-center">
+        <div class="text-center">
+          <div class="font-medium">Compensado</div>
           <canvas [id]="y.compensadoRef" class="donut-small"></canvas>
         </div>
-        <div class="donut-wrapper neto-wrapper text-center">
-          <div class="donut-neto text-xl font-bold"
+        <div class="text-center">
+          <div class="font-semibold text-lg"
             [ngClass]="getNetColorClass(y.totalEmissions, y.totalCompensations)">
-            {{ y.totalEmissions - y.totalCompensations | number:'1.0-0' }}
+            {{ y.totalEmissions - y.totalCompensations | number: '1.0-0' }}
           </div>
-          <div class="donut-neto-unit">Toneladas de CO₂</div>
-          <div class="donut-neto-info">
-            (has compensado el {{ getCompensatedPercentage(y.totalEmissions,
-            y.totalCompensations) }}% de tus emisiones)
+          <div class="text-sm text-gray-600">Toneladas de CO₂</div>
+          <div class="text-xs text-gray-500">
+            ({{ getCompensatedPercentage(y.totalEmissions, y.totalCompensations) }}% compensado)
           </div>
         </div>
       </div>
@@ -141,13 +162,17 @@
   </div>
 
   <!-- Añadir nuevo año -->
-  <div class="border p-4 rounded shadow-sm text-center">
-    <mat-form-field appearance="outline">
-      <mat-label>Año</mat-label>
-      <mat-select [(ngModel)]="selectedYear" name="newYear">
-        <mat-option *ngFor="let y of availableYears" [value]="y">{{ y }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <button mat-raised-button color="primary" (click)="addNewYear(selectedYear)">Añadir año</button>
+  <div class="border p-4 rounded-xl shadow-sm text-center mt-6 bg-gray-50">
+    <label for="newYear" class="block text-gray-700 font-medium mb-2">Año</label>
+    <select id="newYear" [(ngModel)]="selectedYear" name="newYear"
+      class="w-32 rounded-xl border border-gray-300 px-3 py-2 shadow-sm
+                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition mb-2">
+      <option *ngFor="let y of availableYears" [value]="y">{{ y }}</option>
+    </select>
+    <br />
+    <button (click)="addNewYear(selectedYear)"
+      class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition">
+      Añadir año
+    </button>
   </div>
-</mat-card>
+</div>

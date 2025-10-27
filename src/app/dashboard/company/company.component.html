@@ -1,13 +1,13 @@
-<mat-card class="rounded-2xl shadow-md p-4 flex flex-col items-center text-center">
+<mat-card class="rounded-2xl shadow-md p-4 flex flex-col items-center text-center" *ngIf="company">
 
   <!-- PERFIL DE LA COMPAÑÍA -->
-  <img [src]="previewImage || user.company.picture || 'assets/company_profile.png'" alt="Logo"
+  <img [src]="previewImage || company.picture || 'assets/company_profile.png'" alt="Logo"
     class="w-24 h-24 rounded-full shadow-lg mb-4" />
-  <h2 class="text-xl font-semibold">{{ user.company.name }}</h2>
-  <p class="text-gray-500">{{ user.company.address }}</p>
+  <h2 class="text-xl font-semibold">{{ company.name }}</h2>
+  <p class="text-gray-500">{{ company.address }}</p>
 
   <!-- Botón Editar -->
-  <div class="flex gap-2 mt-4" *ngIf="user.role === 'COMPANY_ADMIN'">
+  <div class="flex gap-2 mt-4" *ngIf="user?.role === 'COMPANY_ADMIN' || isEditable">
     <button mat-raised-button color="primary" (click)="goToEditForm()">
       Editar
     </button>
@@ -37,7 +37,7 @@
         <!-- Valor Neto -->
         <div class="donut-wrapper neto-wrapper">
           <div class="donut-label">Valor Neto</div>
-          <div class="donut-neto  text-4xl font-bold"
+          <div class="donut-neto text-4xl font-bold"
             [ngClass]="getNetColorClass(co2Years[0].totalEmissions, co2Years[0].totalCompensations)">
             {{ co2Years[0].totalEmissions - co2Years[0].totalCompensations | number:'1.0-0' }}
           </div>

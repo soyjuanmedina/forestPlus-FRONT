@@ -65,6 +65,30 @@ export class UserFormComponent implements OnInit {
       companyId: [''],
     } );
 
+    this.userForm.get( 'role' )?.valueChanges.subscribe( ( role: RolesEnum ) => {
+      const companyControl = this.userForm.get( 'companyId' );
+
+      if ( role === RolesEnum.COMPANY_ADMIN || role === RolesEnum.COMPANY_USER ) {
+        this.showCompanySelector = true;
+
+        if ( this.isCompanyAdminEditing() ) {
+          companyControl?.disable();
+        } else {
+          companyControl?.enable();
+        }
+
+        companyControl?.setValidators( [Validators.required] );
+      } else {
+        this.showCompanySelector = false;
+        companyControl?.clearValidators();
+        companyControl?.setValue( '' );
+        if ( !this.isCompanyAdmin ) companyControl?.disable();
+      }
+
+      companyControl?.updateValueAndValidity();
+    } );
+
+
     // Si hay id → modo edición
     this.route.paramMap.subscribe( ( params ) => {
       const id = params.get( 'id' );
@@ -81,7 +105,6 @@ export class UserFormComponent implements OnInit {
     // Comportamiento especial para COMPANY_ADMIN
     if ( this.isCompanyAdmin ) {
       this.showCompanySelector = true;
-      this.userForm.get( 'companyId' )?.disable();
 
       // Cargamos las compañías y luego seteamos la suya
       this.companyService.getAllCompanies().subscribe( {
@@ -114,7 +137,7 @@ export class UserFormComponent implements OnInit {
         companyControl?.clearValidators();
         if ( !this.isCompanyAdmin ) {
           companyControl?.setValue( '' );
-          companyControl?.disable();
+          // companyControl?.disable();
         }
       }
 
@@ -140,9 +163,7 @@ export class UserFormComponent implements OnInit {
   private loadCompanies () {
     this.companyService.getAllCompanies().subscribe( {
       next: data => {
-        this.companies = data.filter(
-          c => c.users?.some( u => u.role === RolesEnum.COMPANY_ADMIN )
-        );
+        this.companies = data;
       },
       error: err => console.error( 'Error cargando compañías', err )
     } );
@@ -233,6 +254,36 @@ export class UserFormComponent implements OnInit {
       this.router.navigate( ['/profile'] );
     } else {
       this.router.navigate( ['/admin/users'] );
+    }
+  }
+
+  onCancel () {
+    if ( this.isSelfEdit ) {
+      this.router.navigate( ['/profile'] );
+    } else {
+      this.router.navigate( ['/admin/users'] );
+    }
+  }
+
+  showCompanySelectorDynamic (): boolean {
+    const currentUserRole = this.authService.currentUserRole; // rol del usuario logueado
+    const selectedRole = this.userForm.get( 'role' )?.value;
+
+    return selectedRole === RolesEnum.COMPANY_ADMIN || selectedRole === RolesEnum.COMPANY_USER;
+  }
+
+  // Devuelve true si el usuario que edita es COMPANY_ADMIN (solo su propia compañía)
+  isCompanyAdminEditing (): boolean {
+    return this.user?.role === RolesEnum.COMPANY_ADMIN;
+  }
+
+  // Devuelve la lista de compañías disponibles según el rol del editor
+  getSelectableCompanies () {
+    if ( this.authService.currentUserRole === RolesEnum.ADMIN ) {
+      return this.companies; // todas las compañías
+    } else {
+      // COMPANY_ADMIN solo su propia compañía
+      return this.companies.filter( c => c.id === this.authService.currentUserCompanyId );
     }
   }
 }

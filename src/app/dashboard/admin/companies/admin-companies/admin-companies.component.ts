@@ -1,12 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
 import { Router, RouterModule } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,30 +11,24 @@ import { CompanyResponseDto } from '../../../../api/model/companyResponse';
 import { UserService } from '../../../../services/user.service';
 import { RolesEnum } from '../../../../models/roles';
 import { CompanyService } from '../../../../services/company.service';
+import { FormsModule } from '@angular/forms';
 
 @Component( {
   selector: 'app-admin-companies',
   standalone: true,
   templateUrl: './admin-companies.component.html',
   styleUrls: ['./admin-companies.component.scss'],
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatCardModule,
-    MatTableModule,
-    MatButtonModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatPaginatorModule,
-    MatSortModule
-  ]
+  imports: [CommonModule, RouterModule, MatCardModule, MatButtonModule, MatIconModule, FormsModule]
 } )
 export class AdminCompaniesComponent implements OnInit {
-  companies = new MatTableDataSource<CompanyResponseDto>();
-  displayedColumns: string[] = ['name', 'address', 'actions'];
+  companies: CompanyResponseDto[] = [];
+  filteredCompanies: CompanyResponseDto[] = [];
 
-  @ViewChild( MatPaginator ) paginator!: MatPaginator;
-  @ViewChild( MatSort ) sort!: MatSort;
+  currentPage = 0;
+  pageSize = 5;
+  totalPages = 1;
+
+  filterText = '';
 
   constructor (
     private companyService: CompanyService,
@@ -52,47 +42,63 @@ export class AdminCompaniesComponent implements OnInit {
     this.loadCompanies();
   }
 
-  ngAfterViewInit (): void {
-    this.companies.paginator = this.paginator;
-    this.companies.sort = this.sort;
-  }
-
   loadCompanies (): void {
     const currentUser = this.userService.getCurrentUser();
 
     this.companyService.getAllCompanies().subscribe( {
       next: ( data ) => {
-        let filteredData = data;
-
-        // 👉 Si es COMPANY_ADMIN, filtrar solo su compañía
-        if ( currentUser?.role === RolesEnum.COMPANY_ADMIN && currentUser.company?.id ) {
-          filteredData = data.filter( c => c.id === currentUser.company?.id );
+        if ( currentUser?.role === RolesEnum.COMPANY_ADMIN && currentUser.company?.id != null ) {
+          const companyId = currentUser.company.id;
+          this.companies = data.filter( c => c.id === companyId );
+        } else {
+          this.companies = data;
         }
 
-        this.companies.data = filteredData;
-
-        if ( this.paginator ) {
-          this.paginator.length = filteredData.length;
-        }
+        this.applyFilter();
       },
-      error: ( err ) => {
-        console.error( '❌ Error al cargar compañías', err );
-      }
+      error: ( err ) => console.error( '❌ Error al cargar compañías', err )
     } );
   }
 
+  applyFilter (): void {
+    const filter = this.filterText.trim().toLowerCase();
+    this.filteredCompanies = this.companies.filter( c =>
+      ( c.name || '' ).toLowerCase().includes( filter ) ||
+      ( c.address || '' ).toLowerCase().includes( filter )
+    );
+
+    this.currentPage = 0;
+    this.totalPages = Math.ceil( this.filteredCompanies.length / this.pageSize );
+  }
+
+  getPagedCompanies (): CompanyResponseDto[] {
+    const start = this.currentPage * this.pageSize;
+    return this.filteredCompanies.slice( start, start + this.pageSize );
+  }
+
+  previousPage (): void {
+    if ( this.currentPage > 0 ) this.currentPage--;
+  }
+
+  nextPage (): void {
+    if ( this.currentPage + 1 < this.totalPages ) this.currentPage++;
+  }
+
+  addCompany (): void {
+    this.router.navigate( ['/admin/company-form'] );
+  }
+
   onEdit ( company: CompanyResponseDto ): void {
-    this.router.navigate( ['/admin/company-form/', company.id] );
+    this.router.navigate( ['/admin/company-form', company.id] );
+  }
+
+  onView ( company: CompanyResponseDto ): void {
+    this.router.navigate( ['/company', company.id] );
   }
 
   onDelete ( company: CompanyResponseDto ): void {
+    if ( !company.id ) return;
 
-    const companyId = company.id;
-    if ( !companyId ) {
-      console.warn( '⚠️ No se puede eliminar: id de compañía undefined' );
-      this.snackBar.open( '⚠️ No se puede eliminar esta compañía', 'Cerrar', { duration: 3000 } );
-      return;
-    }
     const dialogRef = this.dialog.open( ConfirmDialogComponent, {
       width: '400px',
       data: {
@@ -102,8 +108,8 @@ export class AdminCompaniesComponent implements OnInit {
     } );
 
     dialogRef.afterClosed().subscribe( result => {
-      if ( result ) {
-        this.companyService.deleteCompany( companyId ).subscribe( {
+      if ( result && company.id !== undefined ) {
+        this.companyService.deleteCompany( company.id ).subscribe( {
           next: () => {
             this.snackBar.open( '✅ Compañía eliminada', 'Cerrar', { duration: 3000 } );
             this.loadCompanies();
@@ -115,10 +121,5 @@ export class AdminCompaniesComponent implements OnInit {
         } );
       }
     } );
-  }
-
-  applyFilter ( event: Event ): void {
-    const filterValue = ( event.target as HTMLInputElement ).value;
-    this.companies.filter = filterValue.trim().toLowerCase();
   }
 }

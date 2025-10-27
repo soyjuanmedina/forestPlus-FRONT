@@ -1,1 +1,35 @@
 @import 'src/styles/donuts';
+
+/* Aplica a todos tus mat-form-field de tipo input o select */
+.custom-input .mat-mdc-text-field-wrapper {
+  background-color: #f3f4f6 !important; /* color gris claro pero activo */
+  border-radius: 12px !important;
+  padding: 0 8px !important;
+  box-shadow: inset 2px 2px 5px rgba(0,0,0,0.03), inset -2px -2px 5px rgba(255,255,255,0.7);
+}
+
+/* Contorno */
+.custom-input .mdc-notched-outline {
+  border-color: #d1d5db !important; /* gris medio */
+  border-radius: 12px !important;
+}
+
+/* Contorno al enfocar */
+.custom-input.mat-mdc-focused .mdc-notched-outline {
+  border-color: #3b82f6 !important; /* azul primario */
+  border-width: 2px !important;
+}
+
+/* Input y select internos */
+.custom-input input.mat-mdc-input-element,
+.custom-input .mat-mdc-select-trigger {
+  background-color: transparent !important;
+  border-radius: 12px !important;
+  color: #111827 !important;
+  padding: 8px !important;
+}
+
+/* Opcional: hover sutil */
+.custom-input:hover .mat-mdc-text-field-wrapper {
+  background-color: #e5e7eb !important;
+}

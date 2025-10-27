@@ -42,7 +42,12 @@ export const routes: Routes = [
           import( './dashboard/profile/user-form/user-form.component' ).then( m => m.UserFormComponent ),
         canActivate: [AuthGuard]
       },
-      { path: 'company', component: CompanyComponent }, // perfil de compañía
+      { path: 'company', component: CompanyComponent },
+      {
+        path: 'company/:id',
+        component: CompanyComponent,
+        canActivate: [AuthGuard]
+      },
 
       // Nueva ruta de edición de compañía (igual que profile/edit)
       {

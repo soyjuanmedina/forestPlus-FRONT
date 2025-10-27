@@ -7,7 +7,7 @@
     "start-local": "ng serve --configuration local",
     "build": "ng build",
     "build:prod": "ng build --configuration production --base-href /",
-    "prod-to-back": "npm run build:prod && xcopy /Y /E dist\\forest-plus\\browser\\* C:\\Users\\juan.medina\\git\\forestPlus-BACK\\src\\main\\resources\\static\\",
+    "prod-to-back": "npm run build:prod && robocopy dist\\forest-plus\\browser C:\\Users\\juan.medina\\git\\forestPlus-BACK\\src\\main\\resources\\static /MIR /NFL /NDL /NJH /NJS /NP",
     "watch": "ng build --watch --configuration development",
     "gen-api": "openapi-generator-cli generate -i http://localhost:8080/v3/api-docs -g typescript-angular -o ./src/app/api --additional-properties=ngVersion=17,modelSuffix=Dto",
     "test": "rmdir node_modules /s /q"

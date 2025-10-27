@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/co
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { Chart, DoughnutController, ArcElement, Tooltip, Legend, Plugin } from 'chart.js';
 import { UserService } from '../../services/user.service';
 import { CompanyService } from '../../services/company.service';
@@ -20,27 +20,63 @@ export class CompanyComponent implements OnInit, AfterViewInit {
   co2Years: any[] = [];
   chartsMap: { [key: string]: Chart } = {};
   previewImage?: string;
+  isEditable: boolean = false;
 
   constructor (
     private userService: UserService,
     private companyService: CompanyService,
     private router: Router,
+    private route: ActivatedRoute,
     private cdr: ChangeDetectorRef
   ) {
     Chart.register( DoughnutController, ArcElement, Tooltip, Legend );
   }
 
   ngOnInit (): void {
-    this.userService.getUser().subscribe( user => {
-      this.user = user;
-      if ( user?.company?.id ) {
-        this.companyService.getCompanyById( user.company.id ).subscribe( c => {
+    const companyIdParam = this.route.snapshot.paramMap.get( 'id' );
+
+    if ( companyIdParam ) {
+      this.isEditable = true;
+      // Si hay un id en la ruta, cargamos esa compañía directamente
+      this.companyService.getCompanyById( +companyIdParam ).subscribe( {
+        next: ( c ) => {
           this.company = c;
-          this.prepareCO2Years();
-        } );
-      }
-    } );
+          if ( this.company ) {
+            this.prepareCO2Years();
+          }
+        },
+        error: ( err ) => {
+          console.error( 'Error cargando la compañía por ID:', err );
+        }
+      } );
+    } else {
+      // Si no hay id, usamos la compañía del usuario logueado
+      this.userService.getUser().subscribe( {
+        next: ( user ) => {
+          this.user = user;
+          if ( user?.company?.id ) {
+            this.companyService.getCompanyById( user.company.id ).subscribe( {
+              next: ( c ) => {
+                this.company = c;
+                if ( this.company ) {
+                  this.prepareCO2Years();
+                }
+              },
+              error: ( err ) => {
+                console.error( 'Error cargando la compañía del usuario:', err );
+              }
+            } );
+          } else {
+            console.warn( 'El usuario no tiene compañía asignada' );
+          }
+        },
+        error: ( err ) => {
+          console.error( 'Error cargando el usuario:', err );
+        }
+      } );
+    }
   }
+
 
   ngAfterViewInit (): void {
     if ( this.co2Years?.length ) {
@@ -62,7 +98,7 @@ export class CompanyComponent implements OnInit, AfterViewInit {
       net: ( y.totalEmissions || 0 ) - ( y.totalCompensations || 0 ),
       emitidoRef: `emitido-${y.year}`,
       compensadoRef: `compensado-${y.year}`,
-      netoRef: `neto-${y.year}`, // importante
+      netoRef: `neto-${y.year}`
     } ) );
 
     this.cdr.detectChanges();
@@ -70,9 +106,9 @@ export class CompanyComponent implements OnInit, AfterViewInit {
   }
 
   goToEditForm () {
-    console.log( 'this.user?.company?.id', this.user?.company?.id );
-    if ( this.user?.company?.id ) {
-      this.router.navigate( ['/company/form', this.user.company.id] );
+    const id = this.company?.id || this.user?.company?.id;
+    if ( id ) {
+      this.router.navigate( ['/company/form', id] );
     }
   }
 
@@ -120,7 +156,6 @@ export class CompanyComponent implements OnInit, AfterViewInit {
       }]
     };
 
-    // Plugin para dibujar texto en el centro
     const centerTextPlugin: Plugin<'doughnut'> = {
       id: 'centerText',
       beforeDraw: chart => {
