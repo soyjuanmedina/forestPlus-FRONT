@@ -1,21 +1,25 @@
-<mat-card class="rounded-2xl shadow-md p-4 flex flex-col items-center text-center" *ngIf="company">
+<mat-card
+  class="rounded-2xl shadow-md p-4 md:p-6 flex flex-col items-center text-center w-full max-w-full"
+  *ngIf="company">
 
   <!-- PERFIL DE LA COMPAÑÍA -->
   <img [src]="previewImage || company.picture || 'assets/company_profile.png'" alt="Logo"
-    class="w-24 h-24 rounded-full shadow-lg mb-4" />
-  <h2 class="text-xl font-semibold">{{ company.name }}</h2>
+    class="w-24 h-24 rounded-full shadow-lg mb-4 object-cover" />
+  <h2 class="text-xl md:text-2xl font-semibold">{{ company.name }}</h2>
   <p class="text-gray-500">{{ company.address }}</p>
 
-  <!-- Botón Editar -->
-  <div class="flex gap-2 mt-4" *ngIf="user?.role === 'COMPANY_ADMIN' || isEditable">
-    <button mat-raised-button color="primary" (click)="goToEditForm()">
+  <!-- Botón Editar unificado -->
+  <div class="flex gap-4 mt-4 w-full justify-center md:justify-start"
+    *ngIf="user?.role === 'COMPANY_ADMIN' || isEditable">
+    <button (click)="goToEditForm()"
+      class="flex-1 md:flex-auto bg-green-600 text-white py-3 px-6 rounded-xl hover:bg-green-700 transition">
       Editar
     </button>
   </div>
 
   <!-- CO2 -->
   <div class="w-full mt-6" *ngIf="co2Years?.length">
-
+    <h2 class="text-xl font-bold mb-4 text-center">Emisiones de CO₂ por año</h2>
     <!-- PRIMER AÑO (GRANDE) -->
     <div class="mb-8">
       <h3 class="text-lg font-semibold">Último año registrado</h3>

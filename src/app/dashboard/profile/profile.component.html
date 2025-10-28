@@ -1,10 +1,10 @@
-<div class="max-w-sm mx-auto" *ngIf="user">
-  <mat-card class="rounded-2xl shadow-md p-4">
+<div class="w-full max-w-full mx-auto" *ngIf="user">
+  <mat-card class="rounded-2xl shadow-md p-6 md:p-8">
     <div class="flex flex-col items-center text-center">
       <img [src]="user.picture || 'assets/logo-white.png'" alt="Avatar"
-        class="w-24 h-24 rounded-full shadow-lg mb-4" />
+        class="w-24 h-24 rounded-full shadow-lg mb-4 object-cover" />
 
-      <h2 class="text-xl font-semibold">
+      <h2 class="text-xl md:text-2xl font-semibold">
         {{ user.name }} {{ user.surname }} {{ user.secondSurname }}
       </h2>
       <p class="text-gray-500">{{ user.email }}</p>
@@ -13,8 +13,10 @@
         Empresa: {{ user.company?.name }}
       </p>
 
-      <div class="flex gap-2 mt-4">
-        <button mat-raised-button color="primary" (click)="goToEdit()">
+      <div class="flex gap-4 mt-4 w-full justify-center md:justify-start">
+        <!-- Botón Editar con estilo unificado -->
+        <button (click)="goToEdit()"
+          class="flex-1 md:flex-auto bg-green-600 text-white py-3 px-6 rounded-xl hover:bg-green-700 transition">
           Editar
         </button>
       </div>

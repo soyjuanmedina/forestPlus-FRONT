@@ -202,10 +202,30 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
   }
 
   toggleEditCO2 ( y: LocalCO2Year ) {
+
+    console.log( 'toggleEditCO2', y );
     if ( !y.editMode ) ( y as any )._backup = { emissions: y.totalEmissions, compensations: y.totalCompensations };
     else if ( ( y as any )._backup ) { y.totalEmissions = ( y as any )._backup.emissions; y.totalCompensations = ( y as any )._backup.compensations; }
     y.editMode = !y.editMode;
     setTimeout( () => this.renderCO2Charts(), 0 );
+  }
+
+  deleteCO2 ( y: LocalCO2Year ) {
+
+    console.log( 'deleteCO2', this.company.id, y.id );
+    if ( !this.company?.id || !y.id ) return;
+
+    this.companyCo2Service.delete( this.company.id, y.id )
+      .subscribe( {
+        next: () => {
+          console.log( 'CO2 eliminado correctamente' );
+          // Aquí puedes actualizar tu array de años para que desaparezca de la vista
+          this.co2Years = this.co2Years.filter( c => c.id !== y.id );
+        },
+        error: ( err ) => {
+          console.error( 'Error al eliminar CO2', err );
+        }
+      } );
   }
 
   saveCO2 ( y: LocalCO2Year ) {
@@ -215,17 +235,14 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
     y.net = totalEmissions - totalCompensations;
     const dto: CompanyCO2YearlyRequestDto = { year: y.year, totalEmissions, totalCompensations };
 
-    this.companyCo2Service.save( this.company.id, dto ).pipe( takeUntil( this.destroy$ ) ).subscribe( {
-      next: res => {
-        y.id = res.id;
-        y.totalEmissions = totalEmissions;
-        y.totalCompensations = totalCompensations;
-        y.editMode = false;
-        this.renderCO2Charts();
-        this.updateAvailableYears();
-      },
-      error: err => console.error( 'Error guardando CO₂', err )
-    } );
+    this.companyCo2Service.save( this.company.id, dto )
+      .pipe( takeUntil( this.destroy$ ) )
+      .subscribe( {
+        next: res => {
+          this.loadCompany( this.company!.id! );
+        },
+        error: err => console.error( 'Error guardando CO₂', err )
+      } );
   }
 
   addNewYear ( year?: number ) {

@@ -1,4 +1,4 @@
-<div class="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-lg">
+<div class="w-full max-w-full mx-auto bg-white p-6 rounded-2xl shadow-lg">
   <h2 class="text-2xl font-bold text-green-700 text-center mb-6">
     {{ isEditMode ? ('USER.EDIT_TITLE' | translate) : ('USER.NEW_TITLE' | translate) }}
   </h2>
@@ -29,7 +29,7 @@
         class="text-red-500 text-sm mt-1">{{ 'USER.FIELD_REQUIRED' | translate }}</div>
     </div>
 
-    <!-- Apellido -->
+    <!-- Apellidos y Email -->
     <div>
       <label class="block text-gray-700 font-medium mb-1">{{ 'USER.SURNAME_LABEL' | translate
         }}</label>
@@ -41,7 +41,6 @@
         class="text-red-500 text-sm mt-1">{{ 'USER.FIELD_REQUIRED' | translate }}</div>
     </div>
 
-    <!-- Segundo Apellido -->
     <div>
       <label class="block text-gray-700 font-medium mb-1">{{ 'USER.SECOND_SURNAME_LABEL' | translate
         }}</label>
@@ -51,7 +50,6 @@
                     focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition">
     </div>
 
-    <!-- Email -->
     <div class="md:col-span-2">
       <label class="block text-gray-700 font-medium mb-1">{{ 'USER.EMAIL_LABEL' | translate
         }}</label>
@@ -68,7 +66,7 @@
       </div>
     </div>
 
-    <!-- Rol -->
+    <!-- Rol y Compañía -->
     <div>
       <label class="block text-gray-700 font-medium mb-1">{{ 'USER.ROLE_LABEL' | translate
         }}</label>
@@ -82,39 +80,31 @@
         class="text-red-500 text-sm mt-1">{{ 'USER.FIELD_REQUIRED' | translate }}</div>
     </div>
 
-    <!-- Compañía dinámica -->
     <div *ngIf="showCompanySelectorDynamic()" class="md:col-span-2">
       <label class="block text-gray-700 font-medium mb-1">{{ 'USER.COMPANY_LABEL' | translate
         }}</label>
       <select formControlName="companyId" class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
-                 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent
-                 disabled:bg-gray-100 disabled:cursor-not-allowed transition">
+                     focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent
+                     disabled:bg-gray-100 disabled:cursor-not-allowed transition">
         <option value="">{{ 'USER.SELECT_COMPANY' | translate }}</option>
         <option *ngFor="let c of getSelectableCompanies()" [value]="c.id">{{ c.name }}</option>
       </select>
-
       <div *ngIf="userForm.get('companyId')?.invalid && userForm.get('companyId')?.touched"
-        class="text-red-500 text-sm mt-1">
-        {{ 'USER.FIELD_REQUIRED' | translate }}
-      </div>
+        class="text-red-500 text-sm mt-1">{{ 'USER.FIELD_REQUIRED' | translate }}</div>
     </div>
 
     <!-- Botones -->
     <div class="md:col-span-2 mt-4 flex gap-4">
-
-      <!-- Cancelar -->
       <button type="button" (click)="onCancel()"
         class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-xl hover:bg-gray-400 transition">
         {{ 'USER.CANCEL_BUTTON' | translate }}
       </button>
-      <!-- Guardar -->
       <button type="submit"
         class="flex-1 bg-green-600 text-white py-3 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
         {{ isEditMode ? ('USER.EDIT_BUTTON' | translate) : ('USER.CREATE_BUTTON' | translate) }}
       </button>
-
-
     </div>
+
   </form>
 
   <!-- Mensajes -->

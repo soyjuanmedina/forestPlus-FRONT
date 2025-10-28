@@ -29,6 +29,7 @@ export class CompanyCo2Service {
    * Eliminar un registro de CO2
    */
   delete ( companyId: number, id: number ): Observable<void> {
+    console.log( 'dnetro1', companyId );
     return this.co2Api._delete( companyId, id );
   }
 }

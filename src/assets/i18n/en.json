@@ -109,10 +109,11 @@
     "COMPANY_LABEL": "Company",
     "SELECT_COMPANY": "Select company",
     "CREATE_BUTTON": "Create User",
-    "EDIT_BUTTON": "Edit User",
+    "EDIT_BUTTON": "Save User",
     "FIELD_REQUIRED": "Required field",
     "INVALID_EMAIL": "Invalid email",
     "MIN_LENGTH": "Minimum 6 characters",
-    "SUCCESS_MSG": "User created successfully"
+    "SUCCESS_MSG": "User created successfully",
+    "CANCEL_BUTTON": "Cancel"
   }
 }
