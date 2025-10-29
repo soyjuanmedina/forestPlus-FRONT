@@ -274,7 +274,7 @@ export class UserFormComponent implements OnInit {
 
   // Devuelve true si el usuario que edita es COMPANY_ADMIN (solo su propia compañía)
   isCompanyAdminEditing (): boolean {
-    return this.user?.role === RolesEnum.COMPANY_ADMIN;
+    return this.authService.currentUserRole === RolesEnum.COMPANY_ADMIN;
   }
 
   // Devuelve la lista de compañías disponibles según el rol del editor

@@ -1,37 +1,38 @@
 <mat-card class="p-4">
   <div class="flex justify-between items-center mb-4">
-    <input type="text" placeholder="Buscar usuario..." (keyup)="applyFilter($event)"
-      class="border rounded px-3 py-2 w-64" />
-    <button mat-raised-button color="accent" (click)="addUser()">
-      <mat-icon class="mr-1">add</mat-icon>
+    <input type="text" placeholder="Buscar usuario..." [(ngModel)]="filterText"
+      (keyup)="applyFilter()"
+      class="w-64 rounded-xl border border-gray-300 px-4 py-2 shadow-sm
+             focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" />
+
+    <button (click)="addUser()"
+      class="flex items-center justify-center gap-2 bg-green-600 text-white py-3 px-4 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
+      <mat-icon>add</mat-icon>
       Nuevo usuario
     </button>
   </div>
 
   <div class="flex flex-col gap-4">
-    <div *ngFor="let user of users.data"
+    <div *ngFor="let user of getPagedUsers()"
       class="border rounded p-4 shadow-sm flex justify-between items-center w-full">
 
-      <!-- Texto a la izquierda -->
+      <!-- Datos del usuario -->
       <div class="flex flex-col text-left">
         <div class="font-semibold text-lg">{{ user.name }} {{ user.surname }}</div>
         <div class="text-gray-600">{{ user.email }}</div>
         <div class="text-gray-500">{{ user.role || '—' }}</div>
       </div>
 
-      <!-- Botones a la derecha -->
+      <!-- Botones -->
       <div class="flex gap-2">
         <button mat-mini-fab (click)="onView(user)"
           class="bg-green-500 hover:bg-green-600 text-white">
           <mat-icon>visibility</mat-icon>
         </button>
-        <!-- Editar: verde -->
         <button mat-mini-fab (click)="onEdit(user)"
           class="bg-green-500 hover:bg-green-600 text-white">
           <mat-icon>edit</mat-icon>
         </button>
-
-        <!-- Eliminar: rojo suave -->
         <button mat-mini-fab (click)="onDelete(user)"
           class="bg-red-400 hover:bg-red-500 text-white">
           <mat-icon>delete</mat-icon>
@@ -40,13 +41,20 @@
     </div>
   </div>
 
-  <div class="mt-4 flex justify-center items-center gap-2">
-    <button mat-stroked-button (click)="previousPage()" [disabled]="currentPage === 0">
+  <div class="mt-6 flex justify-center items-center gap-4">
+    <button (click)="previousPage()" [disabled]="currentPage === 0"
+      class="flex items-center justify-center gap-2 bg-green-600 text-white py-2 px-4 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
+      <mat-icon>chevron_left</mat-icon>
       Anterior
     </button>
-    <span>{{ currentPage + 1 }} / {{ totalPages }}</span>
-    <button mat-stroked-button (click)="nextPage()" [disabled]="currentPage + 1 >= totalPages">
+
+    <span class="text-gray-700 font-medium">{{ currentPage + 1 }} / {{ totalPages }}</span>
+
+    <button (click)="nextPage()" [disabled]="currentPage + 1 >= totalPages"
+      class="flex items-center justify-center gap-2 bg-green-600 text-white py-2 px-4 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
       Siguiente
+      <mat-icon>chevron_right</mat-icon>
     </button>
   </div>
+
 </mat-card>

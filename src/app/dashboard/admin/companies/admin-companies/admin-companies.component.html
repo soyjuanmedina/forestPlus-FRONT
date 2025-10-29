@@ -1,10 +1,13 @@
 <mat-card class="p-4">
   <div class="flex justify-between items-center mb-4">
     <input type="text" placeholder="Buscar compañía..." [(ngModel)]="filterText"
-      (keyup)="applyFilter()" class="border rounded px-3 py-2 w-64" />
-    <button mat-raised-button color="accent" (click)="addCompany()">
-      <mat-icon class="mr-1">add</mat-icon>
-      Nueva compañía
+      (keyup)="applyFilter()"
+      class="w-64 rounded-xl border border-gray-300 px-4 py-2 shadow-sm
+         focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" />
+    <button (click)="addCompany()"
+      class="flex items-center justify-center gap-2 bg-green-600 text-white py-3 px-4 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
+      <mat-icon>add</mat-icon>
+      Nuevo usuario
     </button>
   </div>
 
@@ -34,13 +37,20 @@
     </div>
   </div>
 
-  <div class="mt-4 flex justify-center items-center gap-2">
-    <button mat-stroked-button (click)="previousPage()" [disabled]="currentPage === 0">
+  <div class="mt-6 flex justify-center items-center gap-4">
+    <button (click)="previousPage()" [disabled]="currentPage === 0"
+      class="flex items-center justify-center gap-2 bg-green-600 text-white py-2 px-4 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
+      <mat-icon>chevron_left</mat-icon>
       Anterior
     </button>
-    <span>{{ currentPage + 1 }} / {{ totalPages }}</span>
-    <button mat-stroked-button (click)="nextPage()" [disabled]="currentPage + 1 >= totalPages">
+
+    <span class="text-gray-700 font-medium">{{ currentPage + 1 }} / {{ totalPages }}</span>
+
+    <button (click)="nextPage()" [disabled]="currentPage + 1 >= totalPages"
+      class="flex items-center justify-center gap-2 bg-green-600 text-white py-2 px-4 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
       Siguiente
+      <mat-icon>chevron_right</mat-icon>
     </button>
   </div>
+
 </mat-card>

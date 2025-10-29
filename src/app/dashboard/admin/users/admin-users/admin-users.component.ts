@@ -1,19 +1,16 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { UserService } from '../../../../services/user.service';
-import { UserResponseDto } from '../../../../api/model/userResponse';
 import { Router, RouterModule } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from '../../../../shared/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { UserResponseDto } from '../../../../api/model/userResponse';
+import { UserService } from '../../../../services/user.service';
 import { RolesEnum } from '../../../../models/roles';
+import { FormsModule } from '@angular/forms';
 
 @Component( {
   selector: 'app-admin-users',
@@ -23,24 +20,21 @@ import { RolesEnum } from '../../../../models/roles';
   imports: [
     CommonModule,
     RouterModule,
+    FormsModule,
     MatCardModule,
-    MatTableModule,
     MatButtonModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatPaginatorModule,
-    MatSortModule
+    MatIconModule
   ]
 } )
-export class AdminUsersComponent implements OnInit, AfterViewInit {
-  users = new MatTableDataSource<UserResponseDto>();
-  displayedColumns: string[] = ['name', 'email', 'role', 'actions'];
-  totalPages: number = 1;
-  currentPage = 0;
-  pageSize = 15;
+export class AdminUsersComponent implements OnInit {
+  users: UserResponseDto[] = [];
+  filteredUsers: UserResponseDto[] = [];
 
-  @ViewChild( MatPaginator ) paginator!: MatPaginator;
-  @ViewChild( MatSort ) sort!: MatSort;
+  currentPage = 0;
+  pageSize = 10;
+  totalPages = 1;
+
+  filterText = '';
 
   constructor (
     private userService: UserService,
@@ -50,60 +44,60 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit (): void {
-    // No se llama aquí a loadUsers porque paginator aún no existe
-  }
-
-  ngAfterViewInit (): void {
-    this.users.paginator = this.paginator;
-    this.users.sort = this.sort;
-    this.loadUsers(); // Sí llamamos aquí
+    this.loadUsers();
   }
 
   loadUsers (): void {
-    const page = this.currentPage;
-    const size = this.pageSize;
-    const sort = this.sort?.active && this.sort?.direction
-      ? `${this.sort.active},${this.sort.direction}`
-      : 'id,asc';
-
     const currentUser = this.userService.getCurrentUser();
-    const companyIdFilter = currentUser?.role === RolesEnum.COMPANY_ADMIN
-      ? currentUser.company?.id
-      : undefined;
+    const companyIdFilter =
+      currentUser?.role === RolesEnum.COMPANY_ADMIN
+        ? currentUser.company?.id
+        : undefined;
 
-    this.userService.getUsers( page, size, sort, undefined, companyIdFilter ).subscribe( {
-      next: data => {
-        const filteredUsers = ( data.content ?? [] ).filter( u => u.id !== currentUser?.id );
-        this.users.data = filteredUsers;
-
-        const totalElements = data.totalElements ?? filteredUsers.length;
-        this.totalPages = Math.ceil( totalElements / size );
+    this.userService.getUsers( 0, 1000, 'id,asc', undefined, companyIdFilter ).subscribe( {
+      next: ( data ) => {
+        const allUsers = ( data.content ?? [] ).filter(
+          ( u ) => u.id !== currentUser?.id
+        );
+        this.users = allUsers;
+        this.applyFilter();
       },
-      error: err => console.error( '❌ Error al cargar usuarios', err )
+      error: ( err ) => console.error( '❌ Error al cargar usuarios', err )
     } );
   }
 
+  applyFilter (): void {
+    const filter = this.filterText.trim().toLowerCase();
+    this.filteredUsers = this.users.filter(
+      ( u ) =>
+        ( u.name || '' ).toLowerCase().includes( filter ) ||
+        ( u.surname || '' ).toLowerCase().includes( filter ) ||
+        ( u.email || '' ).toLowerCase().includes( filter )
+    );
+
+    this.currentPage = 0;
+    this.totalPages = Math.ceil( this.filteredUsers.length / this.pageSize );
+  }
+
+  getPagedUsers (): UserResponseDto[] {
+    const start = this.currentPage * this.pageSize;
+    return this.filteredUsers.slice( start, start + this.pageSize );
+  }
 
   previousPage (): void {
-    if ( this.currentPage > 0 ) {
-      this.currentPage--;
-      this.loadUsers();
-    }
+    if ( this.currentPage > 0 ) this.currentPage--;
   }
 
   nextPage (): void {
-    if ( this.currentPage + 1 < this.totalPages ) {
-      this.currentPage++;
-      this.loadUsers();
-    }
-  }
-
-  onEdit ( user: UserResponseDto ): void {
-    this.router.navigate( ['/admin/user-form/', user.id] );
+    if ( this.currentPage + 1 < this.totalPages ) this.currentPage++;
   }
 
   addUser (): void {
     this.router.navigate( ['/admin/user-form'] );
+  }
+
+  onEdit ( user: UserResponseDto ): void {
+    this.router.navigate( ['/admin/user-form', user.id] );
   }
 
   onView ( user: UserResponseDto ): void {
@@ -119,25 +113,19 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
       }
     } );
 
-    dialogRef.afterClosed().subscribe( result => {
+    dialogRef.afterClosed().subscribe( ( result ) => {
       if ( result ) {
         this.userService.deleteUser( user.id ).subscribe( {
           next: () => {
             this.snackBar.open( '✅ Usuario eliminado', 'Cerrar', { duration: 3000 } );
-            this.currentPage = 0;
             this.loadUsers();
           },
-          error: err => {
+          error: ( err ) => {
             console.error( '❌ Error al eliminar usuario', err );
             this.snackBar.open( '❌ Error al eliminar usuario', 'Cerrar', { duration: 3000 } );
           }
         } );
       }
     } );
-  }
-
-  applyFilter ( event: Event ): void {
-    const filterValue = ( event.target as HTMLInputElement ).value;
-    this.users.filter = filterValue.trim().toLowerCase();
   }
 }
