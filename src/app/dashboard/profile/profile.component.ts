@@ -56,7 +56,7 @@ export class ProfileComponent implements OnInit {
 
   goToEdit (): void {
     if ( this.user?.id ) {
-      this.router.navigate( [`/admin/user-form/${this.user.id}`] );
+      this.router.navigate( [`profile/edit/${this.user.id}`] );
     }
   }
 }

@@ -35,6 +35,7 @@ export class UserFormComponent implements OnInit {
 
   RolesEnum = RolesEnum;
   isCompanyAdmin = false;
+  isAdmin = false;
   showCompanySelector = false;
 
   constructor (
@@ -50,8 +51,8 @@ export class UserFormComponent implements OnInit {
   ngOnInit (): void {
     this.currentUser = this.authService.getUser() ?? undefined;
     this.isCompanyAdmin = this.currentUser?.role === RolesEnum.COMPANY_ADMIN;
+    this.isAdmin = this.currentUser?.role === RolesEnum.ADMIN;
 
-    // Variable que controla la visibilidad del selector
     this.showCompanySelector = false;
 
     // Inicializamos el formulario
@@ -65,85 +66,81 @@ export class UserFormComponent implements OnInit {
       companyId: [''],
     } );
 
+    // Cargar roles permitidos
+    this.configureAvailableRoles();
+
+    // Si el usuario es ADMIN o COMPANY_ADMIN → edición completa
+    if ( this.isAdmin || this.isCompanyAdmin ) {
+      this.route.paramMap.subscribe( ( params ) => {
+        const id = params.get( 'id' );
+        if ( id ) {
+          this.isEditMode = true;
+          this.userId = +id;
+          this.loadUser( this.userId );
+        }
+      } );
+
+      if ( this.isCompanyAdmin ) {
+        this.showCompanySelector = true;
+        this.companyService.getAllCompanies().subscribe( {
+          next: ( data ) => {
+            this.companies = data.filter(
+              ( c ) => c.users?.some( ( u ) => u.role === RolesEnum.COMPANY_ADMIN )
+            );
+            const companyId = this.currentUser?.company?.id;
+            if ( companyId ) {
+              this.userForm.patchValue( { companyId } );
+            }
+          },
+          error: ( err ) => console.error( 'Error cargando compañías', err ),
+        } );
+      } else {
+        this.loadCompanies();
+      }
+    }
+    // 🧍‍♂️ Usuario normal: solo edita su propio perfil
+    else {
+      this.isEditMode = true;
+      this.userId = this.currentUser?.id ?? 0;
+      const user = this.userService.getCurrentUser();
+      if ( user ) {
+        this.userForm.patchValue( {
+          name: user.name,
+          surname: user.surname,
+          secondSurname: user.secondSurname,
+          email: user.email,
+          role: user.role,
+          companyId: user.company?.id ?? '',
+          password: '' // dejar vacío
+        } );
+
+        // ⚡ Marcar como self-edit
+        this.isSelfEdit = true;
+
+        // ⚡ Limitar campos para self-edit
+        this.userForm.get( 'role' )?.disable();
+        this.userForm.get( 'companyId' )?.disable();
+        this.userForm.get( 'password' )?.disable();
+      }
+    }
+
+    // Validación dinámica (solo si aplica)
     this.userForm.get( 'role' )?.valueChanges.subscribe( ( role: RolesEnum ) => {
       const companyControl = this.userForm.get( 'companyId' );
-
       if ( role === RolesEnum.COMPANY_ADMIN || role === RolesEnum.COMPANY_USER ) {
         this.showCompanySelector = true;
-
-        if ( this.isCompanyAdminEditing() ) {
-          companyControl?.disable();
-        } else {
-          companyControl?.enable();
-        }
-
         companyControl?.setValidators( [Validators.required] );
+        companyControl?.enable();
       } else {
         this.showCompanySelector = false;
         companyControl?.clearValidators();
         companyControl?.setValue( '' );
         if ( !this.isCompanyAdmin ) companyControl?.disable();
       }
-
-      companyControl?.updateValueAndValidity();
-    } );
-
-
-    // Si hay id → modo edición
-    this.route.paramMap.subscribe( ( params ) => {
-      const id = params.get( 'id' );
-      if ( id ) {
-        this.isEditMode = true;
-        this.userId = +id;
-        this.loadUser( this.userId );
-      }
-    } );
-
-    // Cargar roles permitidos según el rol actual
-    this.configureAvailableRoles();
-
-    // Comportamiento especial para COMPANY_ADMIN
-    if ( this.isCompanyAdmin ) {
-      this.showCompanySelector = true;
-
-      // Cargamos las compañías y luego seteamos la suya
-      this.companyService.getAllCompanies().subscribe( {
-        next: ( data ) => {
-          this.companies = data.filter(
-            c => c.users?.some( u => u.role === RolesEnum.COMPANY_ADMIN )
-          );
-
-          const companyId = this.currentUser?.company?.id;
-          if ( companyId ) {
-            this.userForm.patchValue( { companyId } );
-          }
-        },
-        error: ( err ) => console.error( 'Error cargando compañías', err )
-      } );
-    } else {
-      this.loadCompanies();
-    }
-
-    // Validación dinámica del campo companyId según el rol
-    this.userForm.get( 'role' )?.valueChanges.subscribe( ( role: RolesEnum ) => {
-      const companyControl = this.userForm.get( 'companyId' );
-
-      if ( role === RolesEnum.COMPANY_USER || this.isCompanyAdmin ) {
-        this.showCompanySelector = true; // 👈 Mostrar selector
-        companyControl?.setValidators( [Validators.required] );
-        if ( !this.isCompanyAdmin ) companyControl?.enable();
-      } else {
-        this.showCompanySelector = false; // 👈 Ocultar selector
-        companyControl?.clearValidators();
-        if ( !this.isCompanyAdmin ) {
-          companyControl?.setValue( '' );
-          // companyControl?.disable();
-        }
-      }
-
       companyControl?.updateValueAndValidity();
     } );
   }
+
 
 
   private configureAvailableRoles () {

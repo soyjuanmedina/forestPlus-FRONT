@@ -137,7 +137,8 @@ export class AuthService {
   }
 
   public updateCurrentUser ( user: UserResponseDto ): void {
-    this.setUser( user );
+    const currentToken = localStorage.getItem( 'forestPlus_token' ); // mantenemos el token
+    this.setUser( user, currentToken ?? undefined );
   }
 
   resendVerification ( email: string ): Observable<MessageResponseDto> {
