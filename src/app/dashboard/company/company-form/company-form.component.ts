@@ -55,6 +55,7 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
   user?: UserResponseDto | null;
   previewImage?: string;
   selectedFile?: File;
+  currentUser$ = this.userService.getCurrentUser$();
 
   private destroy$ = new Subject<void>();
 
@@ -218,9 +219,8 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
     this.companyCo2Service.delete( this.company.id, y.id )
       .subscribe( {
         next: () => {
-          console.log( 'CO2 eliminado correctamente' );
-          // Aquí puedes actualizar tu array de años para que desaparezca de la vista
           this.co2Years = this.co2Years.filter( c => c.id !== y.id );
+          this.updateAvailableYears();
         },
         error: ( err ) => {
           console.error( 'Error al eliminar CO2', err );

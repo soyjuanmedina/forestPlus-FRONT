@@ -2,11 +2,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../services/auth.service';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 @Component( {
   selector: 'app-header',
   standalone: true,
-  imports: [TranslateModule],
+  imports: [TranslateModule, MatIconModule, CommonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 } )
@@ -15,6 +17,8 @@ export class HeaderComponent {
   @Output() selectedLangChange = new EventEmitter<string>();
 
   @Output() toggleSidebar = new EventEmitter<void>(); // para abrir/cerrar sidebar mobile
+
+  currentUser$ = this.authService.user$;
 
   constructor ( private translate: TranslateService, private authService: AuthService, private router: Router ) { }
 

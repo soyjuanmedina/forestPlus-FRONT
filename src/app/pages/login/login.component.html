@@ -110,7 +110,7 @@
       <!-- Forgot password toggle -->
       <div *ngIf="!forgotMode && !success" class="text-center mt-4">
         <button type="button" (click)="toggleForgotMode()"
-          class="text-blue-500 font-semibold hover:underline">
+          class="text-green-500 font-semibold hover:underline">
           {{ 'LOGIN.FORGOT_PASSWORD' | translate }}
         </button>
       </div>
@@ -118,7 +118,7 @@
       <!-- Register link -->
       <p class="text-center text-gray-500 mt-4">
         {{ 'LOGIN.NO_ACCOUNT' | translate }}
-        <a [routerLink]="['../register']" class="text-blue-500 font-semibold hover:underline">
+        <a [routerLink]="['../register']" class="text-green-500 font-semibold hover:underline">
           {{ 'LOGIN.REGISTER' | translate }}
         </a>
       </p>
