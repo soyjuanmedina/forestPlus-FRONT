@@ -23,14 +23,16 @@
 
         <!-- Ver -->
         <button mat-mini-fab (click)="onView(company)"
-          class="bg-blue-500 hover:bg-blue-600 text-white">
+          class="bg-green-500 hover:bg-green-600 text-white">
           <mat-icon>visibility</mat-icon>
         </button>
 
-        <button mat-mini-fab color="primary" (click)="onEdit(company)">
+        <button mat-mini-fab color="primary" (click)="onEdit(company)"
+          class="bg-green-500 hover:bg-green-600 text-white">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-mini-fab color="warn" (click)="onDelete(company)">
+        <button mat-mini-fab color="warn" (click)="onDelete(company)"
+          class="bg-red-400 hover:bg-red-500 text-white">
           <mat-icon>delete</mat-icon>
         </button>
       </div>
