@@ -183,6 +183,6 @@ describe( 'UserFormComponent', () => {
     const routerSpy = spyOn( ( component as any ).router, 'navigate' );
     component.isSelfEdit = false;
     ( component as any ).finalizeUpdate( mockUser );
-    expect( routerSpy ).toHaveBeenCalledWith( ['/admin/users'] );
+    expect( routerSpy ).toHaveBeenCalledWith( ['/adfasdfasfaadmin/users'] );
   } );
 } );

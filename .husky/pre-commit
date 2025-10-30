@@ -1,6 +1,5 @@
 echo "👉 Ejecutando pre-commit (lint + tests)..."
 
 npm run lint || echo "⚠️ Lint falló, pero el commit continuará."
-npm run test:ci || echo "⚠️ Tests fallaron, pero el commit continuará."
-
+npm run test:ci
 echo "✅ Pre-commit finalizado."
