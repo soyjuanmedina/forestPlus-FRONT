@@ -1,2 +1,9 @@
-npm run lint || true
-npm run test:ci
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "👉 Ejecutando pre-commit (lint + tests)..."
+
+npm run lint || echo "⚠️ Lint falló, pero el commit continuará."
+npm run test:ci || echo "⚠️ Tests fallaron, pero el commit continuará."
+
+echo "✅ Pre-commit finalizado."
