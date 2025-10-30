@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "prepare": "husky install",
+    "lint": "ng lint",
     "start": "ng serve",
     "start-local": "ng serve --configuration local",
     "build": "ng build",
@@ -10,7 +12,8 @@
     "prod-to-back": "npm run build:prod && robocopy dist\\forest-plus\\browser C:\\Users\\juan.medina\\git\\forestPlus-BACK\\src\\main\\resources\\static /MIR /NFL /NDL /NJH /NJS /NP",
     "watch": "ng build --watch --configuration development",
     "gen-api": "openapi-generator-cli generate -i http://localhost:8080/v3/api-docs -g typescript-angular -o ./src/app/api --additional-properties=ngVersion=17,modelSuffix=Dto",
-    "test": "rmdir node_modules /s /q"
+    "test": "ng test",
+    "test:ci": "ng test --watch=false --browsers=ChromeHeadless"
   },
   "private": true,
   "dependencies": {
@@ -40,12 +43,14 @@
     "@angular/compiler-cli": "^18.0.0",
     "@types/jasmine": "~5.1.0",
     "autoprefixer": "^10.4.21",
+    "husky": "^9.1.7",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "lint-staged": "^16.2.6",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.4.2"
