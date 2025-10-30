@@ -1,6 +1,3 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
 echo "👉 Ejecutando pre-commit (lint + tests)..."
 
 npm run lint || echo "⚠️ Lint falló, pero el commit continuará."
