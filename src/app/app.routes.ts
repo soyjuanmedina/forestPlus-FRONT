@@ -14,6 +14,8 @@ import { AdminPageComponent } from './dashboard/admin/admin-page/admin-page.comp
 import { AdminUsersComponent } from './dashboard/admin/users/admin-users/admin-users.component';
 import { AdminCompaniesComponent } from './dashboard/admin/companies/admin-companies/admin-companies.component';
 import { CompanyComponent } from './dashboard/company/company.component';
+import { AdminTreeTypesComponent } from './dashboard/admin/tree-types/admin-tree-types/admin-tree-types.component';
+import { TreeTypeComponent } from './dashboard/tree-type/tree-type.component';
 
 export const routes: Routes = [
   // Public routes
@@ -46,6 +48,11 @@ export const routes: Routes = [
       {
         path: 'company/:id',
         component: CompanyComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'tree-type/:id',
+        component: TreeTypeComponent,
         canActivate: [AuthGuard]
       },
 
@@ -111,6 +118,30 @@ export const routes: Routes = [
                 .then( m => m.CompanyFormComponent ),
             canActivate: [RoleGuard],
             data: { roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] }
+          },
+
+          // Tree Types
+          {
+            path: 'tree-types',
+            component: AdminTreeTypesComponent,
+            canActivate: [RoleGuard],
+            data: { roles: [RolesEnum.ADMIN] }
+          },
+          {
+            path: 'tree-type-form',
+            loadComponent: () =>
+              import( './dashboard/admin/tree-types/tree-types-form/tree-types-form.component' )
+                .then( m => m.TreeTypesFormComponent ),
+            canActivate: [RoleGuard],
+            data: { roles: [RolesEnum.ADMIN] }
+          },
+          {
+            path: 'tree-type-form/:id',
+            loadComponent: () =>
+              import( './dashboard/admin/tree-types/tree-types-form/tree-types-form.component' )
+                .then( m => m.TreeTypesFormComponent ),
+            canActivate: [RoleGuard],
+            data: { roles: [RolesEnum.ADMIN] }
           }
         ]
       }

@@ -1,0 +1,36 @@
+<mat-card
+  class="rounded-2xl shadow-md p-4 md:p-6 flex flex-col items-center text-center w-full max-w-full"
+  *ngIf="treeType">
+
+  <!-- Imagen -->
+  <img [src]="previewImage || 'assets/tree_placeholder.png'" alt="Árbol"
+    class="w-24 h-24 rounded-full shadow-lg mb-4 object-cover" />
+
+  <!-- Nombre -->
+  <h2 class="text-xl md:text-2xl font-semibold">{{ treeType.name }}</h2>
+  <p class="text-gray-500 italic">{{ treeType.description || 'Sin descripción' }}</p>
+
+  <!-- Datos técnicos -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 text-left w-full max-w-md">
+    <div>
+      <p class="font-semibold text-gray-700">Absorción CO₂</p>
+      <p>{{ treeType.co2Absorption }} toneladas / año</p>
+    </div>
+    <div>
+      <p class="font-semibold text-gray-700">Altura típica</p>
+      <p>{{ treeType.typicalHeight }} metros</p>
+    </div>
+    <div>
+      <p class="font-semibold text-gray-700">Esperanza de vida</p>
+      <p>{{ treeType.lifespanYears }} años</p>
+    </div>
+  </div>
+
+  <!-- Botón de editar (solo admin) -->
+  <div class="flex gap-4 mt-6 justify-center" *ngIf="isEditable">
+    <button (click)="goToEditForm()"
+      class="bg-green-600 text-white py-3 px-6 rounded-xl hover:bg-green-700 transition">
+      Editar
+    </button>
+  </div>
+</mat-card>

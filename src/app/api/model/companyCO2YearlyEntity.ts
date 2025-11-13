@@ -12,7 +12,6 @@ import { CompanyEntityDto } from './companyEntity';
 
 export interface CompanyCO2YearlyEntityDto { 
     id?: number;
-    companyId?: number;
     year?: number;
     totalEmissions?: number;
     totalCompensations?: number;

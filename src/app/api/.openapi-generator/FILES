@@ -10,6 +10,7 @@ api/coordinateController.service.ts
 api/landController.service.ts
 api/pingController.service.ts
 api/treeController.service.ts
+api/treeTypeController.service.ts
 api/uploadsController.service.ts
 api/userController.service.ts
 configuration.ts
@@ -39,6 +40,9 @@ model/resendVerificationEmailRequest.ts
 model/resetPasswordRequest.ts
 model/sortObject.ts
 model/treeEntity.ts
+model/treeTypeRequest.ts
+model/treeTypeResponse.ts
+model/treeTypeUpdateRequest.ts
 model/userEntity.ts
 model/userResponse.ts
 model/userSummaryResponse.ts

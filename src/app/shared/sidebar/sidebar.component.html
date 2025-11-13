@@ -43,8 +43,8 @@
   </aside>
 
   <!-- Mobile overlay -->
-  <div *ngIf="sidebarOpen" class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-    (click)="closeSidebar()"></div>
+  <button *ngIf="sidebarOpen" class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+    (click)="closeSidebar()" aria-label="Cerrar menú"></button>
 
   <!-- Mobile Sidebar -->
   <aside *ngIf="sidebarOpen"
@@ -110,8 +110,8 @@
   </aside>
 
   <!-- Mobile -->
-  <div *ngIf="sidebarOpen" class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-    (click)="closeSidebar()"></div>
+  <button *ngIf="sidebarOpen" class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+    (click)="closeSidebar()" aria-label="Cerrar menú"></button>
 
   <aside *ngIf="sidebarOpen"
     class="fixed inset-y-0 left-0 w-64 bg-white shadow-md z-50 md:hidden flex flex-col h-full">
