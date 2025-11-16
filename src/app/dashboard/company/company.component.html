@@ -3,7 +3,8 @@
   *ngIf="company">
 
   <!-- PERFIL DE LA COMPAÑÍA -->
-  <img [src]="previewImage || company.picture || 'assets/company_profile.png'" alt="Logo"
+  <img [src]="previewImage || company.picture || 'assets/company_profile.png'"
+    alt="{{ 'COMPANY.COMPANY_LOGO_ALT' | translate }}"
     class="w-24 h-24 rounded-full shadow-lg mb-4 object-cover" />
   <h2 class="text-xl md:text-2xl font-semibold">{{ company.name }}</h2>
   <p class="text-gray-500">{{ company.address }}</p>
@@ -13,42 +14,44 @@
     *ngIf="user?.role === 'COMPANY_ADMIN' || isEditable">
     <button (click)="goToEditForm()"
       class="flex-1 md:flex-auto bg-green-600 text-white py-3 px-6 rounded-xl hover:bg-green-700 transition">
-      Editar
+      {{ 'COMPANY.EDIT_BUTTON' | translate }}
     </button>
   </div>
 
   <!-- CO2 -->
   <div class="w-full mt-6" *ngIf="co2Years?.length">
-    <h2 class="text-xl font-bold mb-4 text-center">Emisiones de CO₂ por año</h2>
+    <h2 class="text-xl font-bold mb-4 text-center">{{ 'COMPANY.CO2_SECTION_TITLE' | translate }}
+    </h2>
+
     <!-- PRIMER AÑO (GRANDE) -->
     <div class="mb-8">
-      <h3 class="text-lg font-semibold">Último año registrado</h3>
+      <h3 class="text-lg font-semibold">{{ 'COMPANY.LAST_YEAR' | translate }}</h3>
       <h4 class="text-lg font-semibold">{{ co2Years[0].year }}</h4>
 
       <div class="co2-container flex justify-center gap-4 mt-4 items-center">
         <!-- Emisiones -->
         <div class="donut-wrapper">
-          <div class="donut-label">Emisiones</div>
+          <div class="donut-label">{{ 'COMPANY.ISSUED_LABEL' | translate }}</div>
           <canvas [id]="co2Years[0].emitidoRef" class="donut-large"></canvas>
         </div>
 
         <!-- Compensaciones -->
         <div class="donut-wrapper">
-          <div class="donut-label">Compensaciones</div>
+          <div class="donut-label">{{ 'COMPANY.COMPENSATED_LABEL' | translate }}</div>
           <canvas [id]="co2Years[0].compensadoRef" class="donut-large"></canvas>
         </div>
 
         <!-- Valor Neto -->
         <div class="donut-wrapper neto-wrapper">
-          <div class="donut-label">Valor Neto</div>
+          <div class="donut-label">{{ 'COMPANY.NET_VALUE' | translate }}</div>
           <div class="donut-neto text-4xl font-bold"
             [ngClass]="getNetColorClass(co2Years[0].totalEmissions, co2Years[0].totalCompensations)">
             {{ co2Years[0].totalEmissions - co2Years[0].totalCompensations | number:'1.0-0' }}
           </div>
-          <div class="donut-neto-unit">Toneladas de CO₂</div>
+          <div class="donut-neto-unit">{{ 'COMPANY.TONS_CO2' | translate }}</div>
           <div class="donut-neto-info">
-            (Compensaste el {{ getCompensatedPercentage(co2Years[0].totalEmissions,
-            co2Years[0].totalCompensations) }}% de tus emisiones)
+            {{ 'COMPANY.COMPENSATED_PERCENTAGE' | translate:{percentage:
+            getCompensatedPercentage(co2Years[0].totalEmissions, co2Years[0].totalCompensations)} }}
           </div>
         </div>
       </div>
@@ -56,7 +59,7 @@
 
     <!-- AÑOS ANTERIORES -->
     <div *ngIf="co2Years.length > 1" class="mt-6">
-      <h3 class="text-left font-semibold mb-2">Años anteriores</h3>
+      <h3 class="text-left font-semibold mb-2">{{ 'COMPANY.PREVIOUS_YEARS_TITLE' | translate }}</h3>
 
       <div *ngFor="let y of co2Years.slice(1)"
         class="co2-year-row flex flex-col items-start gap-2 mb-4 w-full">
@@ -76,10 +79,10 @@
                 [ngClass]="getNetColorClass(y.totalEmissions, y.totalCompensations)">
                 {{ y.totalEmissions - y.totalCompensations | number:'1.0-0' }}
               </div>
-              <div class="donut-neto-unit">Toneladas de CO₂</div>
+              <div class="donut-neto-unit">{{ 'COMPANY.TONS_CO2' | translate }}</div>
               <div class="donut-neto-info">
-                Compensaste el {{ getCompensatedPercentage(y.totalEmissions, y.totalCompensations)
-                }}% de tus emisiones
+                {{ 'COMPANY.COMPENSATED_PERCENTAGE' | translate:{percentage:
+                getCompensatedPercentage(y.totalEmissions, y.totalCompensations)} }}
               </div>
             </div>
           </div>

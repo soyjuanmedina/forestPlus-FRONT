@@ -1,14 +1,14 @@
 <mat-card class="p-4">
   <div class="flex justify-between items-center mb-4">
-    <input type="text" placeholder="Buscar usuario..." [(ngModel)]="filterText"
-      (keyup)="applyFilter()"
+    <input type="text" placeholder="{{ 'ADMIN_USERS.SEARCH_PLACEHOLDER' | translate }}"
+      [(ngModel)]="filterText" (keyup)="applyFilter()"
       class="w-64 rounded-xl border border-gray-300 px-4 py-2 shadow-sm
-             focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" />
+                  focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" />
 
     <button (click)="addUser()"
       class="flex items-center justify-center gap-2 bg-green-600 text-white py-3 px-4 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
       <mat-icon>add</mat-icon>
-      Nuevo usuario
+      {{ 'ADMIN_USERS.ADD_BUTTON' | translate }}
     </button>
   </div>
 
@@ -45,16 +45,18 @@
     <button (click)="previousPage()" [disabled]="currentPage === 0"
       class="flex items-center justify-center gap-2 bg-green-600 text-white py-2 px-4 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
       <mat-icon>chevron_left</mat-icon>
-      Anterior
+      {{ 'ADMIN_USERS.PAGINATION.PREVIOUS' | translate }}
     </button>
 
-    <span class="text-gray-700 font-medium">{{ currentPage + 1 }} / {{ totalPages }}</span>
+    <span class="text-gray-700 font-medium">
+      {{ 'ADMIN_USERS.PAGINATION.PAGE_INFO' | translate:{ current: currentPage + 1, total:
+      totalPages } }}
+    </span>
 
     <button (click)="nextPage()" [disabled]="currentPage + 1 >= totalPages"
       class="flex items-center justify-center gap-2 bg-green-600 text-white py-2 px-4 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
-      Siguiente
+      {{ 'ADMIN_USERS.PAGINATION.NEXT' | translate }}
       <mat-icon>chevron_right</mat-icon>
     </button>
   </div>
-
 </mat-card>

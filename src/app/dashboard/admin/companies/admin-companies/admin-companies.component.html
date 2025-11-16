@@ -1,13 +1,14 @@
 <mat-card class="p-4">
   <div class="flex justify-between items-center mb-4">
-    <input type="text" placeholder="Buscar compañía..." [(ngModel)]="filterText"
-      (keyup)="applyFilter()"
+    <input type="text" placeholder="{{ 'ADMIN.COMPANIES.SEARCH_PLACEHOLDER' | translate }}"
+      [(ngModel)]="filterText" (keyup)="applyFilter()"
       class="w-64 rounded-xl border border-gray-300 px-4 py-2 shadow-sm
-         focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" />
+             focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" />
+
     <button (click)="addCompany()"
       class="flex items-center justify-center gap-2 bg-green-600 text-white py-3 px-4 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
       <mat-icon>add</mat-icon>
-      Nuevo usuario
+      {{ 'COMPANIES.NEW_COMPANY' | translate }}
     </button>
   </div>
 
@@ -20,17 +21,19 @@
       </div>
 
       <div class="flex gap-2">
-
         <!-- Ver -->
         <button mat-mini-fab (click)="onView(company)"
           class="bg-green-500 hover:bg-green-600 text-white">
           <mat-icon>visibility</mat-icon>
         </button>
 
+        <!-- Editar -->
         <button mat-mini-fab color="primary" (click)="onEdit(company)"
           class="bg-green-500 hover:bg-green-600 text-white">
           <mat-icon>edit</mat-icon>
         </button>
+
+        <!-- Eliminar -->
         <button mat-mini-fab color="warn" (click)="onDelete(company)"
           class="bg-red-400 hover:bg-red-500 text-white">
           <mat-icon>delete</mat-icon>
@@ -43,16 +46,15 @@
     <button (click)="previousPage()" [disabled]="currentPage === 0"
       class="flex items-center justify-center gap-2 bg-green-600 text-white py-2 px-4 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
       <mat-icon>chevron_left</mat-icon>
-      Anterior
+      {{ 'COMPANIES.PREVIOUS' | translate }}
     </button>
 
     <span class="text-gray-700 font-medium">{{ currentPage + 1 }} / {{ totalPages }}</span>
 
     <button (click)="nextPage()" [disabled]="currentPage + 1 >= totalPages"
       class="flex items-center justify-center gap-2 bg-green-600 text-white py-2 px-4 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
-      Siguiente
+      {{ 'COMPANIES.NEXT' | translate }}
       <mat-icon>chevron_right</mat-icon>
     </button>
   </div>
-
 </mat-card>

@@ -3,26 +3,28 @@
   *ngIf="treeType">
 
   <!-- Imagen -->
-  <img [src]="previewImage || 'assets/tree_placeholder.png'" alt="Árbol"
+  <img [src]="previewImage || 'assets/tree_placeholder.png'"
+    [alt]="'TREE_TYPE.IMAGE_ALT' | translate"
     class="w-24 h-24 rounded-full shadow-lg mb-4 object-cover" />
 
   <!-- Nombre -->
   <h2 class="text-xl md:text-2xl font-semibold">{{ treeType.name }}</h2>
-  <p class="text-gray-500 italic">{{ treeType.description || 'Sin descripción' }}</p>
+  <p class="text-gray-500 italic">{{ treeType.description || ('TREE_TYPE.NO_DESCRIPTION' |
+    translate) }}</p>
 
   <!-- Datos técnicos -->
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 text-left w-full max-w-md">
     <div>
-      <p class="font-semibold text-gray-700">Absorción CO₂</p>
-      <p>{{ treeType.co2Absorption }} toneladas / año</p>
+      <p class="font-semibold text-gray-700">{{ 'TREE_TYPE.CO2_LABEL' | translate }}</p>
+      <p>{{ treeType.co2Absorption }} {{ 'TREE_TYPE.CO2_UNIT' | translate }}</p>
     </div>
     <div>
-      <p class="font-semibold text-gray-700">Altura típica</p>
-      <p>{{ treeType.typicalHeight }} metros</p>
+      <p class="font-semibold text-gray-700">{{ 'TREE_TYPE.TYPICAL_HEIGHT_LABEL' | translate }}</p>
+      <p>{{ treeType.typicalHeight }} {{ 'TREE_TYPE.HEIGHT_UNIT' | translate }}</p>
     </div>
     <div>
-      <p class="font-semibold text-gray-700">Esperanza de vida</p>
-      <p>{{ treeType.lifespanYears }} años</p>
+      <p class="font-semibold text-gray-700">{{ 'TREE_TYPE.LIFESPAN_LABEL' | translate }}</p>
+      <p>{{ treeType.lifespanYears }} {{ 'TREE_TYPE.YEARS_UNIT' | translate }}</p>
     </div>
   </div>
 
@@ -30,7 +32,7 @@
   <div class="flex gap-4 mt-6 justify-center" *ngIf="isEditable">
     <button (click)="goToEditForm()"
       class="bg-green-600 text-white py-3 px-6 rounded-xl hover:bg-green-700 transition">
-      Editar
+      {{ 'TREE_TYPE.EDIT_BUTTON' | translate }}
     </button>
   </div>
 </mat-card>

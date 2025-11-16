@@ -13,7 +13,7 @@
       <label
         class="cursor-pointer bg-gray-200 hover:bg-gray-300 p-2 rounded-full flex items-center gap-2">
         <span class="material-icons">photo_camera</span>
-        <span>Seleccionar foto</span>
+        <span>{{ 'USER.SELECT_IMAGE' | translate }}</span>
         <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
       </label>
     </div>

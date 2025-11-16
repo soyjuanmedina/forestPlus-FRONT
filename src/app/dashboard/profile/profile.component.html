@@ -1,7 +1,7 @@
 <div class="w-full max-w-full mx-auto" *ngIf="user">
   <mat-card class="rounded-2xl shadow-md p-6 md:p-8">
     <div class="flex flex-col items-center text-center">
-      <img [src]="user.picture || 'assets/logo-white.png'" alt="Avatar"
+      <img [src]="user.picture || 'assets/logo-white.png'" [alt]="'PROFILE.AVATAR_ALT' | translate"
         class="w-24 h-24 rounded-full shadow-lg mb-4 object-cover" />
 
       <h2 class="text-xl md:text-2xl font-semibold">
@@ -10,14 +10,14 @@
       <p class="text-gray-500">{{ user.email }}</p>
       <p class="text-gray-500 font-medium mt-1"
         *ngIf="user.role === 'COMPANY_ADMIN' || user.role === 'COMPANY_USER'">
-        Empresa: {{ user.company?.name }}
+        {{ 'PROFILE.COMPANY_LABEL' | translate }}: {{ user.company?.name }}
       </p>
 
       <div class="flex gap-4 mt-4 w-full justify-center md:justify-start">
         <!-- Botón Editar con estilo unificado -->
         <button (click)="goToEdit()"
           class="flex-1 md:flex-auto bg-green-600 text-white py-3 px-6 rounded-xl hover:bg-green-700 transition">
-          Editar
+          {{ 'PROFILE.EDIT_BUTTON' | translate }}
         </button>
       </div>
     </div>

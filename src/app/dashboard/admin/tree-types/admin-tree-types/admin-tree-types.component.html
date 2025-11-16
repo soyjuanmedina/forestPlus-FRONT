@@ -1,42 +1,44 @@
 <mat-card class="p-4">
+
+  <!-- SEARCH + ADD BUTTON -->
   <div class="flex justify-between items-center mb-4">
-    <input type="text" placeholder="Buscar tipo de árbol..." [(ngModel)]="filterText"
-      (keyup)="applyFilter()"
+    <input type="text" placeholder="{{ 'ADMIN_TREE_TYPES.SEARCH_PLACEHOLDER' | translate }}"
+      [(ngModel)]="filterText" (keyup)="applyFilter()"
       class="w-64 rounded-xl border border-gray-300 px-4 py-2 shadow-sm
-             focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" />
+                  focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" />
 
     <button (click)="addTreeType()"
-      class="flex items-center justify-center gap-2 bg-green-600 text-white py-3 px-4 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
+      class="flex items-center justify-center gap-2 bg-green-600 text-white py-3 px-4 rounded-xl hover:bg-green-700 transition">
       <mat-icon>add</mat-icon>
-      Nuevo tipo
+      {{ 'ADMIN_TREE_TYPES.ADD_BUTTON' | translate }}
     </button>
   </div>
 
+  <!-- LIST -->
   <div class="flex flex-col gap-4">
     <div *ngFor="let treeType of getPagedTreeTypes()"
       class="border rounded p-4 shadow-sm flex justify-between items-center w-full">
-
       <div class="flex flex-col text-left">
         <div class="font-semibold text-lg">{{ treeType.name }}</div>
         <div class="text-gray-600">{{ treeType.description || '—' }}</div>
-        <div class="text-gray-600">CO₂ absorción: {{ treeType.co2Absorption }} kg/año</div>
+        <div class="text-gray-600">
+          {{ 'ADMIN_TREE_TYPES.CO2_LABEL' | translate:{ value: treeType.co2Absorption } }}
+        </div>
       </div>
 
+      <!-- ACTION BUTTONS -->
       <div class="flex gap-2">
-        <!-- Ver -->
         <button mat-mini-fab (click)="onView(treeType)"
           class="bg-green-500 hover:bg-green-600 text-white">
           <mat-icon>visibility</mat-icon>
         </button>
 
-        <!-- Editar -->
-        <button mat-mini-fab color="primary" (click)="onEdit(treeType)"
+        <button mat-mini-fab (click)="onEdit(treeType)"
           class="bg-green-500 hover:bg-green-600 text-white">
           <mat-icon>edit</mat-icon>
         </button>
 
-        <!-- Eliminar -->
-        <button mat-mini-fab color="warn" (click)="onDelete(treeType)"
+        <button mat-mini-fab (click)="onDelete(treeType)"
           class="bg-red-400 hover:bg-red-500 text-white">
           <mat-icon>delete</mat-icon>
         </button>
@@ -44,19 +46,24 @@
     </div>
   </div>
 
+  <!-- PAGINATION -->
   <div class="mt-6 flex justify-center items-center gap-4">
     <button (click)="previousPage()" [disabled]="currentPage === 0"
       class="flex items-center justify-center gap-2 bg-green-600 text-white py-2 px-4 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
       <mat-icon>chevron_left</mat-icon>
-      Anterior
+      {{ 'ADMIN_TREE_TYPES.PAGINATION.PREVIOUS' | translate }}
     </button>
 
-    <span class="text-gray-700 font-medium">{{ currentPage + 1 }} / {{ totalPages }}</span>
+    <span class="text-gray-700 font-medium">
+      {{ 'ADMIN_TREE_TYPES.PAGINATION.PAGE_INFO' | translate:{ current: currentPage + 1, total:
+      totalPages } }}
+    </span>
 
     <button (click)="nextPage()" [disabled]="currentPage + 1 >= totalPages"
       class="flex items-center justify-center gap-2 bg-green-600 text-white py-2 px-4 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
-      Siguiente
+      {{ 'ADMIN_TREE_TYPES.PAGINATION.NEXT' | translate }}
       <mat-icon>chevron_right</mat-icon>
     </button>
   </div>
+
 </mat-card>

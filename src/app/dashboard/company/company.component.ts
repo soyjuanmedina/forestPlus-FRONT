@@ -6,11 +6,12 @@ import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { Chart, DoughnutController, ArcElement, Tooltip, Legend, Plugin } from 'chart.js';
 import { UserService } from '../../services/user.service';
 import { CompanyService } from '../../services/company.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component( {
   selector: 'app-company',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, RouterModule],
+  imports: [CommonModule, MatCardModule, MatButtonModule, RouterModule, TranslateModule],
   templateUrl: './company.component.html'
 } )
 export class CompanyComponent implements OnInit, AfterViewInit {

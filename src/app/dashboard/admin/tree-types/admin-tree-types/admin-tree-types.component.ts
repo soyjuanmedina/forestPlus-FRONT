@@ -11,13 +11,14 @@ import { TreeTypeResponseDto } from '../../../../api/model/treeTypeResponse';
 import { UserService } from '../../../../services/user.service';
 import { TreeTypeService } from '../../../../services/tree-type.service';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component( {
   selector: 'app-admin-tree-types',
   standalone: true,
   templateUrl: './admin-tree-types.component.html',
   styleUrls: ['./admin-tree-types.component.scss'],
-  imports: [CommonModule, RouterModule, MatCardModule, MatButtonModule, MatIconModule, FormsModule]
+  imports: [CommonModule, RouterModule, MatCardModule, MatButtonModule, MatIconModule, FormsModule, TranslateModule]
 } )
 export class AdminTreeTypesComponent implements OnInit {
   treeTypes: TreeTypeResponseDto[] = [];
@@ -34,7 +35,8 @@ export class AdminTreeTypesComponent implements OnInit {
     private userService: UserService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) { }
 
   ngOnInit (): void {
@@ -42,10 +44,8 @@ export class AdminTreeTypesComponent implements OnInit {
   }
 
   loadTreeTypes (): void {
-
     this.treeTypeService.getAllTreeTypes().subscribe( {
       next: ( data ) => {
-        // No filtro por compañía aquí, todos los tipos de árboles visibles
         this.treeTypes = data;
         this.applyFilter();
       },
@@ -95,8 +95,8 @@ export class AdminTreeTypesComponent implements OnInit {
     const dialogRef = this.dialog.open( ConfirmDialogComponent, {
       width: '400px',
       data: {
-        title: 'Eliminar tipo de árbol',
-        message: `¿Estás seguro de que quieres eliminar ${treeType.name}?`
+        title: this.translate.instant( 'ADMIN_TREE_TYPES.CONFIRM_DELETE_TREE_TYPE.TITLE' ),
+        message: this.translate.instant( 'ADMIN_TREE_TYPES.CONFIRM_DELETE_TREE_TYPE.MESSAGE', { name: treeType.name } )
       }
     } );
 
@@ -104,12 +104,20 @@ export class AdminTreeTypesComponent implements OnInit {
       if ( result && treeType.id !== undefined ) {
         this.treeTypeService.deleteTreeType( treeType.id ).subscribe( {
           next: () => {
-            this.snackBar.open( '✅ Tipo de árbol eliminado', 'Cerrar', { duration: 3000 } );
+            this.snackBar.open(
+              this.translate.instant( 'ADMIN_TREE_TYPES.TREE_TYPE_DELETED' ),
+              this.translate.instant( 'COMMON.CLOSE' ),
+              { duration: 3000 }
+            );
             this.loadTreeTypes();
           },
           error: ( err ) => {
             console.error( 'Error al eliminar tipo de árbol', err );
-            this.snackBar.open( '❌ Error al eliminar tipo de árbol', 'Cerrar', { duration: 3000 } );
+            this.snackBar.open(
+              this.translate.instant( 'ADMIN_TREE_TYPES.TREE_TYPE_DELETE_ERROR' ),
+              this.translate.instant( 'COMMON.CLOSE' ),
+              { duration: 3000 }
+            );
           }
         } );
       }

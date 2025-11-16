@@ -1,18 +1,20 @@
 <div *ngIf="company" class="w-full max-w-full mx-auto bg-white p-6 rounded-2xl shadow-lg">
   <form [formGroup]="companyForm" (ngSubmit)="onSubmitCompany()">
     <h1 class="text-2xl font-bold mb-6 text-center">
-      {{ company.id ? 'Editar Compañía' : 'Nueva Compañía' }}
+      {{ company.id ? ('COMPANY_FORM.TITLE_EDIT' | translate) : ('COMPANY_FORM.TITLE_NEW' |
+      translate) }}
     </h1>
 
     <!-- 🖼 Logo de la compañía -->
     <div class="md:col-span-2 flex flex-col items-center mb-6">
       <img [src]="previewImage || company.picture || 'assets/logo-white.png'"
-        alt="Logo de la compañía" class="w-24 h-24 rounded-full shadow-lg mb-2 object-cover" />
+        alt="{{ 'COMPANY_FORM.TITLE_NEW' | translate }}"
+        class="w-24 h-24 rounded-full shadow-lg mb-2 object-cover" />
 
       <label
         class="cursor-pointer bg-gray-200 hover:bg-gray-300 p-2 rounded-full flex items-center gap-2">
         <span class="material-icons">photo_camera</span>
-        <span>Seleccionar imagen</span>
+        <span>{{ 'COMPANY_FORM.SELECT_IMAGE' | translate }}</span>
         <input type="file" accept="image/*" (change)="onCompanyFileSelected($event)" hidden />
       </label>
     </div>
@@ -20,17 +22,21 @@
     <!-- 🏢 Datos generales -->
     <div class="flex flex-col md:flex-row gap-4 mb-6">
       <div class="flex-1">
-        <label for="name" class="block text-gray-700 font-medium mb-1">Nombre</label>
+        <label for="name" class="block text-gray-700 font-medium mb-1">{{ 'COMPANY_FORM.NAME_LABEL'
+          | translate }}</label>
         <input id="name" type="text" formControlName="name" required
           class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
-                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" placeholder="Nombre de la compañía" />
+                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+          placeholder="{{ 'COMPANY_FORM.NAME_PLACEHOLDER' | translate }}" />
       </div>
 
       <div class="flex-1">
-        <label for="address" class="block text-gray-700 font-medium mb-1">Dirección</label>
+        <label for="address" class="block text-gray-700 font-medium mb-1">{{
+          'COMPANY_FORM.ADDRESS_LABEL' | translate }}</label>
         <input id="address" type="text" formControlName="address"
           class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
-                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" placeholder="Dirección" />
+                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+          placeholder="{{ 'COMPANY_FORM.ADDRESS_PLACEHOLDER' | translate }}" />
       </div>
     </div>
 
@@ -38,11 +44,12 @@
     <div class="flex justify-end gap-4 mt-6">
       <button type="button" (click)="cancel()"
         class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-xl hover:bg-gray-400 transition">
-        Cancelar
+        {{ 'COMPANY_FORM.CANCEL_BUTTON' | translate }}
       </button>
       <button type="submit"
         class="flex-1 bg-green-600 text-white py-3 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
-        {{ company.id ? 'Guardar cambios' : 'Crear empresa' }}
+        {{ company.id ? ('COMPANY_FORM.SUBMIT_EDIT' | translate) : ('COMPANY_FORM.SUBMIT_NEW' |
+        translate) }}
       </button>
     </div>
   </form>
@@ -52,60 +59,66 @@
     <ng-container *ngIf="user.role === 'ADMIN'">
       <!-- CO2 -->
       <div *ngIf="co2Years?.length">
-        <h2 class="text-xl font-bold mb-4 text-center">Emisiones de CO₂ por año</h2>
+        <h2 class="text-xl font-bold mb-4 text-center">{{ 'COMPANY_FORM.CO2_SECTION_TITLE' |
+          translate }}</h2>
 
         <!-- Último año -->
         <div class="mb-8 border p-4 rounded-xl shadow-sm bg-gray-50">
-          <h3 class="font-semibold mb-2">Último año registrado: {{ co2Years[0].year }}</h3>
+          <h3 class="font-semibold mb-2">{{ 'COMPANY_FORM.LAST_YEAR' | translate:{year:
+            co2Years[0].year} }}</h3>
 
           <div *ngIf="co2Years[0].editMode" class="flex flex-wrap gap-4 mb-4 justify-center">
             <div>
-              <label class="block text-gray-700 font-medium mb-1">Emitido</label>
+              <label class="block text-gray-700 font-medium mb-1">{{ 'COMPANY_FORM.ISSUED_LABEL' |
+                translate }}</label>
               <input type="number" [(ngModel)]="co2Years[0].editEmissions"
                 class="w-32 rounded-xl border border-gray-300 px-3 py-1 shadow-sm
-                        focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" />
+                            focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" />
             </div>
             <div>
-              <label class="block text-gray-700 font-medium mb-1">Compensado</label>
+              <label class="block text-gray-700 font-medium mb-1">{{
+                'COMPANY_FORM.COMPENSATED_LABEL' | translate }}</label>
               <input type="number" [(ngModel)]="co2Years[0].editCompensations"
                 class="w-32 rounded-xl border border-gray-300 px-3 py-1 shadow-sm
-                        focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" />
+                            focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" />
             </div>
             <button (click)="saveCO2(co2Years[0])"
               class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition">
-              Guardar
+              {{ 'COMPANY_FORM.SUBMIT_EDIT' | translate }}
             </button>
           </div>
 
           <div class="flex flex-wrap gap-4 justify-center items-center">
             <div class="text-center">
-              <div class="font-medium">Emitido</div>
+              <div class="font-medium">{{ 'COMPANY_FORM.ISSUED_LABEL' | translate }}</div>
               <canvas [id]="co2Years[0].emitidoRef" class="donut-large"></canvas>
             </div>
             <div class="text-center">
-              <div class="font-medium">Compensado</div>
+              <div class="font-medium">{{ 'COMPANY_FORM.COMPENSATED_LABEL' | translate }}</div>
               <canvas [id]="co2Years[0].compensadoRef" class="donut-large"></canvas>
             </div>
             <div class="text-center">
-              <div class="font-medium">Valor Neto</div>
+              <div class="font-medium">{{ 'COMPANY_FORM.NET_VALUE' | translate }}</div>
               <div class="text-4xl font-bold"
                 [ngClass]="getNetColorClass(co2Years[0].totalEmissions, co2Years[0].totalCompensations)">
                 {{ co2Years[0].totalEmissions - co2Years[0].totalCompensations | number: '1.0-0' }}
               </div>
-              <div class="text-gray-600 text-sm">Toneladas de CO₂</div>
+              <div class="text-gray-600 text-sm">{{ 'COMPANY_FORM.TONS_CO2' | translate }}</div>
               <div class="text-xs text-gray-500 mt-1">
-                (Has compensado el {{ getCompensatedPercentage(co2Years[0].totalEmissions,
-                co2Years[0].totalCompensations) }}%)
+                {{ 'COMPANY_FORM.COMPENSATED_PERCENTAGE' | translate:{percentage:
+                getCompensatedPercentage(co2Years[0].totalEmissions,
+                co2Years[0].totalCompensations)} }}
               </div>
             </div>
           </div>
+
           <div class="mt-5 flex justify-end mb-2">
             <div class="flex justify-center mt-4 gap-4 w-full">
               <!-- Modo Editar -->
               <ng-container *ngIf="!co2Years[0].editMode; else editModeButtons">
                 <button (click)="toggleEditCO2(co2Years[0])"
                   class="bg-green-600 text-white py-3 px-6 rounded-xl hover:bg-green-700 transition w-1/2">
-                  Editar
+                  {{ 'COMPANY_FORM.EDIT_BUTTON' | translate }}
                 </button>
               </ng-container>
 
@@ -113,11 +126,11 @@
               <ng-template #editModeButtons>
                 <button (click)="toggleEditCO2(co2Years[0])"
                   class="bg-gray-300 text-gray-700 py-3 px-6 rounded-xl hover:bg-gray-400 transition flex-1">
-                  Cancelar
+                  {{ 'COMPANY_FORM.CANCEL_EDIT_BUTTON' | translate }}
                 </button>
                 <button (click)="deleteCO2(co2Years[0])"
                   class="bg-red-600 text-white py-3 px-6 rounded-xl hover:bg-red-700 transition flex-1">
-                  Eliminar
+                  {{ 'COMPANY_FORM.DELETE_BUTTON' | translate }}
                 </button>
               </ng-template>
             </div>
@@ -127,33 +140,36 @@
         <!-- Años anteriores -->
         <div *ngFor="let y of co2Years.slice(1)"
           class="mb-6 border p-4 rounded-xl shadow-sm bg-gray-50">
-          <h3 class="font-semibold mb-2">Año {{ y.year }}</h3>
+          <h3 class="font-semibold mb-2">{{ 'COMPANY_FORM.PREVIOUS_YEARS' | translate:{year: y.year}
+            }}</h3>
           <div *ngIf="y.editMode" class="flex flex-wrap gap-4 mb-4 justify-center">
             <div>
-              <label class="block text-gray-700 font-medium mb-1">Emitido</label>
+              <label class="block text-gray-700 font-medium mb-1">{{ 'COMPANY_FORM.ISSUED_LABEL' |
+                translate }}</label>
               <input type="number" [(ngModel)]="y.editEmissions"
                 class="w-32 rounded-xl border border-gray-300 px-3 py-1 shadow-sm
-                        focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" />
+                            focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" />
             </div>
             <div>
-              <label class="block text-gray-700 font-medium mb-1">Compensado</label>
+              <label class="block text-gray-700 font-medium mb-1">{{
+                'COMPANY_FORM.COMPENSATED_LABEL' | translate }}</label>
               <input type="number" [(ngModel)]="y.editCompensations"
                 class="w-32 rounded-xl border border-gray-300 px-3 py-1 shadow-sm
-                        focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" />
+                            focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" />
             </div>
             <button (click)="saveCO2(y)"
               class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition">
-              Guardar
+              {{ 'COMPANY_FORM.SUBMIT_EDIT' | translate }}
             </button>
           </div>
 
           <div class="flex flex-wrap gap-4 justify-center items-center">
             <div class="text-center">
-              <div class="font-medium">Emitido</div>
+              <div class="font-medium">{{ 'COMPANY_FORM.ISSUED_LABEL' | translate }}</div>
               <canvas [id]="y.emitidoRef" class="donut-small"></canvas>
             </div>
             <div class="text-center">
-              <div class="font-medium">Compensado</div>
+              <div class="font-medium">{{ 'COMPANY_FORM.COMPENSATED_LABEL' | translate }}</div>
               <canvas [id]="y.compensadoRef" class="donut-small"></canvas>
             </div>
             <div class="text-center">
@@ -161,31 +177,31 @@
                 [ngClass]="getNetColorClass(y.totalEmissions, y.totalCompensations)">
                 {{ y.totalEmissions - y.totalCompensations | number: '1.0-0' }}
               </div>
-              <div class="text-sm text-gray-600">Toneladas de CO₂</div>
+              <div class="text-sm text-gray-600">{{ 'COMPANY_FORM.TONS_CO2' | translate }}</div>
               <div class="text-xs text-gray-500">
-                ({{ getCompensatedPercentage(y.totalEmissions, y.totalCompensations) }}% compensado)
+                {{ 'COMPANY_FORM.PREVIOUS_COMPENSATED_PERCENTAGE' | translate:{percentage:
+                getCompensatedPercentage(y.totalEmissions, y.totalCompensations)} }}
               </div>
             </div>
           </div>
+
           <div class="mt-5 flex justify-end mb-2">
             <div class="flex justify-center mt-4 gap-4 w-full">
-              <!-- Modo Editar -->
               <ng-container *ngIf="!y.editMode; else editModeButtons">
                 <button (click)="toggleEditCO2(y)"
                   class="bg-green-600 text-white py-3 px-6 rounded-xl hover:bg-green-700 transition w-1/2">
-                  Editar
+                  {{ 'COMPANY_FORM.EDIT_BUTTON' | translate }}
                 </button>
               </ng-container>
 
-              <!-- Modo Editar activo -->
               <ng-template #editModeButtons>
                 <button (click)="toggleEditCO2(y)"
                   class="bg-gray-300 text-gray-700 py-3 px-6 rounded-xl hover:bg-gray-400 transition flex-1">
-                  Cancelar
+                  {{ 'COMPANY_FORM.CANCEL_EDIT_BUTTON' | translate }}
                 </button>
                 <button (click)="deleteCO2(y)"
                   class="bg-red-600 text-white py-3 px-6 rounded-xl hover:bg-red-700 transition flex-1">
-                  Eliminar
+                  {{ 'COMPANY_FORM.DELETE_BUTTON' | translate }}
                 </button>
               </ng-template>
             </div>
@@ -195,16 +211,17 @@
 
       <!-- Añadir nuevo año -->
       <div class="border p-4 rounded-xl shadow-sm text-center mt-6 bg-gray-50">
-        <label for="newYear" class="block text-gray-700 font-medium mb-2">Año</label>
+        <label for="newYear" class="block text-gray-700 font-medium mb-2">{{
+          'COMPANY_FORM.ADD_YEAR_LABEL' | translate }}</label>
         <select id="newYear" [(ngModel)]="selectedYear" name="newYear"
           class="w-32 rounded-xl border border-gray-300 px-3 py-2 shadow-sm
-           focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition mb-2">
+                       focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition mb-2">
           <option *ngFor="let y of availableYears" [value]="y">{{ y }}</option>
         </select>
         <br />
         <button (click)="addNewYear(selectedYear)"
           class="w-32 bg-green-600 text-white py-2 rounded-xl hover:bg-green-700 transition mt-2">
-          Añadir año
+          {{ 'COMPANY_FORM.ADD_YEAR_BUTTON' | translate }}
         </button>
       </div>
     </ng-container>

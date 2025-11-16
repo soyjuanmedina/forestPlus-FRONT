@@ -12,13 +12,14 @@ import { UserService } from '../../../../services/user.service';
 import { RolesEnum } from '../../../../models/roles';
 import { CompanyService } from '../../../../services/company.service';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component( {
   selector: 'app-admin-companies',
   standalone: true,
   templateUrl: './admin-companies.component.html',
   styleUrls: ['./admin-companies.component.scss'],
-  imports: [CommonModule, RouterModule, MatCardModule, MatButtonModule, MatIconModule, FormsModule]
+  imports: [CommonModule, RouterModule, MatCardModule, MatButtonModule, MatIconModule, FormsModule, TranslateModule]
 } )
 export class AdminCompaniesComponent implements OnInit {
   companies: CompanyResponseDto[] = [];
@@ -35,7 +36,8 @@ export class AdminCompaniesComponent implements OnInit {
     private userService: UserService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) { }
 
   ngOnInit (): void {
@@ -102,8 +104,8 @@ export class AdminCompaniesComponent implements OnInit {
     const dialogRef = this.dialog.open( ConfirmDialogComponent, {
       width: '400px',
       data: {
-        title: 'Eliminar compañía',
-        message: `¿Estás seguro de que quieres eliminar ${company.name}?`
+        title: this.translate.instant( 'ADMIN_COMPANIES.CONFIRM_DELETE_COMPANY.TITLE' ),
+        message: this.translate.instant( 'ADMIN_COMPANIES.CONFIRM_DELETE_COMPANY.MESSAGE', { name: company.name } )
       }
     } );
 
@@ -111,12 +113,20 @@ export class AdminCompaniesComponent implements OnInit {
       if ( result && company.id !== undefined ) {
         this.companyService.deleteCompany( company.id ).subscribe( {
           next: () => {
-            this.snackBar.open( '✅ Compañía eliminada', 'Cerrar', { duration: 3000 } );
+            this.snackBar.open(
+              this.translate.instant( 'ADMIN_COMPANIES.COMPANY_DELETED' ),
+              this.translate.instant( 'COMMON.CLOSE' ),
+              { duration: 3000 }
+            );
             this.loadCompanies();
           },
           error: ( err ) => {
             console.error( 'Error al eliminar compañía', err );
-            this.snackBar.open( '❌ Error al eliminar compañía', 'Cerrar', { duration: 3000 } );
+            this.snackBar.open(
+              this.translate.instant( 'ADMIN_COMPANIES.COMPANY_DELETE_ERROR' ),
+              this.translate.instant( 'COMMON.CLOSE' ),
+              { duration: 3000 }
+            );
           }
         } );
       }

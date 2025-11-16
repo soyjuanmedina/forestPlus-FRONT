@@ -14,6 +14,7 @@ import { CompanyService } from '../../../services/company.service';
 import { CompanyCo2Service } from '../../../services/company-co2.service';
 import { UserService } from '../../../services/user.service';
 import { Chart, ChartConfiguration, Plugin, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface LocalCO2Year {
   year: number;
@@ -41,7 +42,8 @@ interface LocalCO2Year {
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatIconModule
+    MatIconModule,
+    TranslateModule
   ],
   templateUrl: './company-form.component.html',
 } )

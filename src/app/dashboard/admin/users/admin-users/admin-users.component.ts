@@ -11,6 +11,7 @@ import { UserResponseDto } from '../../../../api/model/userResponse';
 import { UserService } from '../../../../services/user.service';
 import { RolesEnum } from '../../../../models/roles';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component( {
   selector: 'app-admin-users',
@@ -23,7 +24,8 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     MatCardModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    TranslateModule
   ]
 } )
 export class AdminUsersComponent implements OnInit {
@@ -40,7 +42,8 @@ export class AdminUsersComponent implements OnInit {
     private userService: UserService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) { }
 
   ngOnInit (): void {
@@ -56,9 +59,7 @@ export class AdminUsersComponent implements OnInit {
 
     this.userService.getUsers( 0, 1000, 'id,asc', undefined, companyIdFilter ).subscribe( {
       next: ( data ) => {
-        const allUsers = ( data.content ?? [] ).filter(
-          ( u ) => u.id !== currentUser?.id
-        );
+        const allUsers = ( data.content ?? [] ).filter( ( u ) => u.id !== currentUser?.id );
         this.users = allUsers;
         this.applyFilter();
       },
@@ -108,8 +109,8 @@ export class AdminUsersComponent implements OnInit {
     const dialogRef = this.dialog.open( ConfirmDialogComponent, {
       width: '400px',
       data: {
-        title: 'Eliminar usuario',
-        message: `¿Estás seguro de que quieres eliminar a ${user.name}?`
+        title: this.translate.instant( 'ADMIN_USERS.CONFIRM_DELETE_USER.TITLE' ),
+        message: this.translate.instant( 'ADMIN_USERS.CONFIRM_DELETE_USER.MESSAGE', { name: user.name } )
       }
     } );
 
@@ -117,12 +118,20 @@ export class AdminUsersComponent implements OnInit {
       if ( result ) {
         this.userService.deleteUser( user.id ).subscribe( {
           next: () => {
-            this.snackBar.open( '✅ Usuario eliminado', 'Cerrar', { duration: 3000 } );
+            this.snackBar.open(
+              this.translate.instant( 'ADMIN_USERS.USER_DELETED' ),
+              this.translate.instant( 'COMMON.CLOSE' ),
+              { duration: 3000 }
+            );
             this.loadUsers();
           },
           error: ( err ) => {
             console.error( '❌ Error al eliminar usuario', err );
-            this.snackBar.open( '❌ Error al eliminar usuario', 'Cerrar', { duration: 3000 } );
+            this.snackBar.open(
+              this.translate.instant( 'ADMIN_USERS.USER_DELETE_ERROR' ),
+              this.translate.instant( 'COMMON.CLOSE' ),
+              { duration: 3000 }
+            );
           }
         } );
       }

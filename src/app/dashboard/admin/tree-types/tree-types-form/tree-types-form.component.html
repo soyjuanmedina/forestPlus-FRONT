@@ -1,75 +1,91 @@
 <div *ngIf="treeType" class="w-full max-w-full mx-auto bg-white p-6 rounded-2xl shadow-lg">
   <form [formGroup]="treeTypeForm" (ngSubmit)="onSubmitTreeType()">
     <h1 class="text-2xl font-bold mb-6 text-center">
-      {{ treeType.id ? 'Editar Tipo de Árbol' : 'Nuevo Tipo de Árbol' }}
+      {{ treeType.id ? ('TREE_TYPE.EDIT_TITLE' | translate) : ('TREE_TYPE.NEW_TITLE' | translate) }}
     </h1>
 
-    <!-- 🖼 Imagen del árbol -->
+    <!-- 🖼 Tree image -->
     <div class="md:col-span-2 flex flex-col items-center mb-6">
       <img [src]="previewImage || treeType.picture || 'assets/tree-placeholder.png'"
-        alt="Imagen del árbol" class="w-24 h-24 rounded-full shadow-lg mb-2 object-cover" />
+        alt="{{ 'TREE_TYPE.IMAGE_ALT' | translate }}"
+        class="w-24 h-24 rounded-full shadow-lg mb-2 object-cover" />
 
       <label
         class="cursor-pointer bg-gray-200 hover:bg-gray-300 p-2 rounded-full flex items-center gap-2">
         <span class="material-icons">photo_camera</span>
-        <span>Seleccionar imagen</span>
+        <span>{{ 'TREE_TYPE.SELECT_IMAGE' | translate }}</span>
         <input type="file" accept="image/*" (change)="onTreeTypeFileSelected($event)" hidden />
       </label>
     </div>
 
-    <!-- 🏷 Datos del árbol -->
+    <!-- 🏷 Tree data -->
     <div class="flex flex-col md:flex-row gap-4 mb-6">
+
       <div class="flex-1">
-        <label for="name" class="block text-gray-700 font-medium mb-1">Nombre</label>
+        <label for="name" class="block text-gray-700 font-medium mb-1">
+          {{ 'TREE_TYPE.NAME' | translate }}
+        </label>
         <input id="name" type="text" formControlName="name" required
           class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
-                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" placeholder="Nombre del tipo de árbol" />
+                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+          placeholder="{{ 'TREE_TYPE.NAME_PLACEHOLDER' | translate }}" />
       </div>
 
       <div class="flex-1">
-        <label for="description" class="block text-gray-700 font-medium mb-1">Descripción</label>
+        <label for="description" class="block text-gray-700 font-medium mb-1">
+          {{ 'TREE_TYPE.DESCRIPTION' | translate }}
+        </label>
         <input id="description" type="text" formControlName="description"
           class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
-                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" placeholder="Descripción del tipo de árbol" />
+                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+          placeholder="{{ 'TREE_TYPE.DESCRIPTION_PLACEHOLDER' | translate }}" />
       </div>
     </div>
 
-    <!-- 📊 Características -->
+    <!-- 📊 Characteristics -->
     <div class="flex flex-col md:flex-row gap-4 mb-6">
+
       <div class="flex-1">
-        <label for="co2Absorption" class="block text-gray-700 font-medium mb-1">Absorción de CO₂
-          (kg/año)</label>
+        <label for="co2Absorption" class="block text-gray-700 font-medium mb-1">
+          {{ 'TREE_TYPE.CO2' | translate }}
+        </label>
         <input id="co2Absorption" type="number" formControlName="co2Absorption" step="0.01"
           class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
-                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" placeholder="Ej. 12.5" />
+                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" placeholder="{{ 'TREE_TYPE.CO2_PLACEHOLDER' | translate }}" />
       </div>
 
       <div class="flex-1">
-        <label for="typicalHeight" class="block text-gray-700 font-medium mb-1">Altura típica
-          (m)</label>
+        <label for="typicalHeight" class="block text-gray-700 font-medium mb-1">
+          {{ 'TREE_TYPE.HEIGHT' | translate }}
+        </label>
         <input id="typicalHeight" type="number" formControlName="typicalHeight" step="0.01"
           class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
-                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" placeholder="Ej. 10.0" />
+                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" placeholder="{{ 'TREE_TYPE.HEIGHT_PLACEHOLDER' | translate }}" />
       </div>
 
       <div class="flex-1">
-        <label for="lifespanYears" class="block text-gray-700 font-medium mb-1">Años de vida</label>
+        <label for="lifespanYears" class="block text-gray-700 font-medium mb-1">
+          {{ 'TREE_TYPE.LIFESPAN' | translate }}
+        </label>
         <input id="lifespanYears" type="number" formControlName="lifespanYears"
           class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
-                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" placeholder="Ej. 50" />
+                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+          placeholder="{{ 'TREE_TYPE.LIFESPAN_PLACEHOLDER' | translate }}" />
       </div>
     </div>
 
-    <!-- Botones -->
+    <!-- Buttons -->
     <div class="flex justify-end gap-4 mt-6">
       <button type="button" (click)="cancel()"
         class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-xl hover:bg-gray-400 transition">
-        Cancelar
+        {{ 'COMMON.CANCEL' | translate }}
       </button>
+
       <button type="submit"
         class="flex-1 bg-green-600 text-white py-3 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
-        {{ treeType.id ? 'Guardar cambios' : 'Crear tipo de árbol' }}
+        {{ treeType.id ? ('COMMON.SAVE_CHANGES' | translate) : ('TREE_TYPE.CREATE' | translate) }}
       </button>
     </div>
+
   </form>
 </div>

@@ -5,7 +5,6 @@ import { AuthService } from '../../services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
-import { UserService } from '../../services/user.service';
 import { environment } from '../../../environments/environment';
 import { FormsModule } from '@angular/forms';
 

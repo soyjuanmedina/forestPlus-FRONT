@@ -1,8 +1,9 @@
-<h2 mat-dialog-title>{{ data.title }}</h2>
+<h2 mat-dialog-title>{{ data.title | translate }}</h2>
 <mat-dialog-content>
-  <p>{{ data.message }}</p>
+  <p>{{ data.message | translate }}</p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button (click)="onCancel()">Cancelar</button>
-  <button mat-raised-button color="warn" (click)="onConfirm()">Eliminar</button>
+  <button mat-button (click)="onCancel()">{{ 'CONFIRM_DIALOG.CANCEL' | translate }}</button>
+  <button mat-raised-button color="warn" (click)="onConfirm()">{{ 'CONFIRM_DIALOG.CONFIRM_DELETE' |
+    translate }}</button>
 </mat-dialog-actions>

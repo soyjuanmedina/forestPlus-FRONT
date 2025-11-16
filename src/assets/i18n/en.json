@@ -15,8 +15,17 @@
       "AVAILABLE_LANDS": "Available Lands",
       "LANDS": "Lands"
     },
-    "LOGIN": "Log In",
+    "LOGIN": "Login",
     "REGISTER": "Register"
+  },
+  "ADMIN_PAGE": {
+    "TITLE": "Administration"
+  },
+  "COMPANIES": {
+    "SEARCH_PLACEHOLDER": "Search company...",
+    "NEW_COMPANY": "New Company",
+    "PREVIOUS": "Previous",
+    "NEXT": "Next"
   },
   "DASHBOARD": {
     "DASHBOARD": "Dashboard",
@@ -35,42 +44,45 @@
     "BUTTON": "Login",
     "NO_ACCOUNT": "Don't have an account?",
     "REGISTER": "Register",
-    "EMAIL_NOT_VERIFIED": "Email has not been verified",
+    "EMAIL_NOT_VERIFIED": "Email is not verified",
     "RESEND_EMAIL": "Resend verification email",
-    "VERIFICATION_EMAIL_SENT": "A new verification email has been sent",
-    "VERIFICATION_EMAIL_FAILED": "Failed to send the verification email",
+    "VERIFICATION_EMAIL_SENT": "Verification email sent",
+    "VERIFICATION_EMAIL_FAILED": "Failed to send verification email",
     "FORGOT_PASSWORD_TITLE": "Reset Password",
-    "FORGOT_PASSWORD_SUCCESS": "A password reset email has been sent. Please check your inbox.",
-    "GO_TO_LOGIN": "Back to Login",
+    "FORGOT_PASSWORD_SUCCESS": "An email has been sent to reset your password. Check your inbox.",
+    "GO_TO_LOGIN": "Back to login",
     "FORGOT_PASSWORD": "Forgot your password?",
-    "SEND_NEW_PASSWORD": "Send New Password"
+    "SEND_NEW_PASSWORD": "Send new password"
   },
   "HOME": {
     "TITLE": "Welcome to Forest+",
     "LINES": [
-      "The platform that combines technology and innovation to care for our planet.",
-      "Using satellite imagery and Artificial Intelligence, we make digital reforestation possible with traceability and measurable results.",
-      "We regenerate ecosystems and help organizations achieve their climate goals efficiently.",
+      "The platform that combines technology and innovation to take care of our planet.",
+      "With satellite images and Artificial Intelligence, we make digital reforestation possible with traceability and measurable results.",
+      "We regenerate ecosystems and help organizations meet their climate goals efficiently.",
       "Together, we build a greener future."
     ]
   },
   "PROFILE": {
-    "ROLE": "Role"
+    "ROLE": "Role",
+    "AVATAR_ALT": "Avatar",
+    "EDIT_BUTTON": "Edit",
+    "COMPANY_LABEL": "Company"
   },
   "REGISTER": {
     "TITLE": "Create Account",
-    "NAME": "First Name",
-    "NAME_PLACEHOLDER": "Enter your first name",
-    "NAME_REQUIRED": "First name is required",
-    "SURNAME": "Last Name",
-    "SURNAME_PLACEHOLDER": "Enter your last name",
-    "SURNAME_REQUIRED": "Last name is required",
-    "SECOND_SURNAME": "Second Last Name",
-    "SECOND_SURNAME_PLACEHOLDER": "Enter your second last name (optional)",
+    "NAME": "Name",
+    "NAME_PLACEHOLDER": "Enter your name",
+    "NAME_REQUIRED": "Name is required",
+    "SURNAME": "First surname",
+    "SURNAME_PLACEHOLDER": "Enter your first surname",
+    "SURNAME_REQUIRED": "First surname is required",
+    "SECOND_SURNAME": "Second surname",
+    "SECOND_SURNAME_PLACEHOLDER": "Enter your second surname (optional)",
     "EMAIL": "Email",
     "EMAIL_PLACEHOLDER": "Enter your email",
     "EMAIL_REQUIRED": "Email is required",
-    "EMAIL_INVALID": "Invalid email address",
+    "EMAIL_INVALID": "Invalid email",
     "PASSWORD": "Password",
     "PASSWORD_PLACEHOLDER": "Enter your password",
     "PASSWORD_REQUIRED": "Password is required",
@@ -80,12 +92,12 @@
     "BUTTON": "Register",
     "HAVE_ACCOUNT": "Already have an account?",
     "LOGIN": "Login",
-    "SUCCESS": "Thank you for registering at Forest+. Please confirm your email before logging in.",
-    "ALREADY_ACCOUNT": "¿Already account?"
+    "SUCCESS": "Thanks for registering at Forest+. Please confirm your email before logging in",
+    "ALREADY_ACCOUNT": "Already have an account?"
   },
   "VERIFY_EMAIL": {
     "TITLE": "Email Verification",
-    "PROCESSING": "We are verifying your email, please wait...",
+    "PROCESSING": "Verifying your email, please wait...",
     "SUCCESS": "Your email has been successfully verified! 🎉",
     "ERROR": "An error occurred while verifying your email.",
     "INVALID_LINK": "The verification link is invalid.",
@@ -94,12 +106,12 @@
   "USER": {
     "NEW_TITLE": "New User",
     "EDIT_TITLE": "Edit User",
-    "NAME_LABEL": "First Name",
-    "NAME_PLACEHOLDER": "First Name",
-    "SURNAME_LABEL": "Last Name",
-    "SURNAME_PLACEHOLDER": "Last Name",
-    "SECOND_SURNAME_LABEL": "Second Last Name",
-    "SECOND_SURNAME_PLACEHOLDER": "Second Last Name",
+    "NAME_LABEL": "Name",
+    "NAME_PLACEHOLDER": "Name",
+    "SURNAME_LABEL": "Surname",
+    "SURNAME_PLACEHOLDER": "Surname",
+    "SECOND_SURNAME_LABEL": "Second Surname",
+    "SECOND_SURNAME_PLACEHOLDER": "Second Surname",
     "EMAIL_LABEL": "Email",
     "EMAIL_PLACEHOLDER": "Email",
     "PASSWORD_LABEL": "Password",
@@ -114,6 +126,153 @@
     "INVALID_EMAIL": "Invalid email",
     "MIN_LENGTH": "Minimum 6 characters",
     "SUCCESS_MSG": "User created successfully",
-    "CANCEL_BUTTON": "Cancel"
+    "CANCEL_BUTTON": "Cancel",
+    "SELECT_IMAGE": "Select image"
+  },
+  "TREE_TYPE": {
+    "EDIT_TITLE": "Edit Tree Type",
+    "NEW_TITLE": "New Tree Type",
+    "IMAGE_ALT": "Tree type image",
+    "SELECT_IMAGE": "Select image",
+    "NAME": "Name",
+    "NAME_PLACEHOLDER": "Tree type name",
+    "DESCRIPTION": "Description",
+    "DESCRIPTION_PLACEHOLDER": "Tree type description",
+    "CO2": "CO₂ absorption (kg/year)",
+    "CO2_PLACEHOLDER": "E.g. 12.5",
+    "HEIGHT": "Typical height (m)",
+    "HEIGHT_PLACEHOLDER": "E.g. 10.0",
+    "LIFESPAN": "Lifespan",
+    "LIFESPAN_PLACEHOLDER": "E.g. 50",
+    "CREATE": "Create tree type",
+    "NO_DESCRIPTION": "No description",
+    "CO2_LABEL": "CO₂ absorption",
+    "CO2_UNIT": "tons / year",
+    "TYPICAL_HEIGHT_LABEL": "Typical height",
+    "HEIGHT_UNIT": "meters",
+    "LIFESPAN_LABEL": "Lifespan",
+    "YEARS_UNIT": "years",
+    "EDIT_BUTTON": "Edit"
+  },
+  "COMMON": {
+    "CANCEL": "Cancel",
+    "SAVE_CHANGES": "Save changes"
+  },
+  "ADMIN_TREE_TYPES": {
+    "CONFIRM_DELETE_TREE_TYPE": {
+      "TITLE": "Delete Tree Type",
+      "MESSAGE": "Are you sure you want to delete {{name}}?"
+    },
+    "TREE_TYPE_DELETED": "✅ Tree type deleted",
+    "TREE_TYPE_DELETE_ERROR": "❌ Error deleting tree type",
+    "SEARCH_PLACEHOLDER": "Search tree type...",
+    "ADD_BUTTON": "New type",
+    "CO2_LABEL": "CO₂ absorption: {{value}} kg/year",
+    "ACTIONS": {
+      "VIEW": "View",
+      "EDIT": "Edit",
+      "DELETE": "Delete"
+    },
+    "PAGINATION": {
+      "PREVIOUS": "Previous",
+      "NEXT": "Next",
+      "PAGE_INFO": "{{current}} / {{total}}"
+    }
+  },
+  "ADMIN_USERS": {
+    "CONFIRM_DELETE_USER": {
+      "TITLE": "Delete User",
+      "MESSAGE": "Are you sure you want to delete {{name}}?"
+    },
+    "USER_DELETED": "✅ User deleted",
+    "USER_DELETE_ERROR": "❌ Error deleting user",
+    "SEARCH_PLACEHOLDER": "Search user...",
+    "ADD_BUTTON": "New User",
+    "ACTIONS": {
+      "VIEW": "View",
+      "EDIT": "Edit",
+      "DELETE": "Delete"
+    },
+    "PAGINATION": {
+      "PREVIOUS": "Previous",
+      "NEXT": "Next",
+      "PAGE_INFO": "{{current}} / {{total}}"
+    }
+  },
+  "COMPANY_FORM": {
+    "TITLE_NEW": "New Company",
+    "TITLE_EDIT": "Edit Company",
+    "SELECT_IMAGE": "Select image",
+    "NAME_LABEL": "Name",
+    "NAME_PLACEHOLDER": "Company name",
+    "ADDRESS_LABEL": "Address",
+    "ADDRESS_PLACEHOLDER": "Address",
+    "CANCEL_BUTTON": "Cancel",
+    "SUBMIT_NEW": "Create company",
+    "SUBMIT_EDIT": "Save changes",
+    "CO2_SECTION_TITLE": "CO₂ emissions per year",
+    "LAST_YEAR": "Last recorded year: {{year}}",
+    "ISSUED_LABEL": "Issued",
+    "COMPENSATED_LABEL": "Compensated",
+    "NET_VALUE": "Net value",
+    "TONS_CO2": "Tons of CO₂",
+    "COMPENSATED_PERCENTAGE": "(You have compensated {{percentage}}%)",
+    "EDIT_BUTTON": "Edit",
+    "CANCEL_EDIT_BUTTON": "Cancel",
+    "DELETE_BUTTON": "Delete",
+    "PREVIOUS_YEARS": "Year {{year}}",
+    "PREVIOUS_COMPENSATED_PERCENTAGE": "({{percentage}}% compensated)",
+    "ADD_YEAR_LABEL": "Year",
+    "ADD_YEAR_BUTTON": "Add year"
+  },
+  "COMPANY": {
+    "COMPANY_LOGO_ALT": "Company logo",
+    "EDIT_BUTTON": "Edit",
+    "CO2_SECTION_TITLE": "CO₂ emissions per year",
+    "LAST_YEAR": "Last recorded year",
+    "ISSUED_LABEL": "Issued",
+    "COMPENSATED_LABEL": "Compensated",
+    "NET_VALUE": "Net value",
+    "TONS_CO2": "Tons of CO₂",
+    "COMPENSATED_PERCENTAGE": "(You have compensated {{percentage}}% of your emissions)",
+    "PREVIOUS_YEARS_TITLE": "Previous years"
+  },
+  "RESET_PASSWORD": {
+    "LOGO_ALT": "Forest+ Logo",
+    "TITLE": "Change password",
+    "NEW_PASSWORD_LABEL": "New password",
+    "NEW_PASSWORD_PLACEHOLDER": "Enter your new password",
+    "NEW_PASSWORD_REQUIRED": "New password is required",
+    "NEW_PASSWORD_MINLENGTH": "Password must be at least 6 characters",
+    "CONFIRM_PASSWORD_LABEL": "Confirm new password",
+    "CONFIRM_PASSWORD_PLACEHOLDER": "Confirm your new password",
+    "CONFIRM_PASSWORD_REQUIRED": "Confirm the new password",
+    "SUBMIT_BUTTON": "Change password",
+    "REMEMBER_PASSWORD": "Remembered your password?",
+    "LOGIN_LINK": "Login"
+  },
+  "CONFIRM_DIALOG": {
+    "CANCEL": "Cancel",
+    "CONFIRM_DELETE": "Delete"
+  },
+  "ADMIN_COMPANIES": {
+    "CONFIRM_DELETE_COMPANY": {
+      "TITLE": "Delete Company",
+      "MESSAGE": "Are you sure you want to delete {{name}}?"
+    },
+    "COMPANY_DELETED": "✅ Company deleted",
+    "COMPANY_DELETE_ERROR": "❌ Error deleting company",
+    "SEARCH_PLACEHOLDER": "Search company...",
+    "ADD_BUTTON": "New company",
+    "ACTIONS": {
+      "VIEW": "View",
+      "EDIT": "Edit",
+      "DELETE": "Delete"
+    },
+    "PAGINATION": {
+      "PREVIOUS": "Previous",
+      "NEXT": "Next",
+      "PAGE_INFO": "{{current}} / {{total}}"
+    }
   }
 }

@@ -10,11 +10,12 @@ import { TreeTypeService } from '../../services/tree-type.service';
 import { UserService } from '../../services/user.service';
 import { RolesEnum } from '../../models/roles';
 import { UserResponseDto } from '../../api/model/userResponse';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component( {
   selector: 'app-tree-types-view',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, TranslateModule],
   templateUrl: './tree-type.component.html',
   styleUrls: ['./tree-type.component.scss']
 } )

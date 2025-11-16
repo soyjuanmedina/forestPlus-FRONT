@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component( {
   selector: 'app-tree-types-form',
@@ -20,7 +21,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatCardModule,
     MatButtonModule,
     MatIconModule,
-    RouterModule
+    RouterModule,
+    TranslateModule
   ]
 } )
 export class TreeTypesFormComponent implements OnInit {

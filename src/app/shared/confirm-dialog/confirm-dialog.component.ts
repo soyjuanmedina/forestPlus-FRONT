@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component( {
   selector: 'app-confirm-dialog',
@@ -11,7 +12,8 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    TranslateModule
   ]
 } )
 export class ConfirmDialogComponent {
