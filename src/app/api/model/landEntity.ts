@@ -22,5 +22,7 @@ export interface LandEntityDto {
     companies?: Array<CompanyEntityDto>;
     users?: Array<UserEntityDto>;
     createdAt?: string;
+    maxTrees?: number;
+    isFull?: boolean;
 }
 

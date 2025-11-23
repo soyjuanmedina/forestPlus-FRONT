@@ -7,6 +7,10 @@ import { Chart, DoughnutController, ArcElement, Tooltip, Legend, Plugin } from '
 import { UserService } from '../../services/user.service';
 import { CompanyService } from '../../services/company.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { TreeService } from '../../services/tree.service';
+import { AuthService } from '../../services/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AssignTreesModalComponent } from '../../shared/assign-trees-modal/assign-trees-modal.component';
 
 @Component( {
   selector: 'app-company',
@@ -22,13 +26,18 @@ export class CompanyComponent implements OnInit, AfterViewInit {
   chartsMap: { [key: string]: Chart } = {};
   previewImage?: string;
   isEditable: boolean = false;
+  isAdmin = false;
+  companyTrees: any[] = [];
 
   constructor (
     private userService: UserService,
     private companyService: CompanyService,
+    private treeService: TreeService,
     private router: Router,
     private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService,
+    private dialog: MatDialog
   ) {
     Chart.register( DoughnutController, ArcElement, Tooltip, Legend );
   }
@@ -38,12 +47,13 @@ export class CompanyComponent implements OnInit, AfterViewInit {
 
     if ( companyIdParam ) {
       this.isEditable = true;
-      // Si hay un id en la ruta, cargamos esa compañía directamente
+      this.checkRole();
       this.companyService.getCompanyById( +companyIdParam ).subscribe( {
         next: ( c ) => {
           this.company = c;
           if ( this.company ) {
             this.prepareCO2Years();
+            this.loadCompanyTrees();
           }
         },
         error: ( err ) => {
@@ -51,16 +61,18 @@ export class CompanyComponent implements OnInit, AfterViewInit {
         }
       } );
     } else {
-      // Si no hay id, usamos la compañía del usuario logueado
       this.userService.getUser().subscribe( {
         next: ( user ) => {
           this.user = user;
+          this.checkRole();
+
           if ( user?.company?.id ) {
             this.companyService.getCompanyById( user.company.id ).subscribe( {
               next: ( c ) => {
                 this.company = c;
                 if ( this.company ) {
                   this.prepareCO2Years();
+                  this.loadCompanyTrees();
                 }
               },
               error: ( err ) => {
@@ -78,11 +90,43 @@ export class CompanyComponent implements OnInit, AfterViewInit {
     }
   }
 
+  openAssignTreesModal ( companyId: number ) {
+    // Abrimos el modal pasando solo el companyId
+    const dialogRef = this.dialog.open( AssignTreesModalComponent, {
+      width: '400px',
+      data: { companyId }
+    } );
+
+    dialogRef.afterClosed().subscribe( result => {
+      if ( result && result.treeId ) {
+        this.treeService.assignTreeToUser( result.treeId, companyId )
+          .subscribe( () => {
+            this.loadCompanyTrees();
+          } );
+      }
+    } );
+  }
+
+  checkRole () {
+    const role = this.authService.currentUserRole;
+    this.isAdmin = role === 'ADMIN';
+  }
 
   ngAfterViewInit (): void {
     if ( this.co2Years?.length ) {
       setTimeout( () => this.renderCO2Charts(), 50 );
     }
+  }
+
+  // NUEVO: carga los árboles que pertenecen a la compañía
+  loadCompanyTrees () {
+    const companyId = this.company?.id || this.user?.company?.id;
+    if ( !companyId ) return;
+
+    this.treeService.getTreesByOwner( undefined, companyId ).subscribe( {
+      next: trees => this.companyTrees = trees,
+      error: err => console.error( 'Error cargando árboles de la compañía:', err )
+    } );
   }
 
   prepareCO2Years (): void {

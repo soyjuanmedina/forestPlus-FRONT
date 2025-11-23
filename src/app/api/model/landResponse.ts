@@ -7,8 +7,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserResponseDto } from './userResponse';
-import { CompanyResponseDto } from './companyResponse';
 
 
 export interface LandResponseDto { 
@@ -17,8 +15,9 @@ export interface LandResponseDto {
     location?: string;
     area?: number;
     picture?: string;
-    users?: Array<UserResponseDto>;
-    companies?: Array<CompanyResponseDto>;
+    maxTrees?: number;
     createdAt?: string;
+    userIds?: Array<number>;
+    companyIds?: Array<number>;
 }
 

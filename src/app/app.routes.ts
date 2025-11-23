@@ -16,6 +16,8 @@ import { AdminCompaniesComponent } from './dashboard/admin/companies/admin-compa
 import { CompanyComponent } from './dashboard/company/company.component';
 import { AdminTreeTypesComponent } from './dashboard/admin/tree-types/admin-tree-types/admin-tree-types.component';
 import { TreeTypeComponent } from './dashboard/tree-type/tree-type.component';
+import { AdminLandsComponent } from './dashboard/admin/lands/admin-lands/admin-lands.component';
+import { LandComponent } from './dashboard/land/land.component';
 
 export const routes: Routes = [
   // Public routes
@@ -54,6 +56,19 @@ export const routes: Routes = [
         path: 'tree-type/:id',
         component: TreeTypeComponent,
         canActivate: [AuthGuard]
+      },
+      {
+        path: 'land/:id',
+        component: LandComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'land/edit-trees/:landId/:treeTypeId',
+        loadComponent: () =>
+          import( './dashboard/land/edit-trees/edit-trees.component' )
+            .then( m => m.EditTreesComponent ),
+        canActivate: [RoleGuard],
+        data: { roles: [RolesEnum.ADMIN] }
       },
 
       // Nueva ruta de edición de compañía (igual que profile/edit)
@@ -116,6 +131,30 @@ export const routes: Routes = [
             loadComponent: () =>
               import( './dashboard/company/company-form/company-form.component' )
                 .then( m => m.CompanyFormComponent ),
+            canActivate: [RoleGuard],
+            data: { roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] }
+          },
+
+          // Lands
+          {
+            path: 'lands',
+            component: AdminLandsComponent,
+            canActivate: [RoleGuard],
+            data: { roles: [RolesEnum.ADMIN] }
+          },
+          {
+            path: 'land-form',
+            loadComponent: () =>
+              import( './dashboard/land/land-form/land-form.component' )
+                .then( m => m.LandFormComponent ),
+            canActivate: [RoleGuard],
+            data: { roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] }
+          },
+          {
+            path: 'land-form/:id',
+            loadComponent: () =>
+              import( './dashboard/land/land-form/land-form.component' )
+                .then( m => m.LandFormComponent ),
             canActivate: [RoleGuard],
             data: { roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] }
           },

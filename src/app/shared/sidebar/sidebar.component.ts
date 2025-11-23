@@ -35,6 +35,7 @@ export class SidebarComponent {
       children: [
         { label: 'MENU.ADMIN.USERS', route: 'admin/users', roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] },
         { label: 'MENU.ADMIN.COMPANIES', route: 'admin/companies', roles: [RolesEnum.ADMIN] },
+        { label: 'MENU.ADMIN.LANDS', route: 'admin/lands', roles: [RolesEnum.ADMIN] },
         { label: 'MENU.ADMIN.TREE_TYPES', route: 'admin/tree-types', roles: [RolesEnum.ADMIN] },
         /* { label: 'MENU.ADMIN.TREES', route: 'admin/trees', roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] },
         { label: 'MENU.ADMIN.AVAILABLE_LANDS', route: 'admin/available-lands', roles: [RolesEnum.ADMIN] },

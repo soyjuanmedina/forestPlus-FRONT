@@ -1,0 +1,13 @@
+.mat-dialog-container {
+  max-height: 9vh;
+  overflow-y: auto;
+  border-radius: 1rem; /* coincide con rounded-2xl */
+  padding: 0;
+  background: transparent; /* el mat-card define el color */
+}
+
+/* Borde inferior minimalista */
+.plant-modal input,
+.plant-modal select {
+  border-radius: 0 !important;
+}

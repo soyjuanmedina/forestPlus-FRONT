@@ -17,7 +17,11 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { CoordinateEntityDto } from '../model/coordinateEntity';
+import { CoordinateRequestDto } from '../model/coordinateRequest';
+// @ts-ignore
+import { CoordinateResponseDto } from '../model/coordinateResponse';
+// @ts-ignore
+import { CoordinateUpdateRequestDto } from '../model/coordinateUpdateRequest';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -36,16 +40,17 @@ export class CoordinateControllerService extends BaseService {
     }
 
     /**
-     * @param coordinateEntityDto 
+     * Crear una nueva coordenada
+     * @param coordinateRequestDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createCoordinate(coordinateEntityDto: CoordinateEntityDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<CoordinateEntityDto>;
-    public createCoordinate(coordinateEntityDto: CoordinateEntityDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CoordinateEntityDto>>;
-    public createCoordinate(coordinateEntityDto: CoordinateEntityDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CoordinateEntityDto>>;
-    public createCoordinate(coordinateEntityDto: CoordinateEntityDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (coordinateEntityDto === null || coordinateEntityDto === undefined) {
-            throw new Error('Required parameter coordinateEntityDto was null or undefined when calling createCoordinate.');
+    public createCoordinate(coordinateRequestDto: CoordinateRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<CoordinateResponseDto>;
+    public createCoordinate(coordinateRequestDto: CoordinateRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CoordinateResponseDto>>;
+    public createCoordinate(coordinateRequestDto: CoordinateRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CoordinateResponseDto>>;
+    public createCoordinate(coordinateRequestDto: CoordinateRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (coordinateRequestDto === null || coordinateRequestDto === undefined) {
+            throw new Error('Required parameter coordinateRequestDto was null or undefined when calling createCoordinate.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -84,10 +89,10 @@ export class CoordinateControllerService extends BaseService {
 
         let localVarPath = `/api/coordinates`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<CoordinateEntityDto>('post', `${basePath}${localVarPath}`,
+        return this.httpClient.request<CoordinateResponseDto>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: coordinateEntityDto,
+                body: coordinateRequestDto,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -99,7 +104,8 @@ export class CoordinateControllerService extends BaseService {
     }
 
     /**
-     * @param id 
+     * Eliminar coordenada por ID
+     * @param id ID de la coordenada
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -151,12 +157,66 @@ export class CoordinateControllerService extends BaseService {
     }
 
     /**
+     * Eliminar todas las coordenadas de una parcela
+     * @param landId ID de la parcela
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllCoordinates(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<CoordinateEntityDto>>;
-    public getAllCoordinates(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<CoordinateEntityDto>>>;
-    public getAllCoordinates(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<CoordinateEntityDto>>>;
+    public deleteCoordinatesByLand(landId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public deleteCoordinatesByLand(landId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public deleteCoordinatesByLand(landId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public deleteCoordinatesByLand(landId: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (landId === null || landId === undefined) {
+            throw new Error('Required parameter landId was null or undefined when calling deleteCoordinatesByLand.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/coordinates/land/${this.configuration.encodeParam({name: "landId", value: landId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<any>('delete', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Obtener todas las coordenadas
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAllCoordinates(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<CoordinateResponseDto>>;
+    public getAllCoordinates(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<CoordinateResponseDto>>>;
+    public getAllCoordinates(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<CoordinateResponseDto>>>;
     public getAllCoordinates(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -186,7 +246,7 @@ export class CoordinateControllerService extends BaseService {
 
         let localVarPath = `/api/coordinates`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<Array<CoordinateEntityDto>>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<Array<CoordinateResponseDto>>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -200,13 +260,14 @@ export class CoordinateControllerService extends BaseService {
     }
 
     /**
-     * @param id 
+     * Obtener coordenada por ID
+     * @param id ID de la coordenada
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getCoordinateById(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<CoordinateEntityDto>;
-    public getCoordinateById(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CoordinateEntityDto>>;
-    public getCoordinateById(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CoordinateEntityDto>>;
+    public getCoordinateById(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<CoordinateResponseDto>;
+    public getCoordinateById(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CoordinateResponseDto>>;
+    public getCoordinateById(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CoordinateResponseDto>>;
     public getCoordinateById(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling getCoordinateById.');
@@ -239,7 +300,7 @@ export class CoordinateControllerService extends BaseService {
 
         let localVarPath = `/api/coordinates/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<CoordinateEntityDto>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<CoordinateResponseDto>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -253,20 +314,75 @@ export class CoordinateControllerService extends BaseService {
     }
 
     /**
-     * @param id 
-     * @param coordinateEntityDto 
+     * Obtener coordenadas de una parcela por ID de land
+     * @param landId ID de la parcela
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateCoordinate(id: number, coordinateEntityDto: CoordinateEntityDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<CoordinateEntityDto>;
-    public updateCoordinate(id: number, coordinateEntityDto: CoordinateEntityDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CoordinateEntityDto>>;
-    public updateCoordinate(id: number, coordinateEntityDto: CoordinateEntityDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CoordinateEntityDto>>;
-    public updateCoordinate(id: number, coordinateEntityDto: CoordinateEntityDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getCoordinatesByLand(landId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<CoordinateResponseDto>>;
+    public getCoordinatesByLand(landId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<CoordinateResponseDto>>>;
+    public getCoordinatesByLand(landId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<CoordinateResponseDto>>>;
+    public getCoordinatesByLand(landId: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (landId === null || landId === undefined) {
+            throw new Error('Required parameter landId was null or undefined when calling getCoordinatesByLand.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/coordinates/land/${this.configuration.encodeParam({name: "landId", value: landId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<Array<CoordinateResponseDto>>('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Actualizar coordenada existente
+     * @param id ID de la coordenada
+     * @param coordinateUpdateRequestDto 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public updateCoordinate(id: number, coordinateUpdateRequestDto: CoordinateUpdateRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<CoordinateResponseDto>;
+    public updateCoordinate(id: number, coordinateUpdateRequestDto: CoordinateUpdateRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CoordinateResponseDto>>;
+    public updateCoordinate(id: number, coordinateUpdateRequestDto: CoordinateUpdateRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CoordinateResponseDto>>;
+    public updateCoordinate(id: number, coordinateUpdateRequestDto: CoordinateUpdateRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateCoordinate.');
         }
-        if (coordinateEntityDto === null || coordinateEntityDto === undefined) {
-            throw new Error('Required parameter coordinateEntityDto was null or undefined when calling updateCoordinate.');
+        if (coordinateUpdateRequestDto === null || coordinateUpdateRequestDto === undefined) {
+            throw new Error('Required parameter coordinateUpdateRequestDto was null or undefined when calling updateCoordinate.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -305,10 +421,10 @@ export class CoordinateControllerService extends BaseService {
 
         let localVarPath = `/api/coordinates/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<CoordinateEntityDto>('put', `${basePath}${localVarPath}`,
+        return this.httpClient.request<CoordinateResponseDto>('put', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: coordinateEntityDto,
+                body: coordinateUpdateRequestDto,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

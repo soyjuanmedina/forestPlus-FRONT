@@ -274,5 +274,22 @@
       "NEXT": "Next",
       "PAGE_INFO": "{{current}} / {{total}}"
     }
+  },
+  "LAND_FORM": {
+    "TITLE_NEW": "New Land",
+    "TITLE_EDIT": "Edit Land",
+    "SELECT_IMAGE": "Select Image",
+    "NAME_LABEL": "Name",
+    "NAME_PLACEHOLDER": "Enter land name",
+    "LOCATION_LABEL": "Location",
+    "LOCATION_PLACEHOLDER": "Enter location",
+    "AREA_LABEL": "Area (ha)",
+    "AREA_PLACEHOLDER": "Enter area in hectares",
+    "MAX_TREES_LABEL": "Max Trees",
+    "MAX_TREES_PLACEHOLDER": "Enter maximum number of trees",
+    "CANCEL_BUTTON": "Cancel",
+    "SUBMIT_NEW": "Create Land",
+    "SUBMIT_EDIT": "Save Changes",
+    "DELETE_BUTTON": "Delete Land"
   }
 }

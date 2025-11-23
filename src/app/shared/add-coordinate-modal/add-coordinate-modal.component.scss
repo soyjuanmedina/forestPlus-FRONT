@@ -1,0 +1,22 @@
+/* Ajusta el contenedor del diálogo */
+.mat-dialog-container {
+  max-height: 90vh; /* antes ponías 9vh, parecía un typo */
+  overflow-y: auto;
+  border-radius: 1rem; /* coincide con rounded-2xl */
+  padding: 0;
+  background: transparent; /* el contenido interno define el fondo */
+}
+
+/* Estilo minimalista de inputs y selects */
+.modal-container input,
+.modal-container select {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Highlight al hacer focus */
+.modal-container input:focus,
+.modal-container select:focus {
+  border-color: #16a34a !important; /* green-600 */
+  outline: none !important;
+}

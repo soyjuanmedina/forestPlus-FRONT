@@ -16,5 +16,6 @@ export interface LandRequestDto {
     userIds?: Array<number>;
     companyIds?: Array<number>;
     picture?: string;
+    maxTrees?: number;
 }
 

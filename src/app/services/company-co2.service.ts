@@ -15,21 +15,20 @@ export class CompanyCo2Service {
    * Obtener todos los registros CO2 de una empresa
    */
   getAll ( companyId: number ): Observable<CompanyCO2YearlyResponseDto[]> {
-    return this.co2Api.getAll( companyId );
+    return this.co2Api.getCompanyCO2YearlyList( companyId );
   }
 
   /**
    * Crear o actualizar un registro anual de CO2
    */
   save ( companyId: number, data: CompanyCO2YearlyRequestDto ): Observable<CompanyCO2YearlyResponseDto> {
-    return this.co2Api.createOrUpdate( companyId, data );
+    return this.co2Api.createOrUpdateCompanyCO2Yearly( companyId, data );
   }
 
   /**
    * Eliminar un registro de CO2
    */
-  delete ( companyId: number, id: number ): Observable<void> {
-    console.log( 'dnetro1', companyId );
-    return this.co2Api._delete( companyId, id );
+  delete ( companyId: number, id: number ): Observable<any> {
+    return this.co2Api.deleteCompanyCO2Yearly( companyId, id );
   }
 }

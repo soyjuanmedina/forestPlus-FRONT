@@ -1,0 +1,29 @@
+/* Clase para botones de acción en la lista de árboles */
+.tree-action-button {
+  width: 40px;              /* ancho del botón */
+  height: 40px;             /* alto del botón */
+  border-radius: 50%;       /* redondo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e0e0ff; /* verde base */
+  color: #00006e;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #1cc07d; /* verde más oscuro al hover */
+  }
+
+  mat-icon {
+    font-size: 24px; /* tamaño del icono */
+  }
+}
+
+/* Para botones de borrar, distinto color */
+.tree-action-button.delete {
+  background-color: #f87171; /* rojo base */
+  
+  &:hover {
+    background-color: #ef4444; /* rojo más oscuro al hover */
+  }
+}

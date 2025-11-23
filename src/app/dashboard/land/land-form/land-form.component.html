@@ -1,0 +1,123 @@
+<div class="w-full max-w-full mx-auto bg-white p-6 rounded-2xl shadow-lg">
+  <form [formGroup]="landForm" (ngSubmit)="onSubmitLand()">
+    <h1 class="text-2xl font-bold mb-6 text-center">
+      {{ land?.id ? ('LAND_FORM.TITLE_EDIT' | translate) : ('LAND_FORM.TITLE_NEW' | translate) }}
+    </h1>
+
+    <!-- 🖼 Imagen del terreno -->
+    <div class="flex flex-col items-center mb-6">
+      <img [src]="previewImage || 'assets/logo-white.png'" alt="Imagen del terreno"
+        class="w-24 h-24 rounded-full shadow-lg mb-2 object-cover" />
+      <label
+        class="cursor-pointer bg-gray-200 hover:bg-gray-300 p-2 rounded-full flex items-center gap-2">
+        <span class="material-icons">photo_camera</span>
+        <span>{{ 'LAND_FORM.SELECT_IMAGE' | translate }}</span>
+        <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
+      </label>
+    </div>
+
+    <!-- Campos básicos -->
+    <div class="flex flex-col md:flex-row gap-4 mb-6">
+      <div class="flex-1">
+        <label class="block text-gray-700 font-medium mb-1">{{ 'LAND_FORM.NAME_LABEL' | translate
+          }}</label>
+        <input type="text" formControlName="name" required
+          class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
+                 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+          placeholder="{{ 'LAND_FORM.NAME_PLACEHOLDER' | translate }}" />
+      </div>
+
+      <div class="flex-1">
+        <label class="block text-gray-700 font-medium mb-1">{{ 'LAND_FORM.LOCATION_LABEL' |
+          translate }}</label>
+        <input type="text" formControlName="location"
+          class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
+                 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+          placeholder="{{ 'LAND_FORM.LOCATION_PLACEHOLDER' | translate }}" />
+      </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-4 mb-6">
+      <div class="flex-1">
+        <label class="block text-gray-700 font-medium mb-1">{{ 'LAND_FORM.AREA_LABEL' | translate
+          }}</label>
+        <input type="number" formControlName="area" required
+          class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
+                 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+          placeholder="{{ 'LAND_FORM.AREA_PLACEHOLDER' | translate }}" />
+      </div>
+
+      <div class="flex-1">
+        <label class="block text-gray-700 font-medium mb-1">{{ 'LAND_FORM.MAX_TREES_LABEL' |
+          translate }}</label>
+        <input type="number" formControlName="maxTrees"
+          class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
+                 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+          placeholder="{{ 'LAND_FORM.MAX_TREES_PLACEHOLDER' | translate }}" />
+      </div>
+    </div>
+
+    <!-- Botones principales -->
+    <div class="flex justify-end gap-4 mt-6">
+      <button type="button" (click)="cancel()"
+        class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-xl hover:bg-gray-400 transition">
+        {{ 'LAND_FORM.CANCEL_BUTTON' | translate }}
+      </button>
+      <button type="submit"
+        class="flex-1 bg-green-600 text-white py-3 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
+        {{ land?.id ? ('LAND_FORM.SUBMIT_EDIT' | translate) : ('LAND_FORM.SUBMIT_NEW' | translate)
+        }}
+      </button>
+    </div>
+
+    <!-- Coordenadas -->
+    <div class="mt-6 w-full text-left">
+      <div class="flex justify-between items-center mb-2">
+        <p class="font-semibold text-gray-700">{{ 'LANDS.COORDINATES' | translate }}</p>
+        <button type="button" (click)="openAddCoordinateModal()"
+          class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full hover:bg-blue-300 transition text-sm">
+          {{ 'LAND_FORM.ADD_COORDINATE' | translate }}
+        </button>
+      </div>
+      <ul *ngIf="coordinates?.length; else noCoordinates">
+        <li *ngFor="let coord of coordinates" class="flex justify-between border-b py-1">
+          <span>Lat: {{ coord.latitude | number:'1.6-6' }}, Lng: {{ coord.longitude | number:'1.6-6'
+            }}</span>
+          <span class="text-gray-500 text-sm">ID: {{ coord.id }}</span>
+        </li>
+      </ul>
+      <ng-template #noCoordinates>
+        <p class="text-gray-400">{{ 'LANDS.NO_COORDINATES' | translate }}</p>
+      </ng-template>
+    </div>
+
+    <!-- Resumen de árboles plantados por tipo -->
+    <div class="mt-6 w-full text-left">
+      <div class="flex justify-between items-center mb-2">
+        <p class="font-semibold text-gray-700">{{ 'LANDS.PLANTED_TREES' | translate }}</p>
+
+        <!-- BOTÓN PARA PLANTAR ÁRBOLES -->
+        <button type="button" (click)="openPlantTreesModal()"
+          class="bg-green-200 text-green-800 px-3 py-1 rounded-full hover:bg-green-300 transition text-sm">
+          {{ 'LAND_FORM.PLANT_TREES' | translate }}
+        </button>
+      </div>
+      <ul *ngIf="plantedTrees?.length; else noPlantedTrees">
+        <li *ngFor="let plantedTree of plantedTrees"
+          class="flex justify-between items-center border-b py-1">
+          <span>{{ plantedTree.treeTypeName }}</span>
+          <div class="flex items-center gap-2">
+            <span class="font-semibold">{{ plantedTree.quantity }}</span>
+            <button type="button" (click)="editPlantedTrees(plantedTree)"
+              class="bg-blue-200 text-blue-800 px-2 py-1 rounded-full hover:bg-blue-300 transition text-sm">
+              {{ 'LAND_FORM.EDIT_TREES' | translate }}
+            </button>
+          </div>
+        </li>
+      </ul>
+      <ng-template #noPlantedTrees>
+        <p class="text-gray-500 italic">{{ 'LANDS.NO_PLANTED_TREES_IN_LAND' | translate }}</p>
+      </ng-template>
+    </div>
+  </form>
+</div>

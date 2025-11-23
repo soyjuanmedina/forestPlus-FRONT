@@ -56,6 +56,8 @@ export class AdminCompaniesComponent implements OnInit {
           this.companies = data;
         }
 
+        console.log( 'this.companies', this.companies );
+        console.log( 'typeof', typeof this.companies );
         this.applyFilter();
       },
       error: ( err ) => console.error( '❌ Error al cargar compañías', err )

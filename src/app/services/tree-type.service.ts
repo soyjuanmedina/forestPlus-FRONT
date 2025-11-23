@@ -4,8 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import {
   TreeTypeControllerService,
-  TreeTypeRequestDto,
-  TreeTypeUpdateRequestDto
+  TreeTypeRequestDto
 } from '../api';
 import { TreeTypeResponseDto } from '../api/model/treeTypeResponse';
 

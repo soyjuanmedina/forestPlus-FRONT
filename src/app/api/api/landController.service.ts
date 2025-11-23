@@ -20,6 +20,8 @@ import { Observable }                                        from 'rxjs';
 import { LandRequestDto } from '../model/landRequest';
 // @ts-ignore
 import { LandResponseDto } from '../model/landResponse';
+// @ts-ignore
+import { LandUpdateRequestDto } from '../model/landUpdateRequest';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -38,6 +40,7 @@ export class LandControllerService extends BaseService {
     }
 
     /**
+     * Crear una nueva parcela
      * @param landRequestDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -101,6 +104,7 @@ export class LandControllerService extends BaseService {
     }
 
     /**
+     * Eliminar una parcela por su ID
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -153,6 +157,7 @@ export class LandControllerService extends BaseService {
     }
 
     /**
+     * Obtener todas las parcelas
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -202,6 +207,7 @@ export class LandControllerService extends BaseService {
     }
 
     /**
+     * Obtener una parcela por su ID
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -255,23 +261,28 @@ export class LandControllerService extends BaseService {
     }
 
     /**
+     * Actualizar una parcela existente
      * @param id 
-     * @param landRequestDto 
+     * @param landUpdateRequestDto 
+     * @param authorization 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateLand(id: number, landRequestDto: LandRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<LandResponseDto>;
-    public updateLand(id: number, landRequestDto: LandRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<LandResponseDto>>;
-    public updateLand(id: number, landRequestDto: LandRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<LandResponseDto>>;
-    public updateLand(id: number, landRequestDto: LandRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public updateLand(id: number, landUpdateRequestDto: LandUpdateRequestDto, authorization?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<LandResponseDto>;
+    public updateLand(id: number, landUpdateRequestDto: LandUpdateRequestDto, authorization?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<LandResponseDto>>;
+    public updateLand(id: number, landUpdateRequestDto: LandUpdateRequestDto, authorization?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<LandResponseDto>>;
+    public updateLand(id: number, landUpdateRequestDto: LandUpdateRequestDto, authorization?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateLand.');
         }
-        if (landRequestDto === null || landRequestDto === undefined) {
-            throw new Error('Required parameter landRequestDto was null or undefined when calling updateLand.');
+        if (landUpdateRequestDto === null || landUpdateRequestDto === undefined) {
+            throw new Error('Required parameter landUpdateRequestDto was null or undefined when calling updateLand.');
         }
 
         let localVarHeaders = this.defaultHeaders;
+        if (authorization !== undefined && authorization !== null) {
+            localVarHeaders = localVarHeaders.set('Authorization', String(authorization));
+        }
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
             'application/json'
@@ -310,7 +321,7 @@ export class LandControllerService extends BaseService {
         return this.httpClient.request<LandResponseDto>('put', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: landRequestDto,
+                body: landUpdateRequestDto,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

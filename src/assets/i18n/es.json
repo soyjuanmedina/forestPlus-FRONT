@@ -27,6 +27,32 @@
     "PREVIOUS": "Anterior",
     "NEXT": "Siguiente"
   },
+  "LANDS": {
+    "SEARCH_PLACEHOLDER": "Buscar terreno...",
+    "NEW_LAND": "Nuevo terreno",
+    "PREVIOUS": "Anterior",
+    "NEXT": "Siguiente",
+    "IMAGE_ALT": "Imagen del terreno",
+    "NO_LOCATION": "Sin localización",
+    "AREA_LABEL": "Área",
+    "MAX_TREES_LABEL": "Máx. árboles",
+    "NO_MAX_TREES": "Sin límite",
+    "EDIT_BUTTON": "Editar terreno",
+    "NO_COORDINATES": "Aún no se han definido coordenadas para este terreno",
+    "PLANTED_TREES": "Árboles plantados en este terreno",
+    "PLANTED_TREES_BY_USER": "Árboles plantados por el usuario",
+    "COORDINATES": "Coordenadas",
+    "NO_PLANTED_TREES_IN_LAND": "Aún no se ha plantado ningún árbol en este terreno",
+    "NO_PLANTED_TREES_BY_USER": "Este usuario aún no ha plantado ningún árbol"
+  },
+  "ASSIGN_TREES": {
+    "TITLE": "Asignar árbol",
+    "LAND": "Seleccionar terreno",
+    "TREES": "Árboles disponibles",
+    "NO_TREES": "No hay árboles disponibles en este terreno",
+    "ASSIGN": "Asignar",
+    "ASSIGN_PLANTED_TREES": "Asignar árboles plantados"
+  },
   "DASHBOARD": {
     "DASHBOARD": "Dashboard",
     "LOGOUT": "Cerrar sesion"
@@ -156,7 +182,10 @@
   },
   "COMMON": {
     "CANCEL": "Cancelar",
-    "SAVE_CHANGES": "Guardar cambios"
+    "SAVE_CHANGES": "Guardar cambios",
+    "SAVE": "Guardar",
+    "PREVIOUS": "Anterior",
+    "NEXT": "Siguiente"
   },
   "ADMIN_TREE_TYPES": {
     "CONFIRM_DELETE_TREE_TYPE": {
@@ -235,7 +264,9 @@
     "NET_VALUE": "Valor Neto",
     "TONS_CO2": "Toneladas de CO₂",
     "COMPENSATED_PERCENTAGE": "(Compensaste el {{percentage}}% de tus emisiones)",
-    "PREVIOUS_YEARS_TITLE": "Años anteriores"
+    "PREVIOUS_YEARS_TITLE": "Años anteriores",
+    "TREES_PLANTED_TITLE": "Árboles plantados por la compañia",
+    "NO_TREES_PLANTED": "La compañia aún no ha plantado ningún árbol"
   },
   "RESET_PASSWORD": {
     "LOGO_ALT": "Forest+ Logo",
@@ -274,5 +305,57 @@
       "NEXT": "Siguiente",
       "PAGE_INFO": "{{current}} / {{total}}"
     }
+  },
+  "LAND_FORM": {
+    "TITLE_NEW": "Nuevo Terreno",
+    "TITLE_EDIT": "Editar Terreno",
+    "SELECT_IMAGE": "Seleccionar Imagen",
+    "NAME_LABEL": "Nombre",
+    "NAME_PLACEHOLDER": "Ingrese el nombre del terreno",
+    "LOCATION_LABEL": "Ubicación",
+    "LOCATION_PLACEHOLDER": "Ingrese la ubicación",
+    "AREA_LABEL": "Superficie (ha)",
+    "AREA_PLACEHOLDER": "Ingrese la superficie en hectáreas",
+    "MAX_TREES_LABEL": "Máximo de Árboles",
+    "MAX_TREES_PLACEHOLDER": "Ingrese el número máximo de árboles",
+    "CANCEL_BUTTON": "Cancelar",
+    "SUBMIT_NEW": "Crear Terreno",
+    "SUBMIT_EDIT": "Guardar Cambios",
+    "DELETE_BUTTON": "Eliminar Terreno",
+    "ADD_COORDINATE": "Añadir coordenadas",
+    "PLANT_TREES": "Plantar árboles",
+    "EDIT_TREES": "Editar"
+  },
+  "ADD_COORDINATE": {
+    "TITLE": "Añadir coordenada",
+    "LATITUDE": "Latitud",
+    "LONGITUDE": "Longitud",
+    "LATITUDE_PLACEHOLDER": "Introduce la latitud",
+    "LONGITUDE_PLACEHOLDER": "Introduce la longitud",
+    "SAVE": "Guardar coordenada"
+  },
+  "PLANT_TREES": {
+    "TITLE": "Plantar árboles",
+    "TREE_TYPE": "Tipo de árbol",
+    "QUANTITY": "Cantidad",
+    "QUANTITY_PLACEHOLDER": "Introduce la cantidad",
+    "PLANT": "Plantar"
+  },
+  "EDIT_TREE": {
+    "TITLE": "Editar árbol",
+    "SPECIES": "Especie",
+    "PLANTED_AT": "Plantado el",
+    "TYPE": "Tipo de árbol",
+    "CO2": "Absorción de CO₂ (kg/año)"
+  },
+  "TREE_LIST": {
+    "SEARCH_PLACEHOLDER": "Buscar árboles...",
+    "ADD_TREE": "Añadir árbol",
+    "ID": "ID",
+    "TYPE": "Tipo",
+    "PLANTED_AT": "Plantado",
+    "EDIT": "Editar",
+    "DELETE": "Eliminar",
+    "OWNER": "Propietario"
   }
 }

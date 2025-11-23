@@ -1,0 +1,70 @@
+<mat-card
+  class="rounded-2xl shadow-md p-4 md:p-6 flex flex-col items-center text-center w-full max-w-full"
+  *ngIf="land">
+
+  <!-- Imagen -->
+  <img [src]="previewImage || 'assets/logo-white.png'" [alt]="'LANDS.IMAGE_ALT' | translate"
+    class="w-24 h-24 rounded-full shadow-lg mb-4 object-cover" />
+
+  <!-- Nombre -->
+  <h2 class="text-xl md:text-2xl font-semibold">
+    {{ land.name }}
+  </h2>
+
+  <!-- Localización -->
+  <p class="text-gray-500 italic">
+    {{ land.location || ('LANDS.NO_LOCATION' | translate) }}
+  </p>
+
+  <!-- Datos del terreno -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 text-left w-full max-w-md">
+    <div>
+      <p class="font-semibold text-gray-700">{{ 'LANDS.AREA_LABEL' | translate }}</p>
+      <p>{{ land.area }} m²</p>
+    </div>
+
+    <div>
+      <p class="font-semibold text-gray-700">{{ 'LANDS.MAX_TREES_LABEL' | translate }}</p>
+      <p>{{ land.maxTrees || ('LANDS.NO_MAX_TREES' | translate) }}</p>
+    </div>
+  </div>
+
+  <!-- Coordenadas -->
+  <div class="mt-6 w-full max-w-md text-left" *ngIf="coordinates?.length; else noCoordinates">
+    <p class="font-semibold text-gray-700 mb-2">{{ 'LANDS.COORDINATES' | translate }}</p>
+    <ul>
+      <li *ngFor="let coord of coordinates" class="flex justify-between border-b py-1">
+        <span>Lat: {{ coord.latitude | number:'1.6-6' }}, Lng: {{ coord.longitude | number:'1.6-6'
+          }}</span>
+        <span class="text-gray-500 text-sm">ID: {{ coord.id }}</span>
+      </li>
+    </ul>
+  </div>
+
+  <ng-template #noCoordinates>
+    <p class="text-gray-400">{{ 'LANDS.NO_COORDINATES' | translate }}</p>
+  </ng-template>
+
+  <!-- Árboles plantados -->
+  <div class="mt-6 w-full max-w-md text-left">
+    <p class="font-semibold text-gray-700 mb-2">{{ 'LANDS.PLANTED_TREES' | translate }}</p>
+    <ul *ngIf="plantedTrees?.length; else noTrees">
+      <li *ngFor="let tree of plantedTrees" class="flex justify-between border-b py-1">
+        <span>{{ tree.treeTypeName }}</span>
+        <span class="font-semibold">{{ tree.quantity }}</span>
+      </li>
+    </ul>
+    <ng-template #noTrees>
+      <p class="text-gray-500 italic">{{ 'LANDS.NO_PLANTED_TREES_IN_LAND' | translate }}</p>
+    </ng-template>
+  </div>
+
+  <!-- Botón de editar (solo admin) -->
+  <div class="flex gap-4 mt-4 w-full justify-center md:justify-start"
+    *ngIf="user?.role === 'COMPANY_ADMIN' || isEditable">
+    <button (click)="goToEditForm()"
+      class="flex-1 md:flex-auto bg-green-600 text-white py-3 px-6 rounded-xl hover:bg-green-700 transition">
+      {{ 'COMPANY.EDIT_BUTTON' | translate }}
+    </button>
+  </div>
+</mat-card>

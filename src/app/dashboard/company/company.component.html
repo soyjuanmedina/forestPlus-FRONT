@@ -18,15 +18,42 @@
     </button>
   </div>
 
+  <!-- Árboles plantados por la compañía -->
+  <div class="mt-4 w-full text-left">
+    <div class="flex justify-between items-center mb-2">
+      <p class="font-semibold text-gray-700">{{ 'COMPANY.TREES_PLANTED_TITLE' | translate }}</p>
+
+      <button *ngIf="isAdmin" type="button" (click)="openAssignTreesModal(company)"
+        class="bg-green-200 text-green-800 px-3 py-1 rounded-full hover:bg-green-300 transition text-sm">
+        {{ 'ASSIGN_TREES.ASSIGN_PLANTED_TREES' | translate }}
+      </button>
+    </div>
+
+    <ul *ngIf="companyTrees?.length; else noCompanyTrees">
+      <li *ngFor="let tree of companyTrees" class="flex justify-between border-b py-1">
+        <span>{{ tree.treeTypeName }}</span>
+        <span class="font-semibold">{{ tree.quantity || 1 }}</span>
+      </li>
+    </ul>
+
+    <ng-template #noCompanyTrees>
+      <p class="text-gray-500 italic">{{ 'COMPANY.NO_TREES_PLANTED' | translate }}</p>
+    </ng-template>
+  </div>
+
+
+
   <!-- CO2 -->
   <div class="w-full mt-6" *ngIf="co2Years?.length">
-    <h2 class="text-xl font-bold mb-4 text-center">{{ 'COMPANY.CO2_SECTION_TITLE' | translate }}
-    </h2>
+    <div class="flex justify-between items-center mb-2">
+      <p class="font-semibold text-gray-700">{{ 'COMPANY.CO2_SECTION_TITLE' | translate }}</p>
+      <!-- Aquí iría un botón si quieres agregarlo -->
+    </div>
 
     <!-- PRIMER AÑO (GRANDE) -->
     <div class="mb-8">
-      <h3 class="text-lg font-semibold">{{ 'COMPANY.LAST_YEAR' | translate }}</h3>
-      <h4 class="text-lg font-semibold">{{ co2Years[0].year }}</h4>
+      <p class="font-semibold text-gray-700">{{ 'COMPANY.LAST_YEAR' | translate }}</p>
+      <p class="font-semibold text-gray-700">{{ co2Years[0].year }}</p>
 
       <div class="co2-container flex justify-center gap-4 mt-4 items-center">
         <!-- Emisiones -->
@@ -59,7 +86,11 @@
 
     <!-- AÑOS ANTERIORES -->
     <div *ngIf="co2Years.length > 1" class="mt-6">
-      <h3 class="text-left font-semibold mb-2">{{ 'COMPANY.PREVIOUS_YEARS_TITLE' | translate }}</h3>
+
+      <div class="flex justify-between items-center mb-2">
+        <p class="font-semibold text-gray-700">{{ 'COMPANY.PREVIOUS_YEARS_TITLE' | translate }}</p>
+        <!-- Aquí iría un botón si quieres agregarlo -->
+      </div>
 
       <div *ngFor="let y of co2Years.slice(1)"
         class="co2-year-row flex flex-col items-start gap-2 mb-4 w-full">

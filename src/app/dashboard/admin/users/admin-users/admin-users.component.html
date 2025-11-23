@@ -25,17 +25,22 @@
 
       <!-- Botones -->
       <div class="flex gap-2">
-        <button mat-mini-fab (click)="onView(user)"
-          class="bg-green-500 hover:bg-green-600 text-white">
-          <mat-icon>visibility</mat-icon>
+        <!-- Botón de ver -->
+        <button (click)="onView(user)"
+          class="bg-green-600 hover:bg-green-700 text-white rounded-full p-2 flex items-center justify-center">
+          <mat-icon class="text-white" style="font-size: 20px;">visibility</mat-icon>
         </button>
-        <button mat-mini-fab (click)="onEdit(user)"
-          class="bg-green-500 hover:bg-green-600 text-white">
-          <mat-icon>edit</mat-icon>
+
+        <!-- Botón de editar -->
+        <button (click)="onEdit(user)"
+          class="bg-green-600 hover:bg-green-700 text-white rounded-full py-2 px-4 flex items-center gap-2">
+          <mat-icon class="text-white" style="font-size: 20px;">edit</mat-icon>
         </button>
-        <button mat-mini-fab (click)="onDelete(user)"
-          class="bg-red-400 hover:bg-red-500 text-white">
-          <mat-icon>delete</mat-icon>
+
+        <!-- Botón de borrar -->
+        <button (click)="onDelete(user)"
+          class="bg-red-600 hover:bg-red-700 text-white rounded-full p-2 flex items-center justify-center">
+          <mat-icon class="text-white" style="font-size: 20px;">delete</mat-icon>
         </button>
       </div>
     </div>
