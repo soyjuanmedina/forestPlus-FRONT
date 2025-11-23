@@ -27,6 +27,8 @@ export class SidebarComponent {
     { label: 'MENU.HOME', route: 'home' },
     { label: 'MENU.PROFILE', route: 'profile' },
     { label: 'MENU.MY_COMPANY', route: 'company', roles: [RolesEnum.COMPANY_ADMIN, RolesEnum.COMPANY_USER] },
+    { label: 'MENU.MY_TREES', route: 'my-trees', roles: [RolesEnum.USER] },
+    { label: 'MENU.MY_COMPANY_TREES', route: 'my-trees', roles: [RolesEnum.COMPANY_ADMIN, RolesEnum.COMPANY_USER] },
     /* { label: 'MENU.MY_LANDS', route: 'lands' },
  { label: 'MENU.MY_TREES', route: 'trees' }, */
     {

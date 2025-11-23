@@ -18,6 +18,7 @@ import { AdminTreeTypesComponent } from './dashboard/admin/tree-types/admin-tree
 import { TreeTypeComponent } from './dashboard/tree-type/tree-type.component';
 import { AdminLandsComponent } from './dashboard/admin/lands/admin-lands/admin-lands.component';
 import { LandComponent } from './dashboard/land/land.component';
+import { MyTreesComponent } from './dashboard/my-trees/my-trees.component';
 
 export const routes: Routes = [
   // Public routes
@@ -34,6 +35,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
+      { path: 'my-trees', component: MyTreesComponent },
       { path: 'profile', component: ProfileComponent },
       {
         path: 'profile/:id',

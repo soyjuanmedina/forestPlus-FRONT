@@ -6,6 +6,7 @@
     "MY_COMPANY": "Mi compañía",
     "MY_LANDS": "Mis terrenos",
     "MY_TREES": "Mis árboles",
+    "MY_COMPANY_TREES": "Los árboles de la compañia",
     "ADMIN": {
       "ADMIN": "Administración",
       "USERS": "Usuarios",
@@ -357,5 +358,14 @@
     "EDIT": "Editar",
     "DELETE": "Eliminar",
     "OWNER": "Propietario"
+  },
+  "MY_TREES": {
+    "SEARCH_PLACEHOLDER": "Buscar por tipo de árbol...",
+    "BUY_NEW_TREE": "Comprar un árbol",
+    "QUANTITY": "Cantidad",
+    "PREVIOUS": "Anterior",
+    "NEXT": "Siguiente",
+    "ERROR_LOADING": "Error al cargar tus árboles.",
+    "NO_TREES": "No tienes árboles aún."
   }
 }

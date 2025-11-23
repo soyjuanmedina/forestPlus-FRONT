@@ -1,0 +1,29 @@
+.my-trees-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+.loading,
+.error,
+.empty {
+  font-size: 1.2rem;
+  margin-top: 20px;
+}
+
+.error {
+  color: #d9534f;
+}
+
+.tree-list {
+  margin-top: 20px;
+  display: grid;
+  gap: 20px;
+}
+
+.tree-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 10px;
+  background: #fafafa;
+}
