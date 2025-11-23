@@ -22,11 +22,6 @@
   <div class="mt-4 w-full text-left">
     <div class="flex justify-between items-center mb-2">
       <p class="font-semibold text-gray-700">{{ 'COMPANY.TREES_PLANTED_TITLE' | translate }}</p>
-
-      <button *ngIf="isAdmin" type="button" (click)="openAssignTreesModal(company)"
-        class="bg-green-200 text-green-800 px-3 py-1 rounded-full hover:bg-green-300 transition text-sm">
-        {{ 'ASSIGN_TREES.ASSIGN_PLANTED_TREES' | translate }}
-      </button>
     </div>
 
     <ul *ngIf="companyTrees?.length; else noCompanyTrees">
@@ -47,7 +42,6 @@
   <div class="w-full mt-6" *ngIf="co2Years?.length">
     <div class="flex justify-between items-center mb-2">
       <p class="font-semibold text-gray-700">{{ 'COMPANY.CO2_SECTION_TITLE' | translate }}</p>
-      <!-- Aquí iría un botón si quieres agregarlo -->
     </div>
 
     <!-- PRIMER AÑO (GRANDE) -->
@@ -89,7 +83,6 @@
 
       <div class="flex justify-between items-center mb-2">
         <p class="font-semibold text-gray-700">{{ 'COMPANY.PREVIOUS_YEARS_TITLE' | translate }}</p>
-        <!-- Aquí iría un botón si quieres agregarlo -->
       </div>
 
       <div *ngFor="let y of co2Years.slice(1)"

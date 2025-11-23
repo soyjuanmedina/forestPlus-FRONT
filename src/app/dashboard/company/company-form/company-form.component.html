@@ -54,18 +54,42 @@
     </div>
   </form>
 
+  <!-- Árboles plantados por la compañía -->
+  <div class="mt-4 w-full text-left">
+    <div class="flex justify-between items-center mb-2">
+      <p class="font-semibold text-gray-700">{{ 'COMPANY.TREES_PLANTED_TITLE' | translate }}</p>
+
+      <button *ngIf="isAdmin" type="button" (click)="openAssignTreesModal(company!.id!)"
+        class="bg-green-200 text-green-800 px-3 py-1 rounded-full hover:bg-green-300 transition text-sm">
+        {{ 'ASSIGN_TREES.ASSIGN_PLANTED_TREES' | translate }}
+      </button>
+    </div>
+
+    <ul *ngIf="companyTrees?.length; else noCompanyTrees">
+      <li *ngFor="let tree of companyTrees" class="flex justify-between border-b py-1">
+        <span>{{ tree.treeTypeName }}</span>
+        <span class="font-semibold">{{ tree.quantity || 1 }}</span>
+      </li>
+    </ul>
+
+    <ng-template #noCompanyTrees>
+      <p class="text-gray-500 italic">{{ 'COMPANY.NO_TREES_PLANTED' | translate }}</p>
+    </ng-template>
+  </div>
+
   <hr class="my-6" />
   <div *ngIf="currentUser$ | async as user">
     <ng-container *ngIf="user.role === 'ADMIN'">
       <!-- CO2 -->
       <div *ngIf="co2Years?.length">
-        <h2 class="text-xl font-bold mb-4 text-center">{{ 'COMPANY_FORM.CO2_SECTION_TITLE' |
-          translate }}</h2>
+        <div class="flex justify-between items-center mb-2">
+          <p class="font-semibold text-gray-700">{{ 'COMPANY.CO2_SECTION_TITLE' | translate }}</p>
+        </div>
 
         <!-- Último año -->
         <div class="mb-8 border p-4 rounded-xl shadow-sm bg-gray-50">
-          <h3 class="font-semibold mb-2">{{ 'COMPANY_FORM.LAST_YEAR' | translate:{year:
-            co2Years[0].year} }}</h3>
+          <p class="font-semibold text-gray-700">{{ 'COMPANY.LAST_YEAR' | translate }}</p>
+          <p class="font-semibold text-gray-700">{{ co2Years[0].year }}</p>
 
           <div *ngIf="co2Years[0].editMode" class="flex flex-wrap gap-4 mb-4 justify-center">
             <div>
@@ -138,10 +162,14 @@
         </div>
 
         <!-- Años anteriores -->
+
+        <div class="flex justify-between items-center mb-2">
+          <p class="font-semibold text-gray-700">{{ 'COMPANY.PREVIOUS_YEARS_TITLE' | translate }}
+          </p>
+        </div>
         <div *ngFor="let y of co2Years.slice(1)"
           class="mb-6 border p-4 rounded-xl shadow-sm bg-gray-50">
-          <h3 class="font-semibold mb-2">{{ 'COMPANY_FORM.PREVIOUS_YEARS' | translate:{year: y.year}
-            }}</h3>
+          <div class="w-16 font-bold">{{ y.year }}</div>
           <div *ngIf="y.editMode" class="flex flex-wrap gap-4 mb-4 justify-center">
             <div>
               <label class="block text-gray-700 font-medium mb-1">{{ 'COMPANY_FORM.ISSUED_LABEL' |

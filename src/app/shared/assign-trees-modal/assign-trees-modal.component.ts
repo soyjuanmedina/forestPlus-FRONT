@@ -33,7 +33,7 @@ export class AssignTreesModalComponent implements OnInit {
     private landService: LandService,
     private treeService: TreeService,
     public dialogRef: MatDialogRef<AssignTreesModalComponent>,
-    @Inject( MAT_DIALOG_DATA ) public data: { userId: number }
+    @Inject( MAT_DIALOG_DATA ) public data: { userId?: number, companyId?: number }
   ) {
     this.form = this.fb.group( {
       landId: [null, Validators.required],
@@ -56,10 +56,13 @@ export class AssignTreesModalComponent implements OnInit {
   submit () {
     if ( !this.form.valid ) return;
 
-    const payload = {
-      userId: this.data.userId,
-      treeId: this.form.value.treeId
-    };
+
+    const treeId = this.form.value.treeId;
+
+    // Devolver userId o companyId según corresponda
+    const payload = this.data.userId
+      ? { userId: this.data.userId, treeId }
+      : { companyId: this.data.companyId, treeId };
 
     // Cerrar modal y devolver datos al componente padre
     this.dialogRef.close( payload );

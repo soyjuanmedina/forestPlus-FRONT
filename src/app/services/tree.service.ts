@@ -70,4 +70,9 @@ export class TreeService {
   getTreesByLandAndType ( landId: number, treeTypeId: number ): Observable<TreeResponseDto[]> {
     return this.treeApi.getTreesByLandAndType( landId, treeTypeId );
   }
+
+  // Asignar árbol a compañía (nuevo endpoint)
+  assignTreeToCompany ( treeId: number, companyId: number ): Observable<TreeResponseDto> {
+    return this.treeApi.assignTreeToCompany( treeId, companyId );
+  }
 }

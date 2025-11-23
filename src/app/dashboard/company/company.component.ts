@@ -36,8 +36,7 @@ export class CompanyComponent implements OnInit, AfterViewInit {
     private router: Router,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private authService: AuthService,
-    private dialog: MatDialog
+    private authService: AuthService
   ) {
     Chart.register( DoughnutController, ArcElement, Tooltip, Legend );
   }
@@ -90,22 +89,7 @@ export class CompanyComponent implements OnInit, AfterViewInit {
     }
   }
 
-  openAssignTreesModal ( companyId: number ) {
-    // Abrimos el modal pasando solo el companyId
-    const dialogRef = this.dialog.open( AssignTreesModalComponent, {
-      width: '400px',
-      data: { companyId }
-    } );
 
-    dialogRef.afterClosed().subscribe( result => {
-      if ( result && result.treeId ) {
-        this.treeService.assignTreeToUser( result.treeId, companyId )
-          .subscribe( () => {
-            this.loadCompanyTrees();
-          } );
-      }
-    } );
-  }
 
   checkRole () {
     const role = this.authService.currentUserRole;

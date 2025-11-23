@@ -15,6 +15,10 @@ import { CompanyCo2Service } from '../../../services/company-co2.service';
 import { UserService } from '../../../services/user.service';
 import { Chart, ChartConfiguration, Plugin, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
 import { TranslateModule } from '@ngx-translate/core';
+import { AssignTreesModalComponent } from '../../../shared/assign-trees-modal/assign-trees-modal.component';
+import { MatDialog } from '@angular/material/dialog';
+import { TreeService } from '../../../services/tree.service';
+import { AuthService } from '../../../services/auth.service';
 
 interface LocalCO2Year {
   year: number;
@@ -58,6 +62,8 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
   previewImage?: string;
   selectedFile?: File;
   currentUser$ = this.userService.getCurrentUser$();
+  isAdmin = false;
+  companyTrees: any[] = [];
 
   private destroy$ = new Subject<void>();
 
@@ -67,17 +73,22 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
     private companyCo2Service: CompanyCo2Service,
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private treeService: TreeService,
+    private dialog: MatDialog,
+    private authService: AuthService
   ) {
     Chart.register( DoughnutController, ArcElement, Tooltip, Legend );
   }
 
   ngOnInit () {
     this.initForm();
+    this.checkRole();
 
     const id = Number( this.route.snapshot.paramMap.get( 'id' ) );
     if ( id ) {
       this.loadCompany( id );
+      this.loadCompanyTrees( id );
     }
 
     this.userService.getUser().pipe( takeUntil( this.destroy$ ) ).subscribe( user => this.user = user );
@@ -93,6 +104,36 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
     this.companyForm = this.fb.group( {
       name: ['', Validators.required],
       address: ['']
+    } );
+  }
+
+  checkRole () {
+    const role = this.authService.currentUserRole;
+    this.isAdmin = role === 'ADMIN';
+  }
+
+  openAssignTreesModal ( companyId: number ) {
+    // Abrimos el modal pasando solo el companyId
+    const dialogRef = this.dialog.open( AssignTreesModalComponent, {
+      width: '400px',
+      data: { companyId }
+    } );
+
+    dialogRef.afterClosed().subscribe( result => {
+      if ( result && result.treeId ) {
+        this.treeService.assignTreeToCompany( result.treeId, companyId )
+          .subscribe( () => {
+            this.loadCompanyTrees( companyId );
+          } );
+      }
+    } );
+  }
+
+  loadCompanyTrees ( companyId: number ) {
+
+    this.treeService.getTreesByOwner( undefined, companyId ).subscribe( {
+      next: trees => this.companyTrees = trees,
+      error: err => console.error( 'Error cargando árboles de la compañía:', err )
     } );
   }
 

@@ -8,7 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EditTreeModalComponent } from '../../../shared/edit-tree-modal/edit-tree-modal.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component( {
   selector: 'app-edit-trees',
@@ -33,14 +33,16 @@ export class EditTreesComponent implements OnInit {
   pageSize = 10;
   totalPages = 1;
 
-  constructor ( private treeService: TreeService, private dialog: MatDialog, private router: Router ) { }
+  constructor ( private treeService: TreeService, private dialog: MatDialog, private router: Router, private route: ActivatedRoute ) { }
 
   ngOnInit (): void {
     this.loadTrees();
   }
 
   loadTrees (): void {
-    this.treeService.getAllTrees().subscribe( ( trees ) => {
+    const landId = Number( this.route.snapshot.paramMap.get( 'landId' ) );
+    const treeTypeId = Number( this.route.snapshot.paramMap.get( 'treeTypeId' ) );
+    this.treeService.getTreesByLandAndType( landId, treeTypeId ).subscribe( ( trees ) => {
       this.trees = trees;
       this.applyFilter();
     } );

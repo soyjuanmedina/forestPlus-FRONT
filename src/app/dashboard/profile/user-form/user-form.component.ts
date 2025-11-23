@@ -6,10 +6,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ROLES, RolesEnum } from '../../../models/roles';
-import { RegisterUserRequestDto, UserResponseDto } from '../../../api';
+import { LandTreeSummaryResponseDto, RegisterUserRequestDto, UserResponseDto } from '../../../api';
 import { UserService } from '../../../services/user.service';
 import { AuthService } from '../../../services/auth.service';
 import { CompanyService } from '../../../services/company.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AssignTreesModalComponent } from '../../../shared/assign-trees-modal/assign-trees-modal.component';
+import { TreeService } from '../../../services/tree.service';
 
 @Component( {
   selector: 'app-user-form',
@@ -37,6 +40,7 @@ export class UserFormComponent implements OnInit {
   isCompanyAdmin = false;
   isAdmin = false;
   showCompanySelector = false;
+  plantedTrees: LandTreeSummaryResponseDto[] = [];
 
   constructor (
     private fb: FormBuilder,
@@ -45,7 +49,9 @@ export class UserFormComponent implements OnInit {
     private companyService: CompanyService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dialog: MatDialog,
+    private treeService: TreeService,
   ) { }
 
   ngOnInit (): void {
@@ -77,6 +83,7 @@ export class UserFormComponent implements OnInit {
           this.isEditMode = true;
           this.userId = +id;
           this.loadUser( this.userId );
+          this.loadUserTrees( this.userId );
         }
       } );
 
@@ -121,6 +128,7 @@ export class UserFormComponent implements OnInit {
         this.userForm.get( 'role' )?.disable();
         this.userForm.get( 'companyId' )?.disable();
         this.userForm.get( 'password' )?.disable();
+        this.loadUserTrees( this.userId );
       }
     }
 
@@ -240,6 +248,35 @@ export class UserFormComponent implements OnInit {
     } );
   }
 
+  loadUserTrees ( userId: number ) {
+    this.treeService.getTreesByOwner( userId ).subscribe( {
+      next: trees => this.plantedTrees = trees,
+      error: err => console.error( 'Error al cargar árboles', err )
+    } );
+  }
+
+  checkRole () {
+    const role = this.authService.currentUserRole;
+    this.isAdmin = role === 'ADMIN';
+  }
+
+  openAssignTreesModal ( userId: number ) {
+    // Abrimos el modal pasando solo el userId
+    const dialogRef = this.dialog.open( AssignTreesModalComponent, {
+      width: '400px',
+      data: { userId }
+    } );
+
+    dialogRef.afterClosed().subscribe( result => {
+      if ( result && result.treeId ) {
+        this.treeService.assignTreeToUser( result.treeId, userId )
+          .subscribe( () => {
+            this.loadUserTrees( userId );
+          } );
+      }
+    } );
+  }
+
   private finalizeUpdate ( user: UserResponseDto ) {
     this.user = user;
     this.previewImage = user.picture;
@@ -263,7 +300,6 @@ export class UserFormComponent implements OnInit {
   }
 
   showCompanySelectorDynamic (): boolean {
-    const currentUserRole = this.authService.currentUserRole; // rol del usuario logueado
     const selectedRole = this.userForm.get( 'role' )?.value;
 
     return selectedRole === RolesEnum.COMPANY_ADMIN || selectedRole === RolesEnum.COMPANY_USER;

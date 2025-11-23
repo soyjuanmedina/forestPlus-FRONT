@@ -11,8 +11,6 @@ import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { TreeService } from '../../services/tree.service';
 import { Subject, takeUntil } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
-import { AssignTreesModalComponent } from '../../shared/assign-trees-modal/assign-trees-modal.component';
 
 @Component( {
   selector: 'app-profile',
@@ -39,7 +37,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private treeService: TreeService,
-    private dialog: MatDialog,
+
   ) { }
 
   ngOnInit (): void {
@@ -89,22 +87,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.isAdmin = role === 'ADMIN';
   }
 
-  openAssignTreesModal ( userId: number ) {
-    // Abrimos el modal pasando solo el userId
-    const dialogRef = this.dialog.open( AssignTreesModalComponent, {
-      width: '400px',
-      data: { userId }
-    } );
 
-    dialogRef.afterClosed().subscribe( result => {
-      if ( result && result.treeId ) {
-        this.treeService.assignTreeToUser( result.treeId, userId )
-          .subscribe( () => {
-            this.loadUserTrees( userId );
-          } );
-      }
-    } );
-  }
 
   ngOnDestroy (): void {
     this.destroy$.next();
