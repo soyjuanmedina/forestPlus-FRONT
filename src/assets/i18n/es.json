@@ -325,7 +325,8 @@
     "DELETE_BUTTON": "Eliminar Terreno",
     "ADD_COORDINATE": "Añadir coordenadas",
     "PLANT_TREES": "Plantar árboles",
-    "EDIT_TREES": "Editar"
+    "EDIT_TREES": "Editar",
+    "DELETE_COORDINATE": "Eliminar Coordenada"
   },
   "ADD_COORDINATE": {
     "TITLE": "Añadir coordenada",

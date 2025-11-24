@@ -83,7 +83,13 @@
         <li *ngFor="let coord of coordinates" class="flex justify-between border-b py-1">
           <span>Lat: {{ coord.latitude | number:'1.6-6' }}, Lng: {{ coord.longitude | number:'1.6-6'
             }}</span>
-          <span class="text-gray-500 text-sm">ID: {{ coord.id }}</span>
+          <div class="flex items-center gap-2">
+            <!-- BOTÓN ELIMINAR -->
+            <button type="button" (click)="deleteCoordinate(coord)"
+              class="bg-red-200 text-red-800 px-2 py-1 rounded-full hover:bg-red-300 transition text-sm">
+              {{ 'LAND_FORM.DELETE_COORDINATE' | translate }}
+            </button>
+          </div>
         </li>
       </ul>
       <ng-template #noCoordinates>

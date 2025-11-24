@@ -230,4 +230,15 @@ export class LandFormComponent implements OnInit, OnDestroy {
     this.router.navigate( ['/land/edit-trees', this.land?.id, plantedTrees.treeTypeId] );
   }
 
+  deleteCoordinate ( coord: CoordinateResponseDto ) {
+    if ( !coord.id ) {
+      console.error( "La coordenada no tiene ID, no se puede eliminar" );
+      return;
+    }
+    this.coordinateService.deleteCoordinate( coord.id ).subscribe( {
+      next: () => this.loadCoordinates(),
+      error: err => console.error( 'Error al guardar coordenada', err )
+    } );
+  }
+
 }
