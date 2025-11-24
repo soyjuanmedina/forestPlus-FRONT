@@ -1,1 +1,8 @@
-.map-container { width: 100%; height: 400px; }
+
+
+.map-container {
+  width: 100%;
+  height: 400px; // pon el tamaño que quieras
+  border-radius: 1rem;
+  overflow: hidden;
+}

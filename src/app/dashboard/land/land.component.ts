@@ -24,7 +24,7 @@ import { CoordinateService } from '../../services/coordinate.service';
   templateUrl: './land.component.html',
   styleUrls: ['./land.component.scss']
 } )
-export class LandComponent implements OnInit, AfterViewInit {
+export class LandComponent implements OnInit {
 
   land!: LandResponseDto;
   previewImage: string | null = null;
@@ -54,6 +54,8 @@ export class LandComponent implements OnInit, AfterViewInit {
           this.land = land;
           this.previewImage = land.picture || null;
           this.isEditable = this.user?.role === RolesEnum.ADMIN;
+          setTimeout( () => this.initMap(), 0 );
+
           this.loadPlantedTrees();
           this.loadCoordinates();
         },
@@ -65,18 +67,20 @@ export class LandComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit (): void {
-    this.initMap();
-  }
-
   private initMap (): void {
-    // Inicializa el mapa centrado en El Ejido
+    if ( this.map ) return; // evitar crear 2 mapas
+
     this.map = new maplibregl.Map( {
       container: 'map',
       style: 'https://api.maptiler.com/maps/streets/style.json?key=sdnUoYHqfQl85tCCphh6',
-      center: [-2.7936, 36.8186],
       zoom: 13,
+      center: [-2.7936, 36.8186],
       interactive: true
+    } );
+
+    // Esperar a que cargue el mapa antes de dibujar
+    this.map.on( 'load', () => {
+      this.drawLandPolygon();
     } );
   }
 
@@ -84,13 +88,16 @@ export class LandComponent implements OnInit, AfterViewInit {
     if ( !this.land?.id ) return;
 
     this.coordinateService.getCoordinatesByLand( this.land.id ).subscribe( {
-      next: ( coords: CoordinateResponseDto[] ) => {
+      next: ( coords ) => {
         this.coordinates = coords;
-        this.drawLandPolygon();
+
+        // Si el mapa está cargado, dibuja.
+        if ( this.map && this.map.isStyleLoaded() ) {
+          this.drawLandPolygon();
+        }
       },
       error: ( err ) => {
         console.error( 'Error cargando coordenadas', err );
-        this.snackBar.open( 'Error cargando coordenadas', 'Cerrar', { duration: 3000 } );
       }
     } );
   }
