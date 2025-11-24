@@ -74,7 +74,6 @@ export class LandComponent implements OnInit {
       container: 'map',
       style: 'https://api.maptiler.com/maps/streets/style.json?key=sdnUoYHqfQl85tCCphh6',
       zoom: 13,
-      center: [-2.7936, 36.8186],
       interactive: true
     } );
 
@@ -106,9 +105,11 @@ export class LandComponent implements OnInit {
     if ( !this.map ) return;
 
     if ( this.coordinates.length > 0 ) {
-      const coords = this.coordinates
+      let coords = this.coordinates
         .filter( c => c.latitude != null && c.longitude != null )
         .map( c => [c.longitude!, c.latitude!] as [number, number] );
+
+      coords = this.orderPolygonCoords( coords ); // <-- ORDENAR AQUÍ
 
       if ( coords.length > 0 ) {
         coords.push( coords[0] ); // cerrar polígono
@@ -154,6 +155,24 @@ export class LandComponent implements OnInit {
         this.map.setCenter( coords[0] );
       }
     }
+  }
+
+  // Ordenar coordenadas en sentido horario alrededor del centroide
+  private orderPolygonCoords ( coords: [number, number][] ): [number, number][] {
+    // Calcular centroide
+    const centroid = coords.reduce(
+      ( acc, val ) => [acc[0] + val[0] / coords.length, acc[1] + val[1] / coords.length],
+      [0, 0]
+    );
+
+    // Ordenar por ángulo
+    return coords
+      .map( ( coord ) => ( {
+        coord,
+        angle: Math.atan2( coord[1] - centroid[1], coord[0] - centroid[0] ),
+      } ) )
+      .sort( ( a, b ) => a.angle - b.angle )
+      .map( ( item ) => item.coord );
   }
 
 
