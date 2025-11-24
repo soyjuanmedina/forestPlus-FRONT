@@ -61,7 +61,7 @@ export const routes: Routes = [
       },
       {
         path: 'land/:id',
-        component: LandComponent,
+        loadComponent: () => import( './dashboard/land/land.component' ).then( m => m.LandComponent ),
         canActivate: [AuthGuard]
       },
       {
