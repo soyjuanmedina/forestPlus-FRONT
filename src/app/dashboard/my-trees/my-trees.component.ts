@@ -79,7 +79,7 @@ export class MyTreesComponent implements OnInit {
     if ( this.currentPage + 1 < this.totalPages ) this.currentPage++;
   }
 
-  buyNewTree (): void {
+  buyNewTree () {
     this.router.navigate( ['/buy-tree'] );
   }
 }

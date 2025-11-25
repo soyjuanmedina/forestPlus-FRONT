@@ -19,6 +19,7 @@ import { TreeTypeComponent } from './dashboard/tree-type/tree-type.component';
 import { AdminLandsComponent } from './dashboard/admin/lands/admin-lands/admin-lands.component';
 import { LandComponent } from './dashboard/land/land.component';
 import { MyTreesComponent } from './dashboard/my-trees/my-trees.component';
+import { BuyTreeComponent } from './dashboard/my-trees/buy-tree/buy-tree.component';
 
 export const routes: Routes = [
   // Public routes
@@ -37,6 +38,7 @@ export const routes: Routes = [
       { path: 'home', component: HomeComponent },
       { path: 'my-trees', component: MyTreesComponent },
       { path: 'profile', component: ProfileComponent },
+      { path: 'buy-tree', component: BuyTreeComponent },
       {
         path: 'profile/:id',
         component: ProfileComponent,

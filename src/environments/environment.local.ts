@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  devAccessKey: 'forestplus2025',
+  devAccessKey: 'fp',
   apiBaseUrl: 'http://localhost:8080'
 };

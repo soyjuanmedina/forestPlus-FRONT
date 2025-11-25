@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  devAccessKey: 'forestplus2025',
+  devAccessKey: 'fp',
   apiBaseUrl: 'https://forestplusapp.com'
 };

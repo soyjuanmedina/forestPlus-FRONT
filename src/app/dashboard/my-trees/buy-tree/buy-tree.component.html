@@ -1,0 +1,38 @@
+<div class="max-w-4xl mx-auto p-6">
+  <h1 class="text-3xl font-bold mb-6 text-green-700">
+    Comprar un árbol
+  </h1>
+
+  <mat-card class="p-6 shadow-md rounded-xl">
+    <div class="flex flex-col gap-4">
+      <p class="text-gray-700 text-lg">
+        Selecciona cuántos árboles quieres plantar.
+        Más adelante añadiremos más pasos (especies, dedicación, etc).
+      </p>
+
+      <div class="flex items-center gap-4">
+        <button mat-mini-fab color="primary" (click)="decrease()">
+          <mat-icon>remove</mat-icon>
+        </button>
+
+        <div class="text-3xl font-bold w-16 text-center">
+          {{ quantity }}
+        </div>
+
+        <button mat-mini-fab color="primary" (click)="increase()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+
+      <div class="text-xl font-semibold mt-4 text-gray-800">
+        Precio total: {{ quantity * mockPrice }} €
+      </div>
+
+      <button
+        class="bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-xl transition text-lg"
+        (click)="confirmPurchase()">
+        Continuar con la compra
+      </button>
+    </div>
+  </mat-card>
+</div>
