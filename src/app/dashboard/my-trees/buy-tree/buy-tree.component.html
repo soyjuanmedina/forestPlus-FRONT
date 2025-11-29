@@ -1,92 +1,134 @@
-<div class="max-w-4xl mx-auto p-6">
+<div class="max-w-6xl mx-auto p-6 flex gap-6">
 
-  <h1 class="text-3xl font-bold mb-6 text-green-700">{{ 'BUY_TREE.TITLE' | translate }}</h1>
+  <!-- Columna izquierda: Flujo de compra -->
+  <div class="flex-grow">
+    <h1 class="text-3xl font-bold mb-6 text-green-700">
+      {{ 'BUY_TREE.TITLE' | translate }}
+    </h1>
 
-  <mat-card class="p-6 shadow-md rounded-xl">
+    <mat-card class="p-6 shadow-md rounded-xl">
 
-    <!-- Paso 1: Land -->
-    <ng-container *ngIf="step === 1">
-      <h2 class="text-2xl font-semibold mb-4">{{ 'BUY_TREE.SELECT_LAND' | translate }}</h2>
+      <!-- Aquí van tus pasos EXACTAMENTE igual -->
+      <!-- Paso 1, Paso 2, Paso 3, Paso 4 -->
+      <!-- (solo se mueve todo dentro de este div) -->
 
-      <mat-select [(value)]="selectedLand"
-        placeholder="{{ 'BUY_TREE.SELECT_LAND_PLACEHOLDER' | translate }}" class="w-full">
-        <mat-option *ngFor="let l of lands" [value]="l.id">
-          {{ l.name }}
-        </mat-option>
-      </mat-select>
+      <!-- Paso 1 -->
+      <ng-container *ngIf="step === 1">
+        <h2 class="text-2xl font-semibold mb-4">{{ 'BUY_TREE.SELECT_LAND' | translate }}</h2>
 
-      <div class="flex justify-end mt-6">
-        <button mat-raised-button color="primary" (click)="nextStep()" [disabled]="!selectedLand">
-          {{ 'BUY_TREE.NEXT' | translate }}
-        </button>
-      </div>
-    </ng-container>
+        <mat-select [(value)]="selectedLand"
+          placeholder="{{ 'BUY_TREE.SELECT_LAND_PLACEHOLDER' | translate }}" class="w-full"
+          (selectionChange)="onLandSelected($event.value)">
+          <mat-option *ngFor="let l of lands" [value]="l.id">
+            {{ l.name }}
+          </mat-option>
+        </mat-select>
 
-    <!-- Paso 2: Tipo de árbol -->
-    <ng-container *ngIf="step === 2">
-      <h2 class="text-2xl font-semibold mb-4">{{ 'BUY_TREE.SELECT_TREE' | translate }}</h2>
+        <div class="flex justify-end mt-6">
+          <button mat-raised-button color="primary" (click)="nextStep()" [disabled]="!selectedLand">
+            {{ 'BUY_TREE.NEXT' | translate }}
+          </button>
+        </div>
+      </ng-container>
 
-      <mat-select [(value)]="selectedTree"
-        placeholder="{{ 'BUY_TREE.SELECT_TREE_PLACEHOLDER' | translate }}" class="w-full">
-        <mat-option *ngFor="let t of treeTypes" [value]="t">
-          {{ t.name }} — {{ (treePrices[t.id!] ?? defaultTreePrice) | number:'1.2-2' }} €
-        </mat-option>
-      </mat-select>
+      <!-- Paso 2 -->
+      <ng-container *ngIf="step === 2">
+        <h2 class="text-2xl font-semibold mb-4">{{ 'BUY_TREE.SELECT_TREE' | translate }}</h2>
 
-      <div class="flex justify-between mt-6">
-        <button mat-button (click)="prevStep()">{{ 'BUY_TREE.BACK' | translate }}</button>
-        <button mat-raised-button color="primary" (click)="nextStep()" [disabled]="!selectedTree">
-          {{ 'BUY_TREE.NEXT' | translate }}
-        </button>
-      </div>
-    </ng-container>
+        <mat-select [(value)]="selectedTreeType"
+          placeholder="{{ 'BUY_TREE.SELECT_TREE_PLACEHOLDER' | translate }}" class="w-full"
+          (selectionChange)="onTreeSelected($event.value)">
+          <mat-option *ngFor="let t of treeTypes" [value]="t">
+            {{ t.name }} — {{ (treePrices[t.id!] ?? defaultTreePrice) | number:'1.2-2' }} €
+          </mat-option>
+        </mat-select>
 
-    <!-- Paso 3: Cantidad -->
-    <ng-container *ngIf="step === 3">
-      <h2 class="text-2xl font-semibold mb-4">{{ 'BUY_TREE.SELECT_QUANTITY' | translate }}</h2>
+        <div class="flex justify-between mt-6">
+          <button mat-button (click)="prevStep()">{{ 'BUY_TREE.BACK' | translate }}</button>
+          <button mat-raised-button color="primary" (click)="nextStep()"
+            [disabled]="!selectedTreeType">
+            {{ 'BUY_TREE.NEXT' | translate }}
+          </button>
+        </div>
+      </ng-container>
 
-      <div class="flex items-center gap-4">
-        <button mat-mini-fab color="primary" (click)="decrease()">
-          <mat-icon>remove</mat-icon>
-        </button>
+      <!-- Paso 3 -->
+      <ng-container *ngIf="step === 3">
+        <h2 class="text-2xl font-semibold mb-4">{{ 'BUY_TREE.SELECT_QUANTITY' | translate }}</h2>
 
-        <div class="text-3xl font-bold w-16 text-center">
-          {{ quantity }}
+        <div class="flex items-center gap-4">
+          <button mat-mini-fab color="primary" (click)="decrease()">
+            <mat-icon>remove</mat-icon>
+          </button>
+
+          <div class="text-3xl font-bold w-16 text-center">
+            {{ quantity }}
+          </div>
+
+          <button mat-mini-fab color="primary" (click)="increase()">
+            <mat-icon>add</mat-icon>
+          </button>
         </div>
 
-        <button mat-mini-fab color="primary" (click)="increase()">
-          <mat-icon>add</mat-icon>
-        </button>
-      </div>
+        <div class="mt-6 flex justify-between">
+          <button mat-button (click)="prevStep()">{{ 'BUY_TREE.BACK' | translate }}</button>
+          <button mat-raised-button color="primary" (click)="nextStep()">
+            {{ 'BUY_TREE.NEXT' | translate }}
+          </button>
+        </div>
+      </ng-container>
 
-      <div class="mt-6 flex justify-between">
-        <button mat-button (click)="prevStep()">{{ 'BUY_TREE.BACK' | translate }}</button>
-        <button mat-raised-button color="primary" (click)="nextStep()">{{ 'BUY_TREE.NEXT' |
-          translate }}</button>
-      </div>
-    </ng-container>
+      <!-- Paso 4 -->
+      <ng-container *ngIf="step === 4">
+        <h2 class="text-2xl font-semibold mb-4">{{ 'BUY_TREE.SUMMARY' | translate }}</h2>
 
-    <!-- Paso 4: Resumen -->
-    <ng-container *ngIf="step === 4">
-      <h2 class="text-2xl font-semibold mb-4">{{ 'BUY_TREE.SUMMARY' | translate }}</h2>
+        <p><strong>{{ 'BUY_TREE.LAND' | translate }}:</strong> {{ selectedLandName }}</p>
+        <p><strong>{{ 'BUY_TREE.TREE' | translate }}:</strong> {{ selectedTreeType?.name }}</p>
+        <p><strong>{{ 'BUY_TREE.UNIT_PRICE' | translate }}:</strong>
+          {{ unitPrice | number:'1.2-2' }} €
+        </p>
+        <p><strong>{{ 'BUY_TREE.QUANTITY' | translate }}:</strong> {{ quantity }}</p>
+        <p class="text-xl font-bold mt-3">
+          {{ 'BUY_TREE.TOTAL' | translate }}: {{ totalPrice | number:'1.2-2' }} €
+        </p>
 
-      <p><strong>{{ 'BUY_TREE.LAND' | translate }}:</strong> {{ selectedLandName }}</p>
-      <p><strong>{{ 'BUY_TREE.TREE' | translate }}:</strong> {{ selectedTree?.name }}</p>
-      <p><strong>{{ 'BUY_TREE.UNIT_PRICE' | translate }}:</strong>
-        {{ unitPrice | number:'1.2-2' }} €
-      </p>
-      <p><strong>{{ 'BUY_TREE.QUANTITY' | translate }}:</strong> {{ quantity }}</p>
-      <p class="text-xl font-bold mt-3">
-        {{ 'BUY_TREE.TOTAL' | translate }}: {{ totalPrice | number:'1.2-2' }} €
-      </p>
+        <div class="flex justify-between mt-6">
+          <button mat-button (click)="prevStep()">{{ 'BUY_TREE.BACK' | translate }}</button>
+          <button mat-raised-button color="accent" (click)="confirmPurchase()">
+            {{ 'BUY_TREE.CONFIRM' | translate }}
+          </button>
+        </div>
+      </ng-container>
 
-      <div class="flex justify-between mt-6">
-        <button mat-button (click)="prevStep()">{{ 'BUY_TREE.BACK' | translate }}</button>
-        <button mat-raised-button color="accent" (click)="confirmPurchase()">
-          {{ 'BUY_TREE.CONFIRM' | translate }}
-        </button>
-      </div>
-    </ng-container>
+    </mat-card>
+  </div>
 
-  </mat-card>
+  <!-- Columna derecha: Información -->
+  <div class="w-80">
+
+    <!-- Info de terreno -->
+    <mat-card *ngIf="step === 1 && selectedLandInfo" class="p-4">
+      <h3 class="text-xl font-bold mb-2">{{ selectedLandInfo.name }}</h3>
+      <img *ngIf="selectedLandInfo.picture" [src]="selectedLandInfo.picture" class="rounded mb-3" />
+      <p>{{ selectedLandInfo.location }}</p>
+
+      <button mat-button color="primary" (click)="openLandInfoModal(selectedLandInfo)">
+        Más información
+      </button>
+    </mat-card>
+
+    <!-- Info tipo de árbol -->
+    <mat-card *ngIf="step === 2 && selectedTreeTypeInfo" class="p-4">
+      <h3 class="text-xl font-bold mb-2">{{ selectedTreeTypeInfo.name }}</h3>
+      <img *ngIf="selectedTreeTypeInfo.picture" [src]="selectedTreeTypeInfo.picture"
+        class="rounded mb-3" />
+      <p>{{ selectedTreeTypeInfo.description }}</p>
+
+      <button mat-button color="primary" (click)="openTreeInfoModal(selectedTreeTypeInfo)">
+        Más información
+      </button>
+    </mat-card>
+
+  </div>
+
 </div>

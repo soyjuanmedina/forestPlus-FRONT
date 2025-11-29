@@ -7,8 +7,10 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { LandService } from '../../../services/land.service';
 import { TreeTypeService } from '../../../services/tree-type.service';
-import { LandResponseDto } from '../../../api/model/landResponse';
 import { TreeTypeResponseDto } from '../../../api/model/treeTypeResponse';
+import { MatDialog } from '@angular/material/dialog';
+import { LandResponseDto } from '../../../api';
+import { ModalService } from '../../../services/modal.service';
 
 @Component( {
   selector: 'app-buy-tree',
@@ -30,12 +32,14 @@ export class BuyTreeComponent implements OnInit {
 
   lands: LandResponseDto[] = [];
   selectedLand: number | null = null;
+  selectedLandInfo: LandResponseDto | null = null;   // ⭐ Info panel derecha
 
   treeTypes: TreeTypeResponseDto[] = [];
-  selectedTree: TreeTypeResponseDto | null = null;
+  selectedTreeType: TreeTypeResponseDto | null = null;
+  selectedTreeTypeInfo: TreeTypeResponseDto | null = null;  // ⭐ Info panel derecha
+
   defaultTreePrice = 2.0;
 
-  // Precios locales por id de árbol
   treePrices: { [key: number]: number | undefined } = {
     1: 2.5,
     2: 3.0,
@@ -49,13 +53,18 @@ export class BuyTreeComponent implements OnInit {
 
   constructor (
     private landService: LandService,
-    private treeTypeService: TreeTypeService
+    private treeTypeService: TreeTypeService,
+    private modalService: ModalService
   ) { }
 
   ngOnInit (): void {
     this.loadLands();
     this.loadTreeTypes();
   }
+
+  // ---------------------------------------------------------------------
+  // CARGA DE DATOS
+  // ---------------------------------------------------------------------
 
   loadLands () {
     this.landService.getAllLands().subscribe( {
@@ -71,9 +80,53 @@ export class BuyTreeComponent implements OnInit {
     } );
   }
 
+  // ---------------------------------------------------------------------
+  // SELECTORES + INFO PANEL
+  // ---------------------------------------------------------------------
+
+  onLandSelected ( landId: number ) {
+    this.selectedLand = landId;
+    this.selectedLandInfo = this.lands.find( l => l.id === landId ) ?? null;
+  }
+
+  onTreeSelected ( treeType: TreeTypeResponseDto ) {
+    this.selectedTreeType = treeType;
+    this.selectedTreeTypeInfo = treeType;
+  }
+
+  openLandInfoModal ( land: LandResponseDto ) {
+    this.modalService.openLandInfoModal( land );
+  }
+
+  openTreeInfoModal ( treeType: TreeTypeResponseDto ) {
+    this.modalService.openLandInfoModal( treeType );
+  }
+
+  // ---------------------------------------------------------------------
+  // GETTERS
+  // ---------------------------------------------------------------------
+
   get selectedLandName (): string {
     return this.lands.find( l => l.id === this.selectedLand )?.name ?? '';
   }
+
+  get totalPrice (): number {
+    if ( !this.selectedTreeType ) return 0;
+
+    const id = this.selectedTreeType.id!;
+    const price = this.treePrices[id] ?? this.defaultTreePrice;
+    return this.quantity * price;
+  }
+
+  get unitPrice (): number {
+    return this.selectedTreeType
+      ? this.treePrices[this.selectedTreeType.id!] ?? this.defaultTreePrice
+      : 0;
+  }
+
+  // ---------------------------------------------------------------------
+  // NAVEGACIÓN
+  // ---------------------------------------------------------------------
 
   nextStep () {
     if ( this.step < 4 ) this.step++;
@@ -83,32 +136,24 @@ export class BuyTreeComponent implements OnInit {
     if ( this.step > 1 ) this.step--;
   }
 
-  // Usamos el precio local
-  get totalPrice (): number {
-    if ( !this.selectedTree ) return 0;
+  // ---------------------------------------------------------------------
+  // CANTIDAD
+  // ---------------------------------------------------------------------
 
-    const id = this.selectedTree.id!;
-    const price = this.treePrices[id] ?? this.defaultTreePrice; // fallback
+  increase () { this.quantity++; }
+  decrease () { if ( this.quantity > 1 ) this.quantity--; }
 
-    return this.quantity * price;
-  }
+  // ---------------------------------------------------------------------
+  // COMPRA
+  // ---------------------------------------------------------------------
 
   confirmPurchase () {
     alert(
       `Compra confirmada:
 Land: ${this.selectedLandName}
-Árbol: ${this.selectedTree?.name}
+Árbol: ${this.selectedTreeType?.name}
 Cantidad: ${this.quantity}
 Precio total: ${this.totalPrice} €`
     );
-  }
-
-  increase () { this.quantity++; }
-  decrease () { if ( this.quantity > 1 ) this.quantity--; }
-
-  get unitPrice (): number {
-    return this.selectedTree
-      ? this.treePrices[this.selectedTree.id!] ?? this.defaultTreePrice
-      : 0;
   }
 }

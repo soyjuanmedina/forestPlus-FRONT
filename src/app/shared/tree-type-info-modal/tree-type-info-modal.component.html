@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Información del Árbol</h2>
+
+<mat-dialog-content>
+  <p><strong>Especie:</strong> {{ data.tree?.species }}</p>
+  <p><strong>Altura:</strong> {{ data.tree?.height }} m</p>
+  <p><strong>Edad Aproximada:</strong> {{ data.tree?.age }} años</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>

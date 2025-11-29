@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Información del Terreno</h2>
+
+<mat-dialog-content>
+  <p><strong>Nombre:</strong> {{ data.land?.name }}</p>
+  <p><strong>Superficie:</strong> {{ data.land?.area }} m²</p>
+  <p><strong>Ubicación:</strong> {{ data.land?.location }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>
