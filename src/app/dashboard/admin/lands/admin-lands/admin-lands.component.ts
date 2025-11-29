@@ -104,8 +104,8 @@ export class AdminLandsComponent implements OnInit {
     const dialogRef = this.dialog.open( ConfirmDialogComponent, {
       width: '400px',
       data: {
-        title: this.translate.instant( 'ADMIN_LANDS.CONFIRM_DELETE_LAND.TITLE' ),
-        message: this.translate.instant( 'ADMIN_LANDS.CONFIRM_DELETE_LAND.MESSAGE', { name: land.name } )
+        title: this.translate.instant( 'COMMON.CONFIRM_DELETE' ),
+        message: this.translate.instant( 'COMMON.CONFIRM_DELETE_MESSAGE', { name: land.name } )
       }
     } );
 

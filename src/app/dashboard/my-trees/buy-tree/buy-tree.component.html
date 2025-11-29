@@ -1,14 +1,49 @@
 <div class="max-w-4xl mx-auto p-6">
-  <h1 class="text-3xl font-bold mb-6 text-green-700">
-    Comprar un árbol
-  </h1>
+
+  <h1 class="text-3xl font-bold mb-6 text-green-700">{{ 'BUY_TREE.TITLE' | translate }}</h1>
 
   <mat-card class="p-6 shadow-md rounded-xl">
-    <div class="flex flex-col gap-4">
-      <p class="text-gray-700 text-lg">
-        Selecciona cuántos árboles quieres plantar.
-        Más adelante añadiremos más pasos (especies, dedicación, etc).
-      </p>
+
+    <!-- Paso 1: Land -->
+    <ng-container *ngIf="step === 1">
+      <h2 class="text-2xl font-semibold mb-4">{{ 'BUY_TREE.SELECT_LAND' | translate }}</h2>
+
+      <mat-select [(value)]="selectedLand"
+        placeholder="{{ 'BUY_TREE.SELECT_LAND_PLACEHOLDER' | translate }}" class="w-full">
+        <mat-option *ngFor="let l of lands" [value]="l.id">
+          {{ l.name }}
+        </mat-option>
+      </mat-select>
+
+      <div class="flex justify-end mt-6">
+        <button mat-raised-button color="primary" (click)="nextStep()" [disabled]="!selectedLand">
+          {{ 'BUY_TREE.NEXT' | translate }}
+        </button>
+      </div>
+    </ng-container>
+
+    <!-- Paso 2: Tipo de árbol -->
+    <ng-container *ngIf="step === 2">
+      <h2 class="text-2xl font-semibold mb-4">{{ 'BUY_TREE.SELECT_TREE' | translate }}</h2>
+
+      <mat-select [(value)]="selectedTree"
+        placeholder="{{ 'BUY_TREE.SELECT_TREE_PLACEHOLDER' | translate }}" class="w-full">
+        <mat-option *ngFor="let t of treeTypes" [value]="t">
+          {{ t.name }} — {{ (treePrices[t.id!] ?? defaultTreePrice) | number:'1.2-2' }} €
+        </mat-option>
+      </mat-select>
+
+      <div class="flex justify-between mt-6">
+        <button mat-button (click)="prevStep()">{{ 'BUY_TREE.BACK' | translate }}</button>
+        <button mat-raised-button color="primary" (click)="nextStep()" [disabled]="!selectedTree">
+          {{ 'BUY_TREE.NEXT' | translate }}
+        </button>
+      </div>
+    </ng-container>
+
+    <!-- Paso 3: Cantidad -->
+    <ng-container *ngIf="step === 3">
+      <h2 class="text-2xl font-semibold mb-4">{{ 'BUY_TREE.SELECT_QUANTITY' | translate }}</h2>
 
       <div class="flex items-center gap-4">
         <button mat-mini-fab color="primary" (click)="decrease()">
@@ -24,15 +59,34 @@
         </button>
       </div>
 
-      <div class="text-xl font-semibold mt-4 text-gray-800">
-        Precio total: {{ quantity * mockPrice }} €
+      <div class="mt-6 flex justify-between">
+        <button mat-button (click)="prevStep()">{{ 'BUY_TREE.BACK' | translate }}</button>
+        <button mat-raised-button color="primary" (click)="nextStep()">{{ 'BUY_TREE.NEXT' |
+          translate }}</button>
       </div>
+    </ng-container>
 
-      <button
-        class="bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-xl transition text-lg"
-        (click)="confirmPurchase()">
-        Continuar con la compra
-      </button>
-    </div>
+    <!-- Paso 4: Resumen -->
+    <ng-container *ngIf="step === 4">
+      <h2 class="text-2xl font-semibold mb-4">{{ 'BUY_TREE.SUMMARY' | translate }}</h2>
+
+      <p><strong>{{ 'BUY_TREE.LAND' | translate }}:</strong> {{ selectedLandName }}</p>
+      <p><strong>{{ 'BUY_TREE.TREE' | translate }}:</strong> {{ selectedTree?.name }}</p>
+      <p><strong>{{ 'BUY_TREE.UNIT_PRICE' | translate }}:</strong>
+        {{ unitPrice | number:'1.2-2' }} €
+      </p>
+      <p><strong>{{ 'BUY_TREE.QUANTITY' | translate }}:</strong> {{ quantity }}</p>
+      <p class="text-xl font-bold mt-3">
+        {{ 'BUY_TREE.TOTAL' | translate }}: {{ totalPrice | number:'1.2-2' }} €
+      </p>
+
+      <div class="flex justify-between mt-6">
+        <button mat-button (click)="prevStep()">{{ 'BUY_TREE.BACK' | translate }}</button>
+        <button mat-raised-button color="accent" (click)="confirmPurchase()">
+          {{ 'BUY_TREE.CONFIRM' | translate }}
+        </button>
+      </div>
+    </ng-container>
+
   </mat-card>
 </div>

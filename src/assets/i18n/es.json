@@ -186,7 +186,9 @@
     "SAVE_CHANGES": "Guardar cambios",
     "SAVE": "Guardar",
     "PREVIOUS": "Anterior",
-    "NEXT": "Siguiente"
+    "NEXT": "Siguiente",
+    "CONFIRM_DELETE": "Confirmar eliminación",
+    "CONFIRM_DELETE_MESSAGE": "¿Esta seguro de eliminar este elemento?"
   },
   "ADMIN_TREE_TYPES": {
     "CONFIRM_DELETE_TREE_TYPE": {
@@ -315,7 +317,7 @@
     "NAME_PLACEHOLDER": "Ingrese el nombre del terreno",
     "LOCATION_LABEL": "Ubicación",
     "LOCATION_PLACEHOLDER": "Ingrese la ubicación",
-    "AREA_LABEL": "Superficie (ha)",
+    "AREA_LABEL": "Superficie (m²)",
     "AREA_PLACEHOLDER": "Ingrese la superficie en hectáreas",
     "MAX_TREES_LABEL": "Máximo de Árboles",
     "MAX_TREES_PLACEHOLDER": "Ingrese el número máximo de árboles",
@@ -368,5 +370,22 @@
     "NEXT": "Siguiente",
     "ERROR_LOADING": "Error al cargar tus árboles.",
     "NO_TREES": "No tienes árboles aún."
+  },
+  "BUY_TREE": {
+    "TITLE": "Comprar un árbol",
+    "SELECT_LAND": "1. Selecciona un terreno",
+    "SELECT_LAND_PLACEHOLDER": "Terreno disponible",
+    "SELECT_TREE": "2. Selecciona un tipo de árbol",
+    "SELECT_TREE_PLACEHOLDER": "Tipo de árbol",
+    "SELECT_QUANTITY": "3. Selecciona la cantidad",
+    "SUMMARY": "Resumen de la compra",
+    "LAND": "Terreno",
+    "TREE": "Árbol",
+    "QUANTITY": "Cantidad",
+    "TOTAL": "Total",
+    "NEXT": "Siguiente",
+    "BACK": "Atrás",
+    "CONFIRM": "Confirmar compra",
+    "UNIT_PRICE": "Precio por unidad"
   }
 }
