@@ -25,7 +25,8 @@
         </mat-select>
 
         <div class="flex justify-end mt-6">
-          <button mat-raised-button color="primary" (click)="nextStep()" [disabled]="!selectedLand">
+          <button (click)="nextStep()" [disabled]="!selectedLand"
+            class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition disabled:opacity-40">
             {{ 'BUY_TREE.NEXT' | translate }}
           </button>
         </div>
@@ -44,9 +45,14 @@
         </mat-select>
 
         <div class="flex justify-between mt-6">
-          <button mat-button (click)="prevStep()">{{ 'BUY_TREE.BACK' | translate }}</button>
-          <button mat-raised-button color="primary" (click)="nextStep()"
-            [disabled]="!selectedTreeType">
+
+          <button (click)="prevStep()"
+            class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition disabled:opacity-40">
+            {{ 'BUY_TREE.BACK' | translate }}
+          </button>
+
+          <button (click)="nextStep()" [disabled]="!selectedTreeType"
+            class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition disabled:opacity-40">
             {{ 'BUY_TREE.NEXT' | translate }}
           </button>
         </div>
@@ -57,7 +63,8 @@
         <h2 class="text-2xl font-semibold mb-4">{{ 'BUY_TREE.SELECT_QUANTITY' | translate }}</h2>
 
         <div class="flex items-center gap-4">
-          <button mat-mini-fab color="primary" (click)="decrease()">
+          <button (click)="decrease()"
+            class="bg-green-600 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-green-700">
             <mat-icon>remove</mat-icon>
           </button>
 
@@ -65,14 +72,20 @@
             {{ quantity }}
           </div>
 
-          <button mat-mini-fab color="primary" (click)="increase()">
+          <button (click)="increase()"
+            class="bg-green-600 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-green-700">
             <mat-icon>add</mat-icon>
           </button>
         </div>
 
         <div class="mt-6 flex justify-between">
-          <button mat-button (click)="prevStep()">{{ 'BUY_TREE.BACK' | translate }}</button>
-          <button mat-raised-button color="primary" (click)="nextStep()">
+          <button (click)="prevStep()"
+            class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition disabled:opacity-40">
+            {{ 'BUY_TREE.BACK' | translate }}
+          </button>
+
+          <button (click)="nextStep()"
+            class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition disabled:opacity-40">
             {{ 'BUY_TREE.NEXT' | translate }}
           </button>
         </div>
@@ -93,8 +106,12 @@
         </p>
 
         <div class="flex justify-between mt-6">
-          <button mat-button (click)="prevStep()">{{ 'BUY_TREE.BACK' | translate }}</button>
-          <button mat-raised-button color="accent" (click)="confirmPurchase()">
+          <button (click)="prevStep()"
+            class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition disabled:opacity-40">
+            {{ 'BUY_TREE.BACK' | translate }}
+          </button>
+          <button (click)="confirmPurchase()"
+            class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition">
             {{ 'BUY_TREE.CONFIRM' | translate }}
           </button>
         </div>
@@ -112,8 +129,9 @@
       <img *ngIf="selectedLandInfo.picture" [src]="selectedLandInfo.picture" class="rounded mb-3" />
       <p>{{ selectedLandInfo.location }}</p>
 
-      <button mat-button color="primary" (click)="openLandInfoModal(selectedLandInfo)">
-        Más información
+      <button (click)="openLandInfoModal(selectedLandInfo)"
+        class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition disabled:opacity-40">
+        {{ 'COMMON.MORE_INFO' | translate }}
       </button>
     </mat-card>
 
@@ -123,9 +141,9 @@
       <img *ngIf="selectedTreeTypeInfo.picture" [src]="selectedTreeTypeInfo.picture"
         class="rounded mb-3" />
       <p>{{ selectedTreeTypeInfo.description }}</p>
-
-      <button mat-button color="primary" (click)="openTreeInfoModal(selectedTreeTypeInfo)">
-        Más información
+      <button (click)="openTreeInfoModal(selectedTreeTypeInfo)"
+        class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition disabled:opacity-40">
+        {{ 'COMMON.MORE_INFO' | translate }}
       </button>
     </mat-card>
 

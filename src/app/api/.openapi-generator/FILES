@@ -9,6 +9,7 @@ api/companyController.service.ts
 api/coordinateController.service.ts
 api/landController.service.ts
 api/pingController.service.ts
+api/purchaseController.service.ts
 api/treeController.service.ts
 api/treeTypeController.service.ts
 api/uploadsController.service.ts
@@ -35,6 +36,8 @@ model/messageResponse.ts
 model/models.ts
 model/pageUserResponse.ts
 model/pageableObject.ts
+model/purchaseRequest.ts
+model/purchaseResponse.ts
 model/registerUserByAdminRequest.ts
 model/registerUserRequest.ts
 model/resendVerificationEmailRequest.ts

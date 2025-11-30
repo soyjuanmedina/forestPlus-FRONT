@@ -9,8 +9,10 @@ import { LandService } from '../../../services/land.service';
 import { TreeTypeService } from '../../../services/tree-type.service';
 import { TreeTypeResponseDto } from '../../../api/model/treeTypeResponse';
 import { MatDialog } from '@angular/material/dialog';
-import { LandResponseDto } from '../../../api';
+import { LandResponseDto, PurchaseRequestDto } from '../../../api';
 import { ModalService } from '../../../services/modal.service';
+import { PurchaseService } from '../../../services/purchase.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component( {
   selector: 'app-buy-tree',
@@ -54,7 +56,9 @@ export class BuyTreeComponent implements OnInit {
   constructor (
     private landService: LandService,
     private treeTypeService: TreeTypeService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private snackBar: MatSnackBar,
+    private purchaseService: PurchaseService
   ) { }
 
   ngOnInit (): void {
@@ -148,12 +152,40 @@ export class BuyTreeComponent implements OnInit {
   // ---------------------------------------------------------------------
 
   confirmPurchase () {
-    alert(
-      `Compra confirmada:
-Land: ${this.selectedLandName}
-Árbol: ${this.selectedTreeType?.name}
-Cantidad: ${this.quantity}
-Precio total: ${this.totalPrice} €`
-    );
+    if ( !this.selectedLand || !this.selectedTreeType ) return;
+
+    const request: PurchaseRequestDto = {
+      landId: this.selectedLand,
+      treeTypeId: this.selectedTreeType.id!,
+      quantity: this.quantity,
+      pricePerUnit: this.unitPrice
+    };
+
+    this.purchaseService.purchaseTrees( request ).subscribe( {
+      next: ( res ) => {
+        // Mostrar notificación de éxito
+        this.snackBar.open(
+          `Compra confirmada: ${this.selectedTreeType?.name} x${this.quantity}`,
+          'Cerrar',
+          { duration: 5000, panelClass: ['bg-green-600', 'text-white'] }
+        );
+
+        // Opcional: resetear pasos o variables si quieres
+        this.step = 1;
+        this.selectedLand = null;
+        this.selectedLandInfo = null;
+        this.selectedTreeType = null;
+        this.selectedTreeTypeInfo = null;
+        this.quantity = 1;
+      },
+      error: ( err ) => {
+        console.error( 'Error al realizar la compra', err );
+        this.snackBar.open(
+          `Error al confirmar la compra`,
+          'Cerrar',
+          { duration: 5000, panelClass: ['bg-red-600', 'text-white'] }
+        );
+      }
+    } );
   }
 }

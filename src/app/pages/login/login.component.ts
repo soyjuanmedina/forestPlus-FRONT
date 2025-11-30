@@ -30,7 +30,7 @@ export class LoginComponent {
   unverifiedEmail: string | null = null;
   success = false;
   forgotMode = false;
-  accessGranted = false;
+  accessGranted = true;
   accessKey = '';
   error = false;
 

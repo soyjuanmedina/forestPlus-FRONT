@@ -15,6 +15,8 @@ export * from './landUpdateRequest';
 export * from './messageResponse';
 export * from './pageUserResponse';
 export * from './pageableObject';
+export * from './purchaseRequest';
+export * from './purchaseResponse';
 export * from './registerUserByAdminRequest';
 export * from './registerUserRequest';
 export * from './resendVerificationEmailRequest';

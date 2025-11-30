@@ -13,8 +13,8 @@ import { SortObjectDto } from './sortObject';
 
 
 export interface PageUserResponseDto { 
-    totalElements?: number;
     totalPages?: number;
+    totalElements?: number;
     size?: number;
     content?: Array<UserResponseDto>;
     number?: number;

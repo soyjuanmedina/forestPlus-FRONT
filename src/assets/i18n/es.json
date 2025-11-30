@@ -188,7 +188,8 @@
     "PREVIOUS": "Anterior",
     "NEXT": "Siguiente",
     "CONFIRM_DELETE": "Confirmar eliminación",
-    "CONFIRM_DELETE_MESSAGE": "¿Esta seguro de eliminar este elemento?"
+    "CONFIRM_DELETE_MESSAGE": "¿Esta seguro de eliminar este elemento?",
+    "MORE_INFO": "Más información"
   },
   "ADMIN_TREE_TYPES": {
     "CONFIRM_DELETE_TREE_TYPE": {
