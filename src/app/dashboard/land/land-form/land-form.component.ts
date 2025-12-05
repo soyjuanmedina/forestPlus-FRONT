@@ -17,8 +17,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { LandResponseDto, LandRequestDto, LandUpdateRequestDto, UserResponseDto, CoordinateResponseDto, LandTreeSummaryResponseDto } from '../../../api';
-import { PlantTreesModalComponent } from '../../../shared/plant-trees-modal/plant-trees-modal.component';
-import { AddCoordinateModalComponent } from '../../../shared/add-coordinate-modal/add-coordinate-modal.component';
+import { PlantTreesModalComponent } from '../../../modals/plant-trees-modal/plant-trees-modal.component';
+import { AddCoordinateModalComponent } from '../../../modals/add-coordinate-modal/add-coordinate-modal.component';
 import { TreeTypeService } from '../../../services/tree-type.service';
 
 @Component( {

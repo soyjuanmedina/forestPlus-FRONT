@@ -10,7 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { TreeService } from '../../services/tree.service';
 import { AuthService } from '../../services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AssignTreesModalComponent } from '../../shared/assign-trees-modal/assign-trees-modal.component';
+import { AssignTreesModalComponent } from '../../modals/assign-trees-modal/assign-trees-modal.component';
 
 @Component( {
   selector: 'app-company',

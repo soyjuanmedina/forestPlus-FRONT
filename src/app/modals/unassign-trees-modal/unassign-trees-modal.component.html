@@ -1,0 +1,35 @@
+<app-loading-spinner *ngIf="loadingService.loading$ | async"></app-loading-spinner>
+
+<div *ngIf="!(loadingService.loading$ | async)"
+  class="p-6 w-full max-w-md bg-white rounded-2xl shadow-lg">
+  <h2 class="text-2xl font-bold text-green-700 mb-6 text-center">
+    {{ treeTypeName }}
+  </h2>
+
+  <ul *ngIf="trees?.length; else noTrees">
+    <li *ngFor="let tree of trees" class="flex justify-between items-center border-b py-2">
+      <div>
+        <span class="text-sm text-gray-500">Terreno: {{ tree.landName }}</span> -
+        <span class="font-semibold">{{ tree.treeTypeName }}</span>
+
+      </div>
+      <button type="button"
+        class="bg-red-200 text-red-800 px-3 py-1 rounded-full hover:bg-red-300 transition text-sm"
+        (click)="unassignTree(tree.id!)">
+        {{ 'ASSIGN_TREES.UNASSIGN' | translate }}
+      </button>
+    </li>
+  </ul>
+
+  <ng-template #noTrees>
+    <p class="text-gray-500 italic">{{ 'ASSIGN_TREES.NO_TREES' | translate }}</p>
+  </ng-template>
+
+  <div class="flex justify-end mt-6">
+    <button type="button"
+      class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition"
+      (click)="close()">
+      {{ 'COMMON.CANCEL' | translate }}
+    </button>
+  </div>
+</div>

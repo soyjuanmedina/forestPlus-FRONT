@@ -52,7 +52,8 @@
     "TREES": "Árboles disponibles",
     "NO_TREES": "No hay árboles disponibles en este terreno",
     "ASSIGN": "Asignar",
-    "ASSIGN_PLANTED_TREES": "Asignar árboles plantados"
+    "ASSIGN_PLANTED_TREES": "Asignar árboles plantados",
+    "UNASSIGN": "Desasignar"
   },
   "DASHBOARD": {
     "DASHBOARD": "Dashboard",

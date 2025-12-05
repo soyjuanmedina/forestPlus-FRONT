@@ -7,7 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { EditTreeModalComponent } from '../../../shared/edit-tree-modal/edit-tree-modal.component';
+import { EditTreeModalComponent } from '../../../modals/edit-tree-modal/edit-tree-modal.component';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component( {

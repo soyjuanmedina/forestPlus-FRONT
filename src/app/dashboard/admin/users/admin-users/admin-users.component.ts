@@ -127,10 +127,14 @@ export class AdminUsersComponent implements OnInit {
           },
           error: ( err ) => {
             console.error( '❌ Error al eliminar usuario', err );
+
+            const backendMessage = err?.error?.message ||
+              this.translate.instant( 'ADMIN_USERS.USER_DELETE_ERROR' );
+
             this.snackBar.open(
-              this.translate.instant( 'ADMIN_USERS.USER_DELETE_ERROR' ),
+              `${this.translate.instant( 'ADMIN_USERS.USER_DELETE_ERROR' )}: ${backendMessage}`,
               this.translate.instant( 'COMMON.CLOSE' ),
-              { duration: 3000 }
+              { duration: 6000 }
             );
           }
         } );

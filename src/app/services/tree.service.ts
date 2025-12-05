@@ -75,4 +75,23 @@ export class TreeService {
   assignTreeToCompany ( treeId: number, companyId: number ): Observable<TreeResponseDto> {
     return this.treeApi.assignTreeToCompany( treeId, companyId );
   }
+
+  // Desasignar árbol de una compañía
+  unassignTreeFromCompany ( treeId: number ): Observable<TreeResponseDto> {
+    return this.treeApi.unassignTreeFromCompany( treeId );
+  }
+
+  // Desasignar árbol de un usuario
+  unassignTreeFromUser ( treeId: number ): Observable<TreeResponseDto> {
+    return this.treeApi.unassignTreeFromUser( treeId );
+  }
+
+  // Obtener árboles de un propietario filtrados por tipo
+  getTreesByOwnerAndType (
+    treeTypeId: number,
+    ownerUserId?: number,
+    ownerCompanyId?: number
+  ): Observable<TreeResponseDto[]> {
+    return this.treeApi.getTreesByOwnerAndType( treeTypeId, ownerUserId, ownerCompanyId );
+  }
 }

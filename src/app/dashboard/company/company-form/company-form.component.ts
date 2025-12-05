@@ -15,10 +15,11 @@ import { CompanyCo2Service } from '../../../services/company-co2.service';
 import { UserService } from '../../../services/user.service';
 import { Chart, ChartConfiguration, Plugin, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
 import { TranslateModule } from '@ngx-translate/core';
-import { AssignTreesModalComponent } from '../../../shared/assign-trees-modal/assign-trees-modal.component';
+import { AssignTreesModalComponent } from '../../../modals/assign-trees-modal/assign-trees-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TreeService } from '../../../services/tree.service';
 import { AuthService } from '../../../services/auth.service';
+import { UnassignTreesModalComponent } from '../../../modals/unassign-trees-modal/unassign-trees-modal.component';
 
 interface LocalCO2Year {
   year: number;
@@ -125,6 +126,19 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
           .subscribe( () => {
             this.loadCompanyTrees( companyId );
           } );
+      }
+    } );
+  }
+
+  openUnassignTreesModal ( treeGroup: any ) {
+    const dialogRef = this.dialog.open( UnassignTreesModalComponent, {
+      width: '400px',
+      data: { companyId: this.company.id, treeTypeId: treeGroup.treeTypeId }
+    } );
+
+    dialogRef.afterClosed().subscribe( result => {
+      if ( result?.updated ) {
+        this.loadCompanyTrees( this.company.id! );
       }
     } );
   }

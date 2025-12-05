@@ -11,7 +11,7 @@ import { UserService } from '../../../services/user.service';
 import { AuthService } from '../../../services/auth.service';
 import { CompanyService } from '../../../services/company.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AssignTreesModalComponent } from '../../../shared/assign-trees-modal/assign-trees-modal.component';
+import { AssignTreesModalComponent } from '../../../modals/assign-trees-modal/assign-trees-modal.component';
 import { TreeService } from '../../../services/tree.service';
 
 @Component( {
