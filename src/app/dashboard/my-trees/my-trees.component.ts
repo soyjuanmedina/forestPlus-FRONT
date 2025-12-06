@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TreeService } from '../../services/tree.service';
 import { AuthService } from '../../services/auth.service';
-import { LandTreeSummaryResponseDto } from '../../api';
+import { LandTreeSummaryResponseDto, TreeResponseDto } from '../../api';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,8 +19,8 @@ import { TranslateModule } from '@ngx-translate/core';
 export class MyTreesComponent implements OnInit {
   loading = true;
   error: string | null = null;
-  trees: LandTreeSummaryResponseDto[] = [];
-  filteredTrees: LandTreeSummaryResponseDto[] = [];
+  trees: TreeResponseDto[] = [];
+  filteredTrees: TreeResponseDto[] = [];
   filterText = '';
 
   currentPage = 0;
@@ -43,7 +43,7 @@ export class MyTreesComponent implements OnInit {
 
     const companyId = user.company?.id ?? undefined;
     const userId = companyId ? undefined : user.id ?? undefined;
-    this.treeService.getTreesByOwner( userId, companyId ).subscribe( {
+    this.treeService.getAllTreesByOwner( userId, companyId ).subscribe( {
       next: ( resp ) => {
         this.trees = resp;
         this.applyFilter();
@@ -66,7 +66,7 @@ export class MyTreesComponent implements OnInit {
     this.totalPages = Math.ceil( this.filteredTrees.length / this.pageSize );
   }
 
-  getPagedTrees (): LandTreeSummaryResponseDto[] {
+  getPagedTrees (): TreeResponseDto[] {
     const start = this.currentPage * this.pageSize;
     return this.filteredTrees.slice( start, start + this.pageSize );
   }
@@ -81,5 +81,10 @@ export class MyTreesComponent implements OnInit {
 
   buyNewTree () {
     this.router.navigate( ['/buy-tree'] );
+  }
+
+  goToTree ( treeId: number ) {
+    console.log( 'treeId', treeId );
+    //this.router.navigate( ['/trees', treeId] );
   }
 }

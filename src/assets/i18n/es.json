@@ -371,7 +371,8 @@
     "PREVIOUS": "Anterior",
     "NEXT": "Siguiente",
     "ERROR_LOADING": "Error al cargar tus árboles.",
-    "NO_TREES": "No tienes árboles aún."
+    "NO_TREES": "No tienes árboles aún.",
+    "PLANTED_IN": "Plantado en: "
   },
   "BUY_TREE": {
     "TITLE": "Comprar un árbol",

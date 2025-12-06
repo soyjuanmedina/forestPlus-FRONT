@@ -94,4 +94,9 @@ export class TreeService {
   ): Observable<TreeResponseDto[]> {
     return this.treeApi.getTreesByOwnerAndType( treeTypeId, ownerUserId, ownerCompanyId );
   }
+
+  // Obtener todos los árboles del propietario (nuevo método)
+  getAllTreesByOwner ( ownerUserId?: number, ownerCompanyId?: number ): Observable<TreeResponseDto[]> {
+    return this.treeApi.getAllTreesByOwner( ownerUserId, ownerCompanyId );
+  }
 }
