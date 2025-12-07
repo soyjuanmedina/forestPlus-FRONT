@@ -13,6 +13,7 @@ import { CompanyService } from '../../../services/company.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AssignTreesModalComponent } from '../../../modals/assign-trees-modal/assign-trees-modal.component';
 import { TreeService } from '../../../services/tree.service';
+import { ManageTreesModalComponent } from '../../../modals/manage-trees-modal/manage-trees-modal.component';
 
 @Component( {
   selector: 'app-user-form',
@@ -318,5 +319,18 @@ export class UserFormComponent implements OnInit {
       // COMPANY_ADMIN solo su propia compañía
       return this.companies.filter( c => c.id === this.authService.currentUserCompanyId );
     }
+  }
+
+  openUnassignTreesModal ( treeGroup: any ) {
+    const dialogRef = this.dialog.open( ManageTreesModalComponent, {
+      width: '400px',
+      data: { userId: this.userId, companyId: undefined, treeTypeId: treeGroup.treeTypeId }
+    } );
+
+    dialogRef.afterClosed().subscribe( result => {
+      if ( result?.updated ) {
+        this.loadUserTrees( this.userId! );
+      }
+    } );
   }
 }

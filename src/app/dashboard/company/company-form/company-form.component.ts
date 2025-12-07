@@ -19,7 +19,7 @@ import { AssignTreesModalComponent } from '../../../modals/assign-trees-modal/as
 import { MatDialog } from '@angular/material/dialog';
 import { TreeService } from '../../../services/tree.service';
 import { AuthService } from '../../../services/auth.service';
-import { UnassignTreesModalComponent } from '../../../modals/unassign-trees-modal/unassign-trees-modal.component';
+import { ManageTreesModalComponent } from '../../../modals/manage-trees-modal/manage-trees-modal.component';
 
 interface LocalCO2Year {
   year: number;
@@ -131,9 +131,9 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
   }
 
   openUnassignTreesModal ( treeGroup: any ) {
-    const dialogRef = this.dialog.open( UnassignTreesModalComponent, {
+    const dialogRef = this.dialog.open( ManageTreesModalComponent, {
       width: '400px',
-      data: { companyId: this.company.id, treeTypeId: treeGroup.treeTypeId }
+      data: { userId: undefined, companyId: this.company.id, treeTypeId: treeGroup.treeTypeId }
     } );
 
     dialogRef.afterClosed().subscribe( result => {

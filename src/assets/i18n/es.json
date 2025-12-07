@@ -53,7 +53,8 @@
     "NO_TREES": "No hay árboles disponibles en este terreno",
     "ASSIGN": "Asignar",
     "ASSIGN_PLANTED_TREES": "Asignar árboles plantados",
-    "UNASSIGN": "Desasignar"
+    "UNASSIGN": "Gestionar",
+    "NO_TREES_TO_MANAGE": "No hay árboles para gestionar"
   },
   "DASHBOARD": {
     "DASHBOARD": "Dashboard",
@@ -184,6 +185,7 @@
   },
   "COMMON": {
     "CANCEL": "Cancelar",
+    "CLOSE": "Cerrar",
     "SAVE_CHANGES": "Guardar cambios",
     "SAVE": "Guardar",
     "PREVIOUS": "Anterior",

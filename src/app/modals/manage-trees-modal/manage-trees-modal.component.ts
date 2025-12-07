@@ -6,18 +6,20 @@ import { TreeService } from '../../services/tree.service';
 import { CommonModule } from '@angular/common';
 import { LoadingService } from '../../services/loading.service';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component( {
-  selector: 'app-unassign-trees-modal',
+  selector: 'app-manage-trees-modal',
   standalone: true,
   imports: [
     CommonModule,
     TranslateModule,
+    MatIconModule,
     LoadingSpinnerComponent
   ],
-  templateUrl: './unassign-trees-modal.component.html',
+  templateUrl: './manage-trees-modal.component.html',
 } )
-export class UnassignTreesModalComponent implements OnInit {
+export class ManageTreesModalComponent implements OnInit {
 
   treeTypeName: string = '';
   trees: TreeResponseDto[] = []; // lista de árboles del tipo elegido
@@ -27,7 +29,7 @@ export class UnassignTreesModalComponent implements OnInit {
 
   constructor (
     @Inject( MAT_DIALOG_DATA ) public data: any,
-    private dialogRef: MatDialogRef<UnassignTreesModalComponent>,
+    private dialogRef: MatDialogRef<ManageTreesModalComponent>,
     private treeService: TreeService,
     public loadingService: LoadingService
   ) {
@@ -38,16 +40,45 @@ export class UnassignTreesModalComponent implements OnInit {
   }
 
   ngOnInit (): void {
-    if ( this.companyId && this.treeTypeId !== undefined ) {
-      this.loadingService.show();  // <--- mostrar spinner
-      this.treeService.getTreesByOwnerAndType( this.treeTypeId, undefined, this.companyId )
+    this.loadingService.show();
+
+    // Si viene un usuario
+    if ( this.data.userId && this.treeTypeId !== undefined ) {
+      this.target = 'user';
+      this.treeService.getTreesByOwnerAndType(
+        this.treeTypeId,
+        this.data.userId,
+        undefined
+      )
         .subscribe( {
           next: trees => this.trees = trees,
-          error: err => console.error( 'Error cargando árboles del tipo', err ),
-          complete: () => this.loadingService.hide()  // <--- ocultar spinner al terminar
+          error: err => console.error( 'Error cargando árboles del usuario', err ),
+          complete: () => this.loadingService.hide()
         } );
+      return;
     }
+
+    // Si viene una empresa
+    if ( this.data.companyId && this.treeTypeId !== undefined ) {
+      this.target = 'company';
+      this.treeService.getTreesByOwnerAndType(
+        this.treeTypeId,
+        undefined,
+        this.data.companyId
+      )
+        .subscribe( {
+          next: trees => this.trees = trees,
+          error: err => console.error( 'Error cargando árboles de la compañía', err ),
+          complete: () => this.loadingService.hide()
+        } );
+      return;
+    }
+
+    // Si no hay nada válido
+    this.loadingService.hide();
+    console.error( "❌ No se proporcionó ni userId ni companyId al modal" );
   }
+
 
   unassignTree ( treeId: number ) {
     let unassign$;
@@ -66,6 +97,10 @@ export class UnassignTreesModalComponent implements OnInit {
       error: err => console.error( '❌ Error al desasignar árbol', err )
     } );
 
+  }
+
+  editTree ( treeId: number ) {
+    console.log( 'treeId', treeId );
   }
 
   close () {

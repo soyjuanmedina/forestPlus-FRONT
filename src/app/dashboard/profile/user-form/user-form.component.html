@@ -119,8 +119,14 @@
 
     <ul *ngIf="plantedTrees?.length; else noPlantedTrees">
       <li *ngFor="let tree of plantedTrees" class="flex justify-between border-b py-1">
-        <span>{{ tree.treeTypeName }}</span>
-        <span class="font-semibold">{{ tree.quantity }}</span>
+        <div>
+          <span class="block font-semibold">{{ tree.treeTypeName }}</span>
+          <span class="text-sm text-gray-500">{{ tree.quantity || 1 }} árboles</span>
+        </div>
+        <button *ngIf="isAdmin" type="button" (click)="openUnassignTreesModal(tree)"
+          class="bg-red-200 text-red-800 px-3 py-1 rounded-full hover:bg-red-300 transition text-sm">
+          {{ 'ASSIGN_TREES.UNASSIGN' | translate }}
+        </button>
       </li>
     </ul>
     <ng-template #noPlantedTrees>
