@@ -59,7 +59,7 @@
 
     <div class="flex gap-4 mt-4 w-full justify-center md:justify-start">
       <!-- Botón Editar con estilo unificado -->
-      <button (click)="goToEdit()"
+      <button *ngIf="canEdit" (click)="goToEdit()"
         class="flex-1 md:flex-auto bg-green-600 text-white py-3 px-6 rounded-xl hover:bg-green-700 transition">
         {{ 'PROFILE.EDIT_BUTTON' | translate }}
       </button>

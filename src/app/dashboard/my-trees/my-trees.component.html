@@ -18,7 +18,10 @@
       <div class="flex items-center gap-4">
 
         <div class="flex flex-col text-left">
-          <div class="font-semibold text-lg">{{ t.treeTypeName }}</div>
+          <div class="font-semibold text-lg">{{ t.customName || t.treeTypeName}}</div>
+          <div class="text-gray-600">
+            {{ t.treeTypeName }}
+          </div>
           <div class="text-gray-600">
             {{ 'MY_TREES.PLANTED_IN' | translate }} {{ t.landName }}
           </div>

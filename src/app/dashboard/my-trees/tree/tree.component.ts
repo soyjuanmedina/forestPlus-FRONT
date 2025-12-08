@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component( {
   selector: 'app-tree',
@@ -21,7 +22,8 @@ export class TreeComponent implements OnInit {
   constructor (
     private route: ActivatedRoute,
     private treeService: TreeService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) { }
 
   ngOnInit (): void {
@@ -55,5 +57,11 @@ export class TreeComponent implements OnInit {
     if ( this.tree?.id ) {
       this.router.navigate( ['/tree/form', this.tree.id] );
     }
+  }
+
+  /** 🔹 Indica si el usuario puede ver el botón de edición */
+  get canEdit (): boolean {
+    const role = this.authService.currentUserRole;
+    return role !== 'COMPANY_USER'; // Solo mostrar si no es COMPANY_USER
   }
 }
