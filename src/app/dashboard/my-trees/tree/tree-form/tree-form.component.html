@@ -1,0 +1,73 @@
+<mat-card class="rounded-2xl shadow-md p-6 md:p-8 w-full max-w-full mx-auto" *ngIf="tree">
+  <div class="flex flex-col text-left w-full">
+
+    <h2 class="text-xl md:text-2xl font-semibold mb-2">
+      {{ tree.customName || tree.treeType?.name || ('TREE.ARBOL_SIN_TIPO' | translate) }}
+    </h2>
+
+    <form [formGroup]="treeForm" class="w-full">
+
+      <div class="mb-4">
+        <mat-form-field class="w-full">
+          <mat-label>{{ 'TREE.NOMBRE_PERSONALIZADO' | translate }}</mat-label>
+          <input matInput formControlName="customName">
+        </mat-form-field>
+      </div>
+
+      <div class="mb-4">
+        <mat-form-field class="w-full">
+          <mat-label>{{ 'TREE.TIPO' | translate }}</mat-label>
+          <input matInput formControlName="treeTypeName" readonly>
+        </mat-form-field>
+      </div>
+
+      <div class="mb-4">
+        <mat-form-field class="w-full">
+          <mat-label>{{ 'TREE.SPICE' | translate }}</mat-label>
+          <input matInput formControlName="species" readonly>
+        </mat-form-field>
+      </div>
+
+      <div class="mb-4">
+        <mat-form-field class="w-full">
+          <mat-label>{{ 'TREE.CO2_ABSORBIDO' | translate }}</mat-label>
+          <input matInput type="number" formControlName="co2Absorption" [readonly]="!isAdmin">
+        </mat-form-field>
+      </div>
+
+      <div class="mb-4">
+        <mat-form-field class="w-full">
+          <mat-label>{{ 'TREE.PLANTADO_EL' | translate }}</mat-label>
+          <input matInput type="date" formControlName="plantedAt" [readonly]="!isAdmin">
+        </mat-form-field>
+      </div>
+
+      <div class="mb-4">
+        <mat-form-field class="w-full">
+          <mat-label>{{ 'TREE.TERRENO' | translate }}</mat-label>
+          <input matInput formControlName="landName" readonly>
+        </mat-form-field>
+      </div>
+
+      <div class="mb-4">
+        <mat-form-field class="w-full">
+          <mat-label>{{ 'TREE.PROPIETARIO' | translate }}</mat-label>
+          <input matInput formControlName="ownerName" readonly>
+        </mat-form-field>
+      </div>
+
+      <div class="flex gap-4 mt-4 w-full justify-center md:justify-start">
+        <button type="button" (click)="cancel()"
+          class="flex-1 md:flex-auto bg-gray-300 text-gray-800 py-3 px-6 rounded-xl hover:bg-gray-400 transition">
+          {{ 'COMMON.CANCEL' | translate }}
+        </button>
+        <button type="button" (click)="save()"
+          class="flex-1 md:flex-auto bg-green-600 text-white py-3 px-6 rounded-xl hover:bg-green-700 transition"
+          [disabled]="!treeForm.valid">
+          {{ 'COMMON.SAVE_CHANGES' | translate }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</mat-card>

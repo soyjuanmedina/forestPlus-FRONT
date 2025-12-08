@@ -84,7 +84,6 @@ export class MyTreesComponent implements OnInit {
   }
 
   goToTree ( treeId: number ) {
-    console.log( 'treeId', treeId );
-    //this.router.navigate( ['/trees', treeId] );
+    this.router.navigate( ['/tree', treeId] );
   }
 }

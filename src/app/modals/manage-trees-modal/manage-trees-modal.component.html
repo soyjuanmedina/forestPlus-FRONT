@@ -3,7 +3,7 @@
 <div *ngIf="!(loadingService.loading$ | async)"
   class="p-6 w-full max-w-md bg-white rounded-2xl shadow-lg">
   <h2 class="text-2xl font-bold text-green-700 mb-6 text-center">
-    {{ 'UNASSIGN_TREES.TITLE' | translate }}
+    {{ 'MANAGE_TREES.TITLE' | translate }}
   </h2>
 
   <ul *ngIf="trees?.length; else noTrees">
@@ -16,6 +16,12 @@
 
       <!-- CONTENEDOR DE BOTONES -->
       <div class="flex gap-2">
+
+        <button (click)="viewTree(tree.id!)"
+          class="bg-green-600 hover:bg-green-700 text-white rounded-full p-2 flex items-center justify-center">
+          <mat-icon class="text-white" style="font-size: 20px;">visibility</mat-icon>
+        </button>
+
         <button (click)="editTree(tree.id!)"
           class="bg-green-600 hover:bg-green-700 text-white rounded-full p-2 flex items-center justify-center">
           <mat-icon style="font-size: 20px;">edit</mat-icon>

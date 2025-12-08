@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { LoadingService } from '../../services/loading.service';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 @Component( {
   selector: 'app-manage-trees-modal',
@@ -31,6 +32,7 @@ export class ManageTreesModalComponent implements OnInit {
     @Inject( MAT_DIALOG_DATA ) public data: any,
     private dialogRef: MatDialogRef<ManageTreesModalComponent>,
     private treeService: TreeService,
+    private router: Router,
     public loadingService: LoadingService
   ) {
     this.treeTypeName = data.treeTypeName || '';
@@ -99,8 +101,14 @@ export class ManageTreesModalComponent implements OnInit {
 
   }
 
+  viewTree ( treeId: number ) {
+    this.router.navigate( ['/tree', treeId] );
+    this.dialogRef.close( { updated: true } );
+  }
+
   editTree ( treeId: number ) {
-    console.log( 'treeId', treeId );
+    this.router.navigate( ['/tree/form', treeId] );
+    this.dialogRef.close( { updated: true } );
   }
 
   close () {

@@ -20,6 +20,7 @@ import { AdminLandsComponent } from './dashboard/admin/lands/admin-lands/admin-l
 import { LandComponent } from './dashboard/land/land.component';
 import { MyTreesComponent } from './dashboard/my-trees/my-trees.component';
 import { BuyTreeComponent } from './dashboard/my-trees/buy-tree/buy-tree.component';
+import { TreeComponent } from './dashboard/my-trees/tree/tree.component';
 
 export const routes: Routes = [
   // Public routes
@@ -62,6 +63,11 @@ export const routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
+        path: 'tree/:id',
+        component: TreeComponent,
+        canActivate: [AuthGuard]
+      },
+      {
         path: 'land/:id',
         loadComponent: () => import( './dashboard/land/land.component' ).then( m => m.LandComponent ),
         canActivate: [AuthGuard]
@@ -83,6 +89,12 @@ export const routes: Routes = [
             .then( m => m.CompanyFormComponent ),
         canActivate: [RoleGuard],
         data: { roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] }
+      },
+      {
+        path: 'tree/form/:id',
+        loadComponent: () =>
+          import( './dashboard/my-trees/tree/tree-form/tree-form.component' )
+            .then( m => m.TreeFormComponent ),
       },
 
       { path: 'settings', component: SettingsComponent },

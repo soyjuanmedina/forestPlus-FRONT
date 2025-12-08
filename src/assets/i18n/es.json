@@ -392,5 +392,31 @@
     "BACK": "Atrás",
     "CONFIRM": "Confirmar compra",
     "UNIT_PRICE": "Precio por unidad"
+  },
+  "TREE": {
+    "ARBOL_SIN_TIPO": "Árbol sin tipo",
+    "NOMBRE_PERSONALIZADO": "Nombre personalizado",
+    "SPICE": "Especie",
+    "ESPECIE_NO_DEFINIDA": "Especie no definida",
+    "ID_ARBOL": "ID del árbol",
+    "TIPO": "Tipo",
+    "CO2_ABSORBIDO": "CO₂ absorbido",
+    "PLANTADO_EL": "Plantado el",
+    "TERRENO": "Terreno",
+    "SIN_ASIGNAR": "Sin asignar",
+    "PROPIETARIO": "Propietario",
+    "INFORMACION_TIPO_ARBOL": "Información del tipo de árbol",
+    "DESCRIPCION": "Descripción",
+    "CO2_ABSORCION_TIPO": "CO₂ que absorbe este tipo",
+    "ALTURA_TIPICA": "Altura típica",
+    "VIDA_UTIL": "Vida útil",
+    "INFORMACION_TERRENO": "Información del terreno",
+    "NOMBRE": "Nombre",
+    "UBICACION": "Ubicación",
+    "AREA": "Área",
+    "MAX_ARBOLES": "Máximo de árboles permitidos"
+  },
+  "MANAGE_TREES": {
+    "TITLE": "Gestión de árboles"
   }
 }

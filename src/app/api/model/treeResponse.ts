@@ -7,6 +7,8 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TreeTypeResponseDto } from './treeTypeResponse';
+import { LandResponseDto } from './landResponse';
 
 
 export interface TreeResponseDto { 
@@ -16,11 +18,14 @@ export interface TreeResponseDto {
     plantedAt?: string;
     treeTypeId?: number;
     treeTypeName?: string;
+    treeType?: TreeTypeResponseDto;
     landId?: number;
     landName?: string;
+    land?: LandResponseDto;
     ownerUserId?: number;
     ownerUserName?: string;
     ownerCompanyId?: number;
     ownerCompanyName?: string;
+    customName?: string;
 }
 

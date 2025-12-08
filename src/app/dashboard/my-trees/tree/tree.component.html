@@ -1,0 +1,124 @@
+<mat-card class="rounded-2xl shadow-md p-4 md:p-6 w-full max-w-full" *ngIf="tree">
+
+  <!-- Imagen -->
+  <img src="assets/tree.png" alt="Tree image"
+    class="w-24 h-24 rounded-full shadow-lg mb-4 object-cover mx-auto" />
+
+  <!-- TÍTULO DEL TIPO DE ÁRBOL -->
+  <h2 class="text-xl md:text-2xl font-semibold text-left">
+    <ng-container *ngIf="tree.customName; else noCustomName">{{ tree.customName }}</ng-container>
+    <ng-template #noCustomName>
+      <ng-container *ngIf="tree.treeType; else noType">{{ tree.treeType.name }}</ng-container>
+    </ng-template>
+    <ng-template #noType>{{ 'TREE.ARBOL_SIN_TIPO' | translate }}</ng-template>
+  </h2>
+
+  <!-- TIPO -->
+  <p class="text-gray-500 italic text-left">
+    {{ tree.treeType?.name || ('TREE.ARBOL_SIN_TIPO' | translate)}}
+  </p>
+
+  <!-- INFORMACIÓN BÁSICA DEL ÁRBOL -->
+  <div class="mt-4 w-full text-left space-y-1">
+
+    <div class="flex justify-between border-b py-1">
+      <span class="font-medium">{{ 'TREE.ID_ARBOL' | translate }}</span>
+      <span>{{ tree.id }}</span>
+    </div>
+
+    <div class="flex justify-between border-b py-1">
+      <span class="font-medium">{{ 'TREE.SPICE' | translate }}</span>
+      <span>
+        <ng-container *ngIf="tree.species; else noSpecieSpan">{{ tree.species }}</ng-container>
+        <ng-template #noSpecieSpan>{{ 'TREE.ESPECIE_NO_DEFINIDA' | translate }}</ng-template>
+      </span>
+    </div>
+
+    <div class="flex justify-between border-b py-1">
+      <span class="font-medium">{{ 'TREE.CO2_ABSORBIDO' | translate }}</span>
+      <span>{{ tree.co2Absorption || 0 }} kg/año</span>
+    </div>
+
+    <div class="flex justify-between border-b py-1">
+      <span class="font-medium">{{ 'TREE.PLANTADO_EL' | translate }}</span>
+      <span>{{ tree.plantedAt | date:'dd/MM/yyyy' }}</span>
+    </div>
+
+    <div class="flex justify-between border-b py-1">
+      <span class="font-medium">{{ 'TREE.TERRENO' | translate }}</span>
+      <span>
+        <ng-container *ngIf="tree.land; else noLand">{{ tree.land.name }}</ng-container>
+        <ng-template #noLand>{{ 'TREE.SIN_ASIGNAR' | translate }}</ng-template>
+      </span>
+    </div>
+
+    <div class="flex justify-between border-b py-1">
+      <span class="font-medium">{{ 'TREE.PROPIETARIO' | translate }}</span>
+      <span>{{ getOwner() }}</span>
+    </div>
+
+    <div class="flex gap-4 mt-4 w-full justify-center md:justify-start">
+      <!-- Botón Editar con estilo unificado -->
+      <button (click)="goToEdit()"
+        class="flex-1 md:flex-auto bg-green-600 text-white py-3 px-6 rounded-xl hover:bg-green-700 transition">
+        {{ 'PROFILE.EDIT_BUTTON' | translate }}
+      </button>
+    </div>
+
+  </div>
+
+  <!-- SECCIÓN: INFORMACIÓN DEL TIPO DE ÁRBOL -->
+  <div class="mt-6 w-full text-left" *ngIf="tree.treeType">
+    <h3 class="text-lg font-semibold mb-2">
+      {{ 'TREE.INFORMACION_TIPO_ARBOL' | translate }}
+    </h3>
+
+    <div class="border-b py-1" *ngIf="tree.treeType.description">
+      <div class="font-medium">{{ 'TREE.DESCRIPCION' | translate }}</div>
+      <div>{{ tree.treeType.description }}</div>
+    </div>
+
+    <div class="flex justify-between border-b py-1" *ngIf="tree.treeType.co2Absorption">
+      <span class="font-medium">{{ 'TREE.CO2_ABSORCION_TIPO' | translate }}</span>
+      <span>{{ tree.treeType.co2Absorption }} kg/año</span>
+    </div>
+
+    <div class="flex justify-between border-b py-1" *ngIf="tree.treeType.typicalHeight">
+      <span class="font-medium">{{ 'TREE.ALTURA_TIPICA' | translate }}</span>
+      <span>{{ tree.treeType.typicalHeight }} m</span>
+    </div>
+
+    <div class="flex justify-between border-b py-1" *ngIf="tree.treeType.lifespanYears">
+      <span class="font-medium">{{ 'TREE.VIDA_UTIL' | translate }}</span>
+      <span>{{ tree.treeType.lifespanYears }} años</span>
+    </div>
+  </div>
+
+  <!-- SECCIÓN: INFORMACIÓN DEL TERRENO -->
+  <div class="mt-6 w-full text-left" *ngIf="tree.land">
+    <h3 class="text-lg font-semibold mb-2">
+      {{ 'TREE.INFORMACION_TERRENO' | translate }}
+    </h3>
+
+    <div class="flex justify-between border-b py-1">
+      <span class="font-medium">{{ 'TREE.NOMBRE' | translate }}</span>
+      <span>{{ tree.land.name }}</span>
+    </div>
+
+    <div class="flex justify-between border-b py-1" *ngIf="tree.land.location">
+      <span class="font-medium">{{ 'TREE.UBICACION' | translate }}</span>
+      <span>{{ tree.land.location }}</span>
+    </div>
+
+    <div class="flex justify-between border-b py-1" *ngIf="tree.land.area">
+      <span class="font-medium">{{ 'TREE.AREA' | translate }}</span>
+      <span>{{ tree.land.area }} m²</span>
+    </div>
+
+    <div class="flex justify-between border-b py-1" *ngIf="tree.land.maxTrees">
+      <span class="font-medium">{{ 'TREE.MAX_ARBOLES' | translate }}</span>
+      <span>{{ tree.land.maxTrees }}</span>
+    </div>
+  </div>
+
+</mat-card>

@@ -17,5 +17,6 @@ export interface TreeRequestDto {
     landId?: number;
     ownerUserId?: number;
     ownerCompanyId?: number;
+    customName?: string;
 }
 
