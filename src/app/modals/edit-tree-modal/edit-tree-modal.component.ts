@@ -37,9 +37,9 @@ export class EditTreeModalComponent {
   ) {
     this.form = this.fb.group( {
       treeTypeId: [data.tree.treeTypeId, Validators.required],
-      species: [data.tree.species],
+      scientificName: [data.tree.scientificName],
       plantedAt: [data.tree.plantedAt, Validators.required],
-      co2Absorption: [{ value: data.tree.co2Absorption, disabled: true }]
+      co2AbsorptionAt20: [{ value: data.tree.co2AbsorptionAt20, disabled: true }]
     } );
 
     this.loadTreeTypes();
@@ -56,7 +56,7 @@ export class EditTreeModalComponent {
     const selectedTypeId = this.form.get( 'treeTypeId' )?.value;
     const selectedType = this.treeTypes.find( t => t.id === selectedTypeId );
     if ( selectedType ) {
-      this.form.get( 'co2Absorption' )?.setValue( selectedType.co2Absorption );
+      this.form.get( 'co2AbsorptionAt20' )?.setValue( selectedType.co2AbsorptionAt20 );
     }
   }
 

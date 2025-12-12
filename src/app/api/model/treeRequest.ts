@@ -10,13 +10,18 @@
 
 
 export interface TreeRequestDto { 
-    species?: string;
-    co2Absorption?: number;
+    scientificName?: string;
+    customName?: string;
+    co2AbsorptionAt20?: number;
+    co2AbsorptionAt25?: number;
+    co2AbsorptionAt30?: number;
+    co2AbsorptionAt35?: number;
+    co2AbsorptionAt40?: number;
     plantedAt?: string;
     treeTypeId?: number;
     landId?: number;
     ownerUserId?: number;
     ownerCompanyId?: number;
-    customName?: string;
+    picture?: string;
 }
 

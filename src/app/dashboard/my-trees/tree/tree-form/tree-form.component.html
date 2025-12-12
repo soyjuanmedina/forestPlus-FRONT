@@ -24,14 +24,14 @@
       <div class="mb-4">
         <mat-form-field class="w-full">
           <mat-label>{{ 'TREE.SPICE' | translate }}</mat-label>
-          <input matInput formControlName="species" readonly>
+          <input matInput formControlName="scientificName" readonly>
         </mat-form-field>
       </div>
 
       <div class="mb-4">
         <mat-form-field class="w-full">
           <mat-label>{{ 'TREE.CO2_ABSORBIDO' | translate }}</mat-label>
-          <input matInput type="number" formControlName="co2Absorption" [readonly]="!isAdmin">
+          <input matInput type="number" formControlName="co2AbsorptionAt20" [readonly]="!isAdmin">
         </mat-form-field>
       </div>
 

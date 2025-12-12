@@ -3,21 +3,45 @@
   *ngIf="treeType">
 
   <!-- Imagen -->
-  <img [src]="previewImage || 'assets/tree_placeholder.png'"
-    [alt]="'TREE_TYPE.IMAGE_ALT' | translate"
+  <img [src]="previewImage || 'assets/tree_placeholder.png'" [alt]="treeType.name"
     class="w-24 h-24 rounded-full shadow-lg mb-4 object-cover" />
 
-  <!-- Nombre -->
+  <!-- Nombre y nombre científico -->
   <h2 class="text-xl md:text-2xl font-semibold">{{ treeType.name }}</h2>
+  <p class="text-gray-500 italic" *ngIf="treeType.scientificName">
+    <em>{{ treeType.scientificName }}</em>
+  </p>
   <p class="text-gray-500 italic">{{ treeType.description || ('TREE_TYPE.NO_DESCRIPTION' |
     translate) }}</p>
 
+  <!-- Absorciones estimadas -->
+  <div class="w-full mt-6 text-left">
+    <p class="font-semibold text-gray-700 mb-2">{{ 'TREE_TYPE.CO2_ESTIMATIONS_TITLE' | translate }}
+    </p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full">
+      <div *ngFor="let co2 of [
+          { label: 'TREE_TYPE.CO2_AT_20_LABEL', value: treeType.co2AbsorptionAt20 },
+          { label: 'TREE_TYPE.CO2_AT_25_LABEL', value: treeType.co2AbsorptionAt25 },
+          { label: 'TREE_TYPE.CO2_AT_30_LABEL', value: treeType.co2AbsorptionAt30 },
+          { label: 'TREE_TYPE.CO2_AT_35_LABEL', value: treeType.co2AbsorptionAt35 },
+          { label: 'TREE_TYPE.CO2_AT_40_LABEL', value: treeType.co2AbsorptionAt40 }
+        ]">
+        <div class="bg-white shadow-md rounded-lg p-4 flex flex-col items-center w-full">
+          <p class="font-semibold text-gray-700 mb-1 text-center">{{ co2.label | translate }}</p>
+          <p class="text-lg font-bold text-gray-800">
+            {{ co2.value !== undefined && co2.value !== null ? co2.value + ' ' +
+            ('TREE_TYPE.CO2_UNIT'
+            | translate) : '-' }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
   <!-- Datos técnicos -->
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 text-left w-full max-w-md">
-    <div>
-      <p class="font-semibold text-gray-700">{{ 'TREE_TYPE.CO2_LABEL' | translate }}</p>
-      <p>{{ treeType.co2Absorption }} {{ 'TREE_TYPE.CO2_UNIT' | translate }}</p>
-    </div>
     <div>
       <p class="font-semibold text-gray-700">{{ 'TREE_TYPE.TYPICAL_HEIGHT_LABEL' | translate }}</p>
       <p>{{ treeType.typicalHeight }} {{ 'TREE_TYPE.HEIGHT_UNIT' | translate }}</p>

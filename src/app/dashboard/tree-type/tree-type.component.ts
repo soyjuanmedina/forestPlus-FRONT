@@ -42,7 +42,7 @@ export class TreeTypeComponent implements OnInit {
       this.treeTypeService.getTreeTypeById( +id ).subscribe( {
         next: ( treeType ) => {
           this.treeType = treeType;
-          this.previewImage = treeType.picture || null;
+          this.previewImage = treeType.picture || 'assets/tree_placeholder.png';
           this.isEditable = this.user?.role === RolesEnum.ADMIN;
         },
         error: ( err ) => {

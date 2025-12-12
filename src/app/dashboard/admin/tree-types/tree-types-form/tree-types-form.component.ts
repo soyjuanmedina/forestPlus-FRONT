@@ -52,11 +52,20 @@ export class TreeTypesFormComponent implements OnInit {
 
   private initForm (): void {
     this.treeTypeForm = this.fb.group( {
-      name: ['', Validators.required],
-      description: [''],
-      co2Absorption: [0, [Validators.required, Validators.min( 0 )]],
-      typicalHeight: [0, [Validators.required, Validators.min( 0 )]],
-      lifespanYears: [0, [Validators.required, Validators.min( 1 )]]
+      name: ['', Validators.required], // Obligatorio
+      scientificName: [null],          // Permitido nulo
+      description: [null],             // Permitido nulo
+
+      // CO₂ estimaciones (permiten nulo)
+      co2AbsorptionAt20: [null],
+      co2AbsorptionAt25: [null],
+      co2AbsorptionAt30: [null],
+      co2AbsorptionAt35: [null],
+      co2AbsorptionAt40: [null],
+
+      // Altura y esperanza de vida (permiten nulo)
+      typicalHeight: [null],
+      lifespanYears: [null],
     } );
   }
 
@@ -66,10 +75,15 @@ export class TreeTypesFormComponent implements OnInit {
         this.treeType = treeType;
         this.treeTypeForm.patchValue( {
           name: treeType.name,
+          scientificName: treeType.scientificName, // Nuevo campo
           description: treeType.description,
-          co2Absorption: treeType.co2Absorption,
+          co2AbsorptionAt20: treeType.co2AbsorptionAt20,
+          co2AbsorptionAt25: treeType.co2AbsorptionAt25,
+          co2AbsorptionAt30: treeType.co2AbsorptionAt30,
+          co2AbsorptionAt35: treeType.co2AbsorptionAt35,
+          co2AbsorptionAt40: treeType.co2AbsorptionAt40,
           typicalHeight: treeType.typicalHeight,
-          lifespanYears: treeType.lifespanYears
+          lifespanYears: treeType.lifespanYears,
         } );
       },
       error: ( err ) => {
@@ -103,6 +117,7 @@ export class TreeTypesFormComponent implements OnInit {
   }
 
   onSubmitTreeType (): void {
+    console.log( 'onSubmitTreeType', );
     if ( this.treeTypeForm.invalid ) return;
 
     const formValue = this.treeTypeForm.value;
@@ -113,7 +128,7 @@ export class TreeTypesFormComponent implements OnInit {
       this.treeTypeService.updateTreeType( this.treeType.id, formValue ).subscribe( {
         next: () => {
           this.snackBar.open( '✅ Tipo de árbol actualizado', 'Cerrar', { duration: 3000 } );
-          this.router.navigate( ['/admin/tree-types'] );
+          this.router.navigate( ['/tree-type/', this.treeType.id] );
         },
         error: ( err ) => {
           console.error( 'Error al actualizar el tipo de árbol', err );

@@ -13,8 +13,14 @@ import { LandResponseDto } from './landResponse';
 
 export interface TreeResponseDto { 
     id?: number;
-    species?: string;
-    co2Absorption?: number;
+    scientificName?: string;
+    customName?: string;
+    co2AbsorptionAt20?: number;
+    co2AbsorptionAt25?: number;
+    co2AbsorptionAt30?: number;
+    co2AbsorptionAt35?: number;
+    co2AbsorptionAt40?: number;
+    picture?: string;
     plantedAt?: string;
     treeTypeId?: number;
     treeTypeName?: string;
@@ -26,6 +32,5 @@ export interface TreeResponseDto {
     ownerUserName?: string;
     ownerCompanyId?: number;
     ownerCompanyName?: string;
-    customName?: string;
 }
 

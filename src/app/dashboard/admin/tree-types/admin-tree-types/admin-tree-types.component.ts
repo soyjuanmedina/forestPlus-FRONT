@@ -113,8 +113,10 @@ export class AdminTreeTypesComponent implements OnInit {
           },
           error: ( err ) => {
             console.error( 'Error al eliminar tipo de árbol', err );
+            const message = this.translate.instant( err?.error?.message );
+
             this.snackBar.open(
-              this.translate.instant( 'ADMIN_TREE_TYPES.TREE_TYPE_DELETE_ERROR' ),
+              message,
               this.translate.instant( 'COMMON.CLOSE' ),
               { duration: 3000 }
             );

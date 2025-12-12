@@ -1,11 +1,12 @@
 <div *ngIf="treeType" class="w-full max-w-full mx-auto bg-white p-6 rounded-2xl shadow-lg">
   <form [formGroup]="treeTypeForm" (ngSubmit)="onSubmitTreeType()">
+
     <h1 class="text-2xl font-bold mb-6 text-center">
       {{ treeType.id ? ('TREE_TYPE.EDIT_TITLE' | translate) : ('TREE_TYPE.NEW_TITLE' | translate) }}
     </h1>
 
     <!-- 🖼 Tree image -->
-    <div class="md:col-span-2 flex flex-col items-center mb-6">
+    <div class="flex flex-col items-center mb-6">
       <img [src]="previewImage || treeType.picture || 'assets/tree-placeholder.png'"
         alt="{{ 'TREE_TYPE.IMAGE_ALT' | translate }}"
         class="w-24 h-24 rounded-full shadow-lg mb-2 object-cover" />
@@ -18,58 +19,66 @@
       </label>
     </div>
 
-    <!-- 🏷 Tree data -->
+    <!-- 🏷 Tree names -->
     <div class="flex flex-col md:flex-row gap-4 mb-6">
-
       <div class="flex-1">
-        <label for="name" class="block text-gray-700 font-medium mb-1">
-          {{ 'TREE_TYPE.NAME' | translate }}
-        </label>
-        <input id="name" type="text" formControlName="name" required
-          class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
-                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+        <label class="block text-gray-700 font-medium mb-1">{{ 'TREE_TYPE.NAME' | translate
+          }}</label>
+        <input type="text" formControlName="name" required
+          class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
           placeholder="{{ 'TREE_TYPE.NAME_PLACEHOLDER' | translate }}" />
       </div>
 
       <div class="flex-1">
-        <label for="description" class="block text-gray-700 font-medium mb-1">
-          {{ 'TREE_TYPE.DESCRIPTION' | translate }}
-        </label>
-        <input id="description" type="text" formControlName="description"
-          class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
-                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
-          placeholder="{{ 'TREE_TYPE.DESCRIPTION_PLACEHOLDER' | translate }}" />
+        <label class="block text-gray-700 font-medium mb-1">{{ 'TREE_TYPE.SCIENTIFIC_NAME' |
+          translate }}</label>
+        <input type="text" formControlName="scientificName"
+          class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+          placeholder="{{ 'TREE_TYPE.SCIENTIFIC_NAME_PLACEHOLDER' | translate }}" />
       </div>
     </div>
 
-    <!-- 📊 Characteristics -->
+    <div class="mb-6">
+      <label class="block text-gray-700 font-medium mb-1">{{ 'TREE_TYPE.DESCRIPTION' | translate
+        }}</label>
+      <textarea formControlName="description"
+        class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+        placeholder="{{ 'TREE_TYPE.DESCRIPTION_PLACEHOLDER' | translate }}"></textarea>
+    </div>
+
+    <!-- 📊 CO₂ absorptions -->
+    <div class="w-full mb-6">
+      <p class="font-semibold text-gray-700 mb-2">{{ 'TREE_TYPE.CO2_ESTIMATIONS_TITLE' | translate
+        }}</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full">
+        <ng-container *ngFor="let co2 of [20,25,30,35,40]">
+          <div class="bg-white shadow-md rounded-lg p-4 flex flex-col items-center w-full">
+            <label class="font-semibold text-gray-700 mb-1 text-center">
+              {{ 'TREE_TYPE.CO2_AT_' + co2 + '_LABEL' | translate }}
+            </label>
+            <input type="number" [formControlName]="'co2AbsorptionAt' + co2" step="0.01"
+              class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+              placeholder="{{ 'TREE_TYPE.CO2_PLACEHOLDER' | translate }}" />
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Altura típica y esperanza de vida -->
     <div class="flex flex-col md:flex-row gap-4 mb-6">
-
       <div class="flex-1">
-        <label for="co2Absorption" class="block text-gray-700 font-medium mb-1">
-          {{ 'TREE_TYPE.CO2' | translate }}
-        </label>
-        <input id="co2Absorption" type="number" formControlName="co2Absorption" step="0.01"
-          class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
-                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" placeholder="{{ 'TREE_TYPE.CO2_PLACEHOLDER' | translate }}" />
+        <label class="block text-gray-700 font-medium mb-1">{{ 'TREE_TYPE.TYPICAL_HEIGHT_LABEL' |
+          translate }}</label>
+        <input type="number" formControlName="typicalHeight" step="0.01"
+          class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+          placeholder="{{ 'TREE_TYPE.HEIGHT_PLACEHOLDER' | translate }}" />
       </div>
 
       <div class="flex-1">
-        <label for="typicalHeight" class="block text-gray-700 font-medium mb-1">
-          {{ 'TREE_TYPE.HEIGHT' | translate }}
-        </label>
-        <input id="typicalHeight" type="number" formControlName="typicalHeight" step="0.01"
-          class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
-                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" placeholder="{{ 'TREE_TYPE.HEIGHT_PLACEHOLDER' | translate }}" />
-      </div>
-
-      <div class="flex-1">
-        <label for="lifespanYears" class="block text-gray-700 font-medium mb-1">
-          {{ 'TREE_TYPE.LIFESPAN' | translate }}
-        </label>
-        <input id="lifespanYears" type="number" formControlName="lifespanYears"
-          class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
-                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+        <label class="block text-gray-700 font-medium mb-1">{{ 'TREE_TYPE.LIFESPAN_LABEL' |
+          translate }}</label>
+        <input type="number" formControlName="lifespanYears"
+          class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
           placeholder="{{ 'TREE_TYPE.LIFESPAN_PLACEHOLDER' | translate }}" />
       </div>
     </div>
@@ -80,7 +89,6 @@
         class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-xl hover:bg-gray-400 transition">
         {{ 'COMMON.CANCEL' | translate }}
       </button>
-
       <button type="submit"
         class="flex-1 bg-green-600 text-white py-3 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
         {{ treeType.id ? ('COMMON.SAVE_CHANGES' | translate) : ('TREE_TYPE.CREATE' | translate) }}

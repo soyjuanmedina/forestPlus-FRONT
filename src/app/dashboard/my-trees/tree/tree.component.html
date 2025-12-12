@@ -29,14 +29,15 @@
     <div class="flex justify-between border-b py-1">
       <span class="font-medium">{{ 'TREE.SPICE' | translate }}</span>
       <span>
-        <ng-container *ngIf="tree.species; else noSpecieSpan">{{ tree.species }}</ng-container>
-        <ng-template #noSpecieSpan>{{ 'TREE.ESPECIE_NO_DEFINIDA' | translate }}</ng-template>
+        <ng-container *ngIf="tree.scientificName; else noscientificNamepan">{{ tree.scientificName
+          }}</ng-container>
+        <ng-template #noscientificNamepan>{{ 'TREE.ESPECIE_NO_DEFINIDA' | translate }}</ng-template>
       </span>
     </div>
 
     <div class="flex justify-between border-b py-1">
       <span class="font-medium">{{ 'TREE.CO2_ABSORBIDO' | translate }}</span>
-      <span>{{ tree.co2Absorption || 0 }} kg/año</span>
+      <span>{{ tree.co2AbsorptionAt20 || 0 }} kg/año</span>
     </div>
 
     <div class="flex justify-between border-b py-1">
@@ -78,9 +79,9 @@
       <div>{{ tree.treeType.description }}</div>
     </div>
 
-    <div class="flex justify-between border-b py-1" *ngIf="tree.treeType.co2Absorption">
+    <div class="flex justify-between border-b py-1" *ngIf="tree.treeType.co2AbsorptionAt20">
       <span class="font-medium">{{ 'TREE.CO2_ABSORCION_TIPO' | translate }}</span>
-      <span>{{ tree.treeType.co2Absorption }} kg/año</span>
+      <span>{{ tree.treeType.co2AbsorptionAt20 }} kg/año</span>
     </div>
 
     <div class="flex justify-between border-b py-1" *ngIf="tree.treeType.typicalHeight">

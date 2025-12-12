@@ -10,12 +10,12 @@
 import { LandEntityDto } from './landEntity';
 
 
-export interface TreeEntityDto { 
-    id?: number;
-    land?: LandEntityDto;
-    species?: string;
-    plantedAt?: string;
-    co2Absorption?: number;
-    createdAt?: string;
+export interface TreeEntityDto {
+  id?: number;
+  land?: LandEntityDto;
+  scientificName?: string;
+  plantedAt?: string;
+  co2AbsorptionAt20?: number;
+  createdAt?: string;
 }
 

@@ -53,9 +53,9 @@ export class TreeFormComponent implements OnInit {
     this.treeForm = this.fb.group( {
       customName: [this.tree.customName || ''], // ← nombre personalizado
       treeTypeName: [{ value: this.tree.treeType?.name, disabled: true }],
-      species: [{ value: this.tree.species, disabled: true }],
-      co2Absorption: [
-        { value: this.tree.co2Absorption, disabled: !this.isAdmin },
+      scientificName: [{ value: this.tree.scientificName, disabled: true }],
+      co2AbsorptionAt20: [
+        { value: this.tree.co2AbsorptionAt20, disabled: !this.isAdmin },
         [Validators.required, Validators.min( 0 )]
       ],
       plantedAt: [
@@ -71,7 +71,7 @@ export class TreeFormComponent implements OnInit {
     if ( !this.treeForm.valid ) return;
 
     const updateDto: TreeUpdateRequestDto = {
-      co2Absorption: this.treeForm.get( 'co2Absorption' )?.value,
+      co2AbsorptionAt20: this.treeForm.get( 'co2AbsorptionAt20' )?.value,
       plantedAt: this.treeForm.get( 'plantedAt' )?.value,
       customName: this.treeForm.get( 'customName' )?.value // ← incluir customName
     };

@@ -11,8 +11,13 @@
 
 export interface TreeTypeRequestDto { 
     name?: string;
+    scientificName?: string;
     description?: string;
-    co2Absorption?: number;
+    co2AbsorptionAt20?: number;
+    co2AbsorptionAt25?: number;
+    co2AbsorptionAt30?: number;
+    co2AbsorptionAt35?: number;
+    co2AbsorptionAt40?: number;
     typicalHeight?: number;
     lifespanYears?: number;
 }
