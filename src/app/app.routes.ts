@@ -21,6 +21,8 @@ import { LandComponent } from './dashboard/land/land.component';
 import { MyTreesComponent } from './dashboard/my-trees/my-trees.component';
 import { BuyTreeComponent } from './dashboard/my-trees/buy-tree/buy-tree.component';
 import { TreeComponent } from './dashboard/my-trees/tree/tree.component';
+import { AdminPlannedPlantationsComponent } from './dashboard/admin/planned-plantations/admin-planned-plantations/admin-planned-plantations.component';
+import { PlannedPlantationComponent } from './dashboard/planned-plantation/planned-plantation.component';
 
 export const routes: Routes = [
   // Public routes
@@ -60,6 +62,11 @@ export const routes: Routes = [
       {
         path: 'tree-type/:id',
         component: TreeTypeComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'planned-plantation/:id',
+        component: PlannedPlantationComponent,
         canActivate: [AuthGuard]
       },
       {
@@ -197,6 +204,31 @@ export const routes: Routes = [
                 .then( m => m.TreeTypesFormComponent ),
             canActivate: [RoleGuard],
             data: { roles: [RolesEnum.ADMIN] }
+          },
+          // Planned Plantations
+          {
+            path: 'planned-plantations',
+            component: AdminPlannedPlantationsComponent,
+            canActivate: [RoleGuard],
+            data: { roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] }
+          },
+          {
+            path: 'planned-plantation-form',
+            loadComponent: () =>
+              import(
+                './dashboard/admin/planned-plantations/planned-plantation-form/planned-plantation-form.component'
+              ).then( m => m.PlannedPlantationFormComponent ),
+            canActivate: [RoleGuard],
+            data: { roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] }
+          },
+          {
+            path: 'planned-plantation-form/:id',
+            loadComponent: () =>
+              import(
+                './dashboard/admin/planned-plantations/planned-plantation-form/planned-plantation-form.component'
+              ).then( m => m.PlannedPlantationFormComponent ),
+            canActivate: [RoleGuard],
+            data: { roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] }
           }
         ]
       }

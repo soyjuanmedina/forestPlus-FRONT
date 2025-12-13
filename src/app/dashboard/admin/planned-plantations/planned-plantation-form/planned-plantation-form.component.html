@@ -1,0 +1,87 @@
+<mat-card class="p-6 max-w-3xl mx-auto">
+  <h2 class="text-xl font-semibold mb-6">
+    {{ 'PLANNED_PLANTATION.NEW' | translate }}
+  </h2>
+
+  <form class="flex flex-col gap-6" (ngSubmit)="onSubmit()">
+
+    <!-- Terreno -->
+    <div class="flex flex-col gap-1">
+      <label class="text-sm font-medium">
+        {{ 'PLANNED_PLANTATION.LAND' | translate }}
+      </label>
+      <select [(ngModel)]="form.landId" name="landId" required class="rounded-xl border border-gray-300 px-4 py-2 shadow-sm
+               focus:outline-none focus:ring-2 focus:ring-green-500 transition">
+        <option [ngValue]="null">—</option>
+        <option *ngFor="let land of lands" [ngValue]="land.id">
+          {{ land.name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Fechas (prevista y efectiva) -->
+    <div class="flex flex-col md:flex-row gap-4">
+      <!-- Fecha prevista -->
+      <div class="flex flex-col gap-1 flex-1">
+        <label class="text-sm font-medium">
+          {{ 'PLANNED_PLANTATION.PLANNED_DATE' | translate }}
+        </label>
+        <input type="date" [(ngModel)]="form.plannedDate" name="plannedDate"
+          [value]="form.plannedDate | date:'yyyy-MM-dd'" required class="rounded-xl border border-gray-300 px-4 py-2 shadow-sm
+             focus:outline-none focus:ring-2 focus:ring-green-500 transition" />
+      </div>
+
+      <!-- Fecha efectiva (opcional) -->
+      <div class="flex flex-col gap-1 flex-1">
+        <label class="text-sm font-medium">
+          {{ 'PLANNED_PLANTATION.EFFECTIVE_DATE' | translate }}
+        </label>
+        <input type="date" [(ngModel)]="form.effectiveDate" name="effectiveDate"
+          [value]="form.effectiveDate | date:'yyyy-MM-dd'" class="rounded-xl border border-gray-300 px-4 py-2 shadow-sm
+             focus:outline-none focus:ring-2 focus:ring-green-500 transition" />
+      </div>
+    </div>
+
+    <!-- Cantidades de árboles -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-medium">
+          {{ 'PLANNED_PLANTATION.MIN_TREES' | translate }}
+        </label>
+        <input type="number" min="0" [(ngModel)]="form.minTrees" name="minTrees" required class="rounded-xl border border-gray-300 px-4 py-2 shadow-sm
+                 focus:outline-none focus:ring-2 focus:ring-green-500 transition" />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-medium">
+          {{ 'PLANNED_PLANTATION.OPTIMAL_TREES' | translate }}
+        </label>
+        <input type="number" min="0" [(ngModel)]="form.optimalTrees" name="optimalTrees" class="rounded-xl border border-gray-300 px-4 py-2 shadow-sm
+                 focus:outline-none focus:ring-2 focus:ring-green-500 transition" />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-medium">
+          {{ 'PLANNED_PLANTATION.MAX_TREES' | translate }}
+        </label>
+        <input type="number" min="0" [(ngModel)]="form.maxTrees" name="maxTrees" class="rounded-xl border border-gray-300 px-4 py-2 shadow-sm
+                 focus:outline-none focus:ring-2 focus:ring-green-500 transition" />
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end gap-3 mt-6">
+      <button type="button" (click)="onCancel()"
+        class="px-4 py-2 rounded-xl border border-gray-300 hover:bg-gray-100 transition">
+        {{ 'COMMON.CANCEL' | translate }}
+      </button>
+
+      <button type="submit" [disabled]="loading" class="flex items-center gap-2 bg-green-600 text-white px-6 py-2 rounded-xl
+               hover:bg-green-700 disabled:opacity-50 transition">
+        <mat-icon>save</mat-icon>
+        {{ 'COMMON.SAVE' | translate }}
+      </button>
+    </div>
+
+  </form>
+</mat-card>

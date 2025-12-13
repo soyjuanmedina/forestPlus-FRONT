@@ -1,0 +1,75 @@
+<mat-card class="p-4">
+  <div class="flex justify-between items-center mb-4">
+    <input type="text" placeholder="{{ 'PLANNED_PLANTATION.SEARCH_PLACEHOLDER' | translate }}"
+      [(ngModel)]="filterText" (keyup)="applyFilter()"
+      class="w-64 rounded-xl border border-gray-300 px-4 py-2 shadow-sm
+             focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" />
+
+    <button (click)="addPlannedPlantation()"
+      class="flex items-center justify-center gap-2 bg-green-600 text-white py-3 px-4 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
+      <mat-icon>add</mat-icon>
+      {{ 'PLANNED_PLANTATION.NEW' | translate }}
+    </button>
+  </div>
+
+  <div class="flex flex-col gap-4">
+    <div *ngFor="let pp of getPagedPlannedPlantations()"
+      class="border rounded p-4 shadow-sm flex justify-between items-center w-full">
+
+      <div class="flex flex-col text-left">
+        <div class="font-semibold text-lg">{{ pp.landName || '—' }}</div>
+        <div class="text-gray-500 text-sm">
+          {{ 'PLANNED_PLANTATION.PLANNED_DATE' | translate }}:
+          {{ pp.plannedDate ? (pp.plannedDate | date:'dd/MM/yyyy') : '—' }}
+
+          <span *ngIf="pp.effectiveDate">
+            | {{ 'PLANNED_PLANTATION.EFFECTIVE_DATE' | translate }}:
+            {{ pp.effectiveDate | date:'dd/MM/yyyy' }}
+          </span>
+        </div>
+        <div class="text-gray-600 text-sm mt-1">
+          {{ 'PLANNED_PLANTATION.TREES_TITLE' | translate }}:
+          {{ 'PLANNED_PLANTATION.MIN_TREES' | translate }}: {{ pp.minTrees ?? '—' }},
+          {{ 'PLANNED_PLANTATION.OPTIMAL_TREES' | translate }}:{{pp.optimalTrees ?? '—' }},
+          {{ 'PLANNED_PLANTATION.MAX_TREES' | translate }}:{{pp.maxTrees ?? '—' }}
+        </div>
+      </div>
+
+      <div class="flex gap-2">
+        <!-- Ver -->
+        <button (click)="onView(pp)"
+          class="bg-green-600 hover:bg-green-700 text-white rounded-full p-2 flex items-center justify-center">
+          <mat-icon class="text-white" style="font-size: 20px;">visibility</mat-icon>
+        </button>
+
+        <!-- Editar -->
+        <button (click)="onEdit(pp)"
+          class="bg-green-600 hover:bg-green-700 text-white rounded-full p-2 flex items-center justify-center">
+          <mat-icon class="text-white" style="font-size: 20px;">edit</mat-icon>
+        </button>
+
+        <!-- Eliminar -->
+        <button (click)="onDelete(pp)"
+          class="bg-red-500 hover:bg-red-600 text-white rounded-full p-2 flex items-center justify-center">
+          <mat-icon class="text-white" style="font-size: 20px;">delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-6 flex justify-center items-center gap-4">
+    <button (click)="previousPage()" [disabled]="currentPage === 0"
+      class="flex items-center justify-center gap-2 bg-green-600 text-white py-2 px-4 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
+      <mat-icon>chevron_left</mat-icon>
+      {{ 'PLANNED_PLANTATION.PREVIOUS' | translate }}
+    </button>
+
+    <span class="text-gray-700 font-medium">{{ currentPage + 1 }} / {{ totalPages }}</span>
+
+    <button (click)="nextPage()" [disabled]="currentPage + 1 >= totalPages"
+      class="flex items-center justify-center gap-2 bg-green-600 text-white py-2 px-4 rounded-xl hover:bg-green-700 disabled:opacity-50 transition">
+      {{ 'PLANNED_PLANTATION.NEXT' | translate }}
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+</mat-card>
