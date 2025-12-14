@@ -52,23 +52,6 @@ export class LoginComponent {
 
     this.loginForm.valueChanges.subscribe( () => this.loginError = null );
 
-    if ( !environment.production ) {
-      this.accessGranted = true;
-      this.error = false;
-      return;
-    }
-
-  }
-
-  checkAccessKey () {
-    // No hay token, comprobamos la clave de desarrollo
-    if ( this.accessKey === environment.devAccessKey ) {
-      this.accessGranted = true;
-      this.error = false;
-    } else {
-      this.accessGranted = false;
-      this.error = true;
-    }
   }
 
   toggleForgotMode () {
