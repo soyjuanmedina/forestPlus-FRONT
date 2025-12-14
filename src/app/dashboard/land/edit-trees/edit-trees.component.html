@@ -51,13 +51,15 @@
       <!-- Acciones -->
       <div class="flex gap-2">
 
-        <!-- (Editar si lo activas más adelante)
-        <button
-          (click)="openEditModal(tree)"
+        <button (click)="viewTree(tree.id!)"
           class="bg-green-600 hover:bg-green-700 text-white rounded-full p-2 flex items-center justify-center">
-          <mat-icon class="text-white" style="font-size: 20px;">edit</mat-icon>
+          <mat-icon class="text-white" style="font-size: 20px;">visibility</mat-icon>
         </button>
-        -->
+
+        <button (click)="editTree(tree.id!)"
+          class="bg-green-600 hover:bg-green-700 text-white rounded-full p-2 flex items-center justify-center">
+          <mat-icon style="font-size: 20px;">edit</mat-icon>
+        </button>
 
         <button (click)="deleteTree(tree)"
           class="bg-red-500 hover:bg-red-600 text-white rounded-full p-2 flex items-center justify-center">

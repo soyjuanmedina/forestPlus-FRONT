@@ -20,6 +20,7 @@ import { LandResponseDto, LandRequestDto, LandUpdateRequestDto, UserResponseDto,
 import { PlantTreesModalComponent } from '../../../modals/plant-trees-modal/plant-trees-modal.component';
 import { AddCoordinateModalComponent } from '../../../modals/add-coordinate-modal/add-coordinate-modal.component';
 import { TreeTypeService } from '../../../services/tree-type.service';
+import { PlannedPlantationService } from '../../../services/planned-plantation.service';
 
 @Component( {
   selector: 'app-land-form',
@@ -53,6 +54,7 @@ export class LandFormComponent implements OnInit, OnDestroy {
   constructor (
     private fb: FormBuilder,
     private landService: LandService,
+    private plannedPlantationService: PlannedPlantationService,
     private coordinateService: CoordinateService,
     private route: ActivatedRoute,
     private router: Router,
@@ -204,23 +206,36 @@ export class LandFormComponent implements OnInit, OnDestroy {
   openPlantTreesModal () {
     if ( !this.land?.id ) return;
 
-    // Supongamos que treeTypes ya está cargado desde algún servicio
+    // 1️⃣ Obtener tipos de árboles
     this.treeTypeService.getAllTreeTypes().pipe( takeUntil( this.destroy$ ) ).subscribe( {
       next: ( types ) => {
-        const dialogRef = this.dialog.open( PlantTreesModalComponent, {
-          width: '400px',
-          data: { treeTypes: types }  // <-- aquí le pasas los tipos
+
+        // 2️⃣ Obtener plantaciones planificadas del terreno
+        this.plannedPlantationService.getByLand( this.land!.id! ).pipe( takeUntil( this.destroy$ ) ).subscribe( {
+          next: ( plantations ) => {
+
+            // 3️⃣ Abrir el modal pasando ambos datos
+            const dialogRef = this.dialog.open( PlantTreesModalComponent, {
+              width: '400px',
+              data: { treeTypes: types, plannedPlantations: plantations }
+            } );
+
+            // 4️⃣ Después de cerrar el modal, plantar los árboles
+            dialogRef.afterClosed().subscribe( result => {
+              if ( result && this.land?.id ) {
+                this.treeService.plantTreeBatch( {
+                  landId: this.land.id,
+                  treeTypeId: result.treeTypeId,
+                  quantity: result.quantity,
+                  plannedPlantationId: result.plannedPlantationId // 🔹 enviar plantación seleccionada
+                } ).subscribe( () => this.loadPlantedTrees( this.land!.id! ) );
+              }
+            } );
+
+          },
+          error: ( err ) => console.error( 'Error cargando plantaciones planificadas', err )
         } );
 
-        dialogRef.afterClosed().subscribe( result => {
-          if ( result && this.land?.id ) {
-            this.treeService.plantTreeBatch( {
-              landId: this.land.id,
-              treeTypeId: result.treeTypeId,
-              quantity: result.quantity
-            } ).subscribe( () => this.loadPlantedTrees( this.land!.id! ) );
-          }
-        } );
       },
       error: ( err ) => console.error( 'Error cargando tipos de árboles', err )
     } );

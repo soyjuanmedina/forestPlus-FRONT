@@ -31,6 +31,19 @@
         class="w-full px-0 py-2 border-b border-gray-300 focus:border-green-500 bg-transparent outline-none" />
     </div>
 
+    <!-- Fecha prevista -->
+    <mat-form-field class="w-full">
+      <mat-select formControlName="plannedPlantationId"
+        placeholder="{{ 'PLANT_TREES.SELECT_PLANTATION' | translate }}">
+        <mat-option *ngFor="let plantation of plannedPlantations" [value]="plantation.id">
+          {{ plantation.plannedDate | date:'dd/MM/yyyy' }}
+          <ng-container *ngIf="plantation.effectiveDate">
+            ({{ plantation.effectiveDate | date:'dd/MM/yyyy' }})
+          </ng-container>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <!-- Botones -->
     <div class="flex justify-end gap-4 mt-8">
       <button type="button" (click)="dialogRef.close()"

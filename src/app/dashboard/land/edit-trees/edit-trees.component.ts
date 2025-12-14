@@ -87,6 +87,14 @@ export class EditTreesComponent implements OnInit {
     } );
   }
 
+  viewTree ( treeId: number ) {
+    this.router.navigate( ['/tree', treeId] );
+  }
+
+  editTree ( treeId: number ) {
+    this.router.navigate( ['/tree/form', treeId] );
+  }
+
   deleteTree ( tree: TreeResponseDto ): void {
     if ( !tree.id ) {
       console.error( 'El árbol no tiene ID, no se puede eliminar' );

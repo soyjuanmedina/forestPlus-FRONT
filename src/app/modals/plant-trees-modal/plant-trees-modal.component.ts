@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { TreeTypeResponseDto } from '../../api/model/treeTypeResponse';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatCardModule } from '@angular/material/card';
+import { PlannedPlantationResponseDto } from '../../api';
 
 @Component( {
   selector: 'app-plant-trees-modal',
@@ -30,21 +31,24 @@ import { MatCardModule } from '@angular/material/card';
 export class PlantTreesModalComponent implements OnInit {
 
   treeTypes: TreeTypeResponseDto[] = [];
+  plannedPlantations: PlannedPlantationResponseDto[] = [];
   form: FormGroup;
 
   constructor (
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<PlantTreesModalComponent>,
-    @Inject( MAT_DIALOG_DATA ) public data: { treeTypes: TreeTypeResponseDto[] }
+    @Inject( MAT_DIALOG_DATA ) public data: { treeTypes: TreeTypeResponseDto[], plannedPlantations: PlannedPlantationResponseDto[] }
   ) {
     this.form = this.fb.group( {
       treeTypeId: [null, Validators.required],
-      quantity: [1, [Validators.required, Validators.min( 1 )]]
+      quantity: [1, [Validators.required, Validators.min( 1 )]],
+      plannedPlantationId: [null, Validators.required]
     } );
   }
 
   ngOnInit () {
     this.treeTypes = this.data.treeTypes;
+    this.plannedPlantations = this.data.plannedPlantations;
   }
 
   submit () {
