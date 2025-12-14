@@ -7,6 +7,7 @@
 
     <form [formGroup]="treeForm" class="w-full">
 
+      <!-- Nombre personalizado -->
       <div class="mb-4">
         <mat-form-field class="w-full">
           <mat-label>{{ 'TREE.NOMBRE_PERSONALIZADO' | translate }}</mat-label>
@@ -14,6 +15,7 @@
         </mat-form-field>
       </div>
 
+      <!-- Tipo -->
       <div class="mb-4">
         <mat-form-field class="w-full">
           <mat-label>{{ 'TREE.TIPO' | translate }}</mat-label>
@@ -21,6 +23,7 @@
         </mat-form-field>
       </div>
 
+      <!-- Especie -->
       <div class="mb-4">
         <mat-form-field class="w-full">
           <mat-label>{{ 'TREE.SPICE' | translate }}</mat-label>
@@ -28,13 +31,34 @@
         </mat-form-field>
       </div>
 
+      <!-- CO2 absorbido -->
       <div class="mb-4">
-        <mat-form-field class="w-full">
-          <mat-label>{{ 'TREE.CO2_ABSORBIDO' | translate }}</mat-label>
-          <input matInput type="number" formControlName="co2AbsorptionAt20" [readonly]="!isAdmin">
-        </mat-form-field>
+        <label class="font-medium block mb-1">{{ 'TREE.CO2_ABSORBIDO' | translate }}</label>
+        <div class="flex flex-wrap gap-4">
+          <mat-form-field class="flex-1 min-w-[120px]">
+            <mat-label>{{ 'TREE_TYPE.CO2_AT_20_LABEL' | translate }}</mat-label>
+            <input matInput type="number" formControlName="co2AbsorptionAt20" [readonly]="!isAdmin">
+          </mat-form-field>
+          <mat-form-field class="flex-1 min-w-[120px]">
+            <mat-label>{{ 'TREE_TYPE.CO2_AT_25_LABEL' | translate }}</mat-label>
+            <input matInput type="number" formControlName="co2AbsorptionAt25" [readonly]="!isAdmin">
+          </mat-form-field>
+          <mat-form-field class="flex-1 min-w-[120px]">
+            <mat-label>{{ 'TREE_TYPE.CO2_AT_30_LABEL' | translate }}</mat-label>
+            <input matInput type="number" formControlName="co2AbsorptionAt30" [readonly]="!isAdmin">
+          </mat-form-field>
+          <mat-form-field class="flex-1 min-w-[120px]">
+            <mat-label>{{ 'TREE_TYPE.CO2_AT_35_LABEL' | translate }}</mat-label>
+            <input matInput type="number" formControlName="co2AbsorptionAt35" [readonly]="!isAdmin">
+          </mat-form-field>
+          <mat-form-field class="flex-1 min-w-[120px]">
+            <mat-label>{{ 'TREE_TYPE.CO2_AT_40_LABEL' | translate }}</mat-label>
+            <input matInput type="number" formControlName="co2AbsorptionAt40" [readonly]="!isAdmin">
+          </mat-form-field>
+        </div>
       </div>
 
+      <!-- Fecha plantado -->
       <div class="mb-4">
         <mat-form-field class="w-full">
           <mat-label>{{ 'TREE.PLANTADO_EL' | translate }}</mat-label>
@@ -42,6 +66,7 @@
         </mat-form-field>
       </div>
 
+      <!-- Terreno -->
       <div class="mb-4">
         <mat-form-field class="w-full">
           <mat-label>{{ 'TREE.TERRENO' | translate }}</mat-label>
@@ -49,6 +74,7 @@
         </mat-form-field>
       </div>
 
+      <!-- Propietario -->
       <div class="mb-4">
         <mat-form-field class="w-full">
           <mat-label>{{ 'TREE.PROPIETARIO' | translate }}</mat-label>
@@ -56,6 +82,24 @@
         </mat-form-field>
       </div>
 
+      <!-- Plantación planificada -->
+      <div class="mb-4">
+        <mat-form-field class="w-full">
+          <mat-label>{{ 'TREE.PLANTACION_PLANIFICADA' | translate }}</mat-label>
+          <mat-select formControlName="plannedPlantationId">
+            <mat-option [value]="null">{{ 'COMMON.NONE' | translate }}</mat-option>
+            <mat-option *ngFor="let plantation of plannedPlantations" [value]="plantation.id">
+              {{ plantation.landName || ('TREE.SIN_ASIGNAR' | translate) }} -
+              {{ plantation.plannedDate | date:'dd/MM/yyyy' }}
+              <ng-container *ngIf="plantation.effectiveDate">
+                ({{ plantation.effectiveDate | date:'dd/MM/yyyy' }})
+              </ng-container>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Botones -->
       <div class="flex gap-4 mt-4 w-full justify-center md:justify-start">
         <button type="button" (click)="cancel()"
           class="flex-1 md:flex-auto bg-gray-300 text-gray-800 py-3 px-6 rounded-xl hover:bg-gray-400 transition">

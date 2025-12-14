@@ -22,6 +22,7 @@ export interface TreeUpdateRequestDto {
     landId?: number;
     ownerUserId?: number;
     ownerCompanyId?: number;
+    plannedPlantationId?: number;
     picture?: string;
 }
 

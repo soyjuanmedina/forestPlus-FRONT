@@ -9,6 +9,7 @@
  */
 import { TreeTypeResponseDto } from './treeTypeResponse';
 import { LandResponseDto } from './landResponse';
+import { PlannedPlantationResponseDto } from './plannedPlantationResponse';
 
 
 export interface TreeResponseDto { 
@@ -22,6 +23,7 @@ export interface TreeResponseDto {
     co2AbsorptionAt40?: number;
     picture?: string;
     plantedAt?: string;
+    plannedPlantation?: PlannedPlantationResponseDto;
     treeTypeId?: number;
     treeTypeName?: string;
     treeType?: TreeTypeResponseDto;

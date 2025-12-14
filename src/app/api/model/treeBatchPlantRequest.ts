@@ -15,5 +15,6 @@ export interface TreeBatchPlantRequestDto {
     quantity?: number;
     ownerUserId?: number;
     ownerCompanyId?: number;
+    plannedPlantationId?: number;
 }
 
