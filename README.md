@@ -1,3 +1,3 @@
 # ForestPlus
 
-Una aplicación
+Una aplicación para la gestión forestal
