@@ -83,7 +83,7 @@ export class TreeFormComponent implements OnInit {
       plantedAt: [{ value: this.tree.plantedAt, disabled: !this.isAdmin }, Validators.required],
       landName: [{ value: this.tree.land?.name, disabled: true }],
       ownerName: [{ value: this.tree.ownerUserName, disabled: true }],
-      plannedPlantationId: [this.tree.plannedPlantation?.id || null]
+      plannedPlantationId: [{ value: this.tree.plannedPlantation?.id || null, disabled: !this.isAdmin }]
     } );
   }
 
