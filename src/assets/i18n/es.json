@@ -1,4 +1,18 @@
 {
+  "COMMON": {
+    "CANCEL": "Cancelar",
+    "EDIT": "Editar",
+    "DELETE": "Eliminar",
+    "CLOSE": "Cerrar",
+    "SAVE_CHANGES": "Guardar cambios",
+    "SAVE": "Guardar",
+    "PREVIOUS": "Anterior",
+    "NEXT": "Siguiente",
+    "CONFIRM_DELETE": "Confirmar eliminación",
+    "CONFIRM_DELETE_MESSAGE": "¿Esta seguro de eliminar este elemento?",
+    "MORE_INFO": "Más información",
+    "SELECT_OPTION": "Seleccionar"
+  },
   "MENU": {
     "MENU": "Menú",
     "HOME": "Inicio",
@@ -30,6 +44,8 @@
     "NEXT": "Siguiente"
   },
   "LANDS": {
+    "PLANNED_PLANTATIONS": "Plantaciones planificadas",
+    "NO_PLANNED_PLANTATIONS": "Sin plantaciones planificadas",
     "SEARCH_PLACEHOLDER": "Buscar terreno...",
     "NEW_LAND": "Nuevo terreno",
     "PREVIOUS": "Anterior",
@@ -49,11 +65,13 @@
   },
   "ASSIGN_TREES": {
     "TITLE": "Asignar árbol",
+    "PLANNED_PLANTATION": "Plantaciones previstas",
+    "QUANTITY": "Cantidad",
     "LAND": "Seleccionar terreno",
     "TREES": "Árboles disponibles",
     "NO_TREES": "No hay árboles disponibles en este terreno",
     "ASSIGN": "Asignar",
-    "ASSIGN_PLANTED_TREES": "Asignar árboles plantados",
+    "ASSIGN_PLANTED_TREES": "Asignar árboles",
     "UNASSIGN": "Gestionar",
     "NO_TREES_TO_MANAGE": "No hay árboles para gestionar"
   },
@@ -189,17 +207,6 @@
     "EDIT_BUTTON": "Editar",
     "CO2_ESTIMATIONS_TITLE": "Absorciones CO₂ estimadas",
     "DELETE_ERROR": "No se puede eliminar el tipo de árbol porque hay árboles asociados"
-  },
-  "COMMON": {
-    "CANCEL": "Cancelar",
-    "CLOSE": "Cerrar",
-    "SAVE_CHANGES": "Guardar cambios",
-    "SAVE": "Guardar",
-    "PREVIOUS": "Anterior",
-    "NEXT": "Siguiente",
-    "CONFIRM_DELETE": "Confirmar eliminación",
-    "CONFIRM_DELETE_MESSAGE": "¿Esta seguro de eliminar este elemento?",
-    "MORE_INFO": "Más información"
   },
   "ADMIN_TREE_TYPES": {
     "CONFIRM_DELETE_TREE_TYPE": {

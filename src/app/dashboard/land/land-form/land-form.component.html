@@ -116,33 +116,12 @@
       </ng-template>
     </div>
 
-    <!-- Resumen de árboles plantados por tipo -->
-    <div class="mt-6 w-full text-left">
-      <div class="flex justify-between items-center mb-2">
-        <p class="font-semibold text-gray-700">{{ 'LANDS.PLANTED_TREES' | translate }}</p>
-
-        <!-- BOTÓN PARA PLANTAR ÁRBOLES -->
-        <button type="button" (click)="openPlantTreesModal()"
-          class="bg-green-200 text-green-800 px-3 py-1 rounded-full hover:bg-green-300 transition text-sm">
-          {{ 'LAND_FORM.PLANT_TREES' | translate }}
-        </button>
-      </div>
-      <ul *ngIf="plantedTrees?.length; else noPlantedTrees">
-        <li *ngFor="let plantedTree of plantedTrees"
-          class="flex justify-between items-center border-b py-1">
-          <span>{{ plantedTree.treeTypeName }}</span>
-          <div class="flex items-center gap-2">
-            <span class="font-semibold">{{ plantedTree.quantity }}</span>
-            <button type="button" (click)="editPlantedTrees(plantedTree)"
-              class="bg-blue-200 text-blue-800 px-2 py-1 rounded-full hover:bg-blue-300 transition text-sm">
-              {{ 'LAND_FORM.EDIT_TREES' | translate }}
-            </button>
-          </div>
-        </li>
-      </ul>
-      <ng-template #noPlantedTrees>
-        <p class="text-gray-500 italic">{{ 'LANDS.NO_PLANTED_TREES_IN_LAND' | translate }}</p>
-      </ng-template>
+    <!-- Plantaciones planificadas -->
+    <div class="mt-6 w-full">
+      <app-planned-plantations-list [plantations]="plannedPlantations" [editable]="true"
+        (edit)="onEditPlantation($event)">
+      </app-planned-plantations-list>
     </div>
+
   </form>
 </div>

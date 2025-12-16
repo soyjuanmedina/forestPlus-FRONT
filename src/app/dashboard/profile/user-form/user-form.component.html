@@ -109,8 +109,13 @@
   <!-- Árboles plantados -->
   <div class="mt-4 w-full text-left">
     <div class="flex justify-between items-center mb-2">
-      <p class="font-semibold text-gray-700">{{ 'LANDS.PLANTED_TREES_BY_USER' | translate }}</p>
-
+      <p class="font-semibold text-gray-700">{{ 'LANDS.PLANTED_TREES_BY_USER' | translate }}
+        <!-- Badge de pendientes de asignar -->
+        <span *ngIf="(user?.pendingTreesCount ?? 0) > 0"
+          class="bg-red-600 text-white text-xs px-2 py-0.5 rounded-full">
+          Pendientes de asignar: {{ user?.pendingTreesCount }}
+        </span>
+      </p>
       <button *ngIf="isAdmin" type="button" (click)="openAssignTreesModal(user!.id!)"
         class="bg-green-200 text-green-800 px-3 py-1 rounded-full hover:bg-green-300 transition text-sm">
         {{ 'ASSIGN_TREES.ASSIGN_PLANTED_TREES' | translate }}

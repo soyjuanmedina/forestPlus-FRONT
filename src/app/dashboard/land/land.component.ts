@@ -12,15 +12,17 @@ import { UserService } from '../../services/user.service';
 import { RolesEnum } from '../../models/roles';
 import { LandResponseDto } from '../../api/model/landResponse';
 import { UserResponseDto } from '../../api/model/userResponse';
-import { LandTreeSummaryResponseDto } from '../../api';
+import { LandTreeSummaryResponseDto, PlannedPlantationResponseDto } from '../../api';
 import { TreeService } from '../../services/tree.service';
 import { CoordinateResponseDto } from '../../api/model/coordinateResponse';
 import { CoordinateService } from '../../services/coordinate.service';
+import { PlannedPlantationService } from '../../services/planned-plantation.service';
+import { PlannedPlantationsListComponent } from '../../shared/planned-plantations-list/planned-plantations-list.component';
 
 @Component( {
   selector: 'app-land',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, TranslateModule],
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, TranslateModule, PlannedPlantationsListComponent],
   templateUrl: './land.component.html',
   styleUrls: ['./land.component.scss']
 } )
@@ -30,7 +32,7 @@ export class LandComponent implements OnInit {
   previewImage: string | null = null;
   user: UserResponseDto | null = null;
   isEditable = false;
-  plantedTrees: LandTreeSummaryResponseDto[] = [];
+  plannedPlantations: PlannedPlantationResponseDto[] = [];
   coordinates: CoordinateResponseDto[] = [];
   private map!: maplibregl.Map;
 
@@ -38,7 +40,7 @@ export class LandComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private landService: LandService,
-    private treeService: TreeService,
+    private plannedPlantationService: PlannedPlantationService,
     private coordinateService: CoordinateService,
     private snackBar: MatSnackBar,
     private userService: UserService
@@ -56,7 +58,7 @@ export class LandComponent implements OnInit {
           this.isEditable = this.user?.role === RolesEnum.ADMIN;
           setTimeout( () => this.initMap(), 0 );
 
-          this.loadPlantedTrees();
+          this.loadPlannedPlantations();
           this.loadCoordinates();
         },
         error: ( err ) => {
@@ -182,17 +184,23 @@ export class LandComponent implements OnInit {
     }
   }
 
-  private loadPlantedTrees () {
+  private loadPlannedPlantations (): void {
     if ( !this.land?.id ) return;
 
-    this.treeService.getTreesByLand( this.land.id ).subscribe( {
-      next: ( trees: LandTreeSummaryResponseDto[] ) => {
-        this.plantedTrees = trees;
-      },
-      error: ( err ) => {
-        console.error( 'Error cargando árboles plantados', err );
-        this.snackBar.open( 'Error cargando árboles plantados', 'Cerrar', { duration: 3000 } );
-      }
-    } );
+    this.plannedPlantationService
+      .getByLand( this.land.id )
+      .subscribe( {
+        next: ( plantations ) => {
+          this.plannedPlantations = plantations ?? [];
+        },
+        error: ( err ) => {
+          console.error( 'Error cargando plantaciones planificadas', err );
+          this.snackBar.open(
+            'Error cargando plantaciones planificadas',
+            'Cerrar',
+            { duration: 3000 }
+          );
+        }
+      } );
   }
 }

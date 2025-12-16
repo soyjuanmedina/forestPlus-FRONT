@@ -66,17 +66,23 @@
     <p class="text-gray-400">{{ 'LANDS.NO_COORDINATES' | translate }}</p>
   </ng-template>
 
-  <!-- Árboles plantados -->
-  <div class="mt-6 w-full text-left">
-    <p class="font-semibold text-gray-700 mb-2">{{ 'LANDS.PLANTED_TREES' | translate }}</p>
-    <ul *ngIf="plantedTrees?.length; else noTrees">
-      <li *ngFor="let tree of plantedTrees" class="flex justify-between border-b py-1">
-        <span>{{ tree.treeTypeName }}</span>
-        <span class="font-semibold">{{ tree.quantity }}</span>
-      </li>
-    </ul>
-    <ng-template #noTrees>
-      <p class="text-gray-500 italic">{{ 'LANDS.NO_PLANTED_TREES_IN_LAND' | translate }}</p>
-    </ng-template>
+
+
+
+
+
+
+
+
+  <!-- Plantaciones planificadas -->
+  <!-- Plantaciones planificadas -->
+  <div class="mt-6 w-full">
+    <app-planned-plantations-list [plantations]="plannedPlantations" [editable]="false">
+    </app-planned-plantations-list>
   </div>
+
+
+
+
+
 </mat-card>

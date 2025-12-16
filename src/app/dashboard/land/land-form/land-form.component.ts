@@ -16,11 +16,12 @@ import { CoordinateService } from '../../../services/coordinate.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { LandResponseDto, LandRequestDto, LandUpdateRequestDto, UserResponseDto, CoordinateResponseDto, LandTreeSummaryResponseDto } from '../../../api';
+import { LandResponseDto, LandRequestDto, LandUpdateRequestDto, UserResponseDto, CoordinateResponseDto, LandTreeSummaryResponseDto, PlannedPlantationResponseDto } from '../../../api';
 import { PlantTreesModalComponent } from '../../../modals/plant-trees-modal/plant-trees-modal.component';
 import { AddCoordinateModalComponent } from '../../../modals/add-coordinate-modal/add-coordinate-modal.component';
 import { TreeTypeService } from '../../../services/tree-type.service';
 import { PlannedPlantationService } from '../../../services/planned-plantation.service';
+import { PlannedPlantationsListComponent } from '../../../shared/planned-plantations-list/planned-plantations-list.component';
 
 @Component( {
   selector: 'app-land-form',
@@ -34,7 +35,8 @@ import { PlannedPlantationService } from '../../../services/planned-plantation.s
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    TranslateModule
+    TranslateModule,
+    PlannedPlantationsListComponent
   ],
   templateUrl: './land-form.component.html',
 } )
@@ -47,7 +49,7 @@ export class LandFormComponent implements OnInit, OnDestroy {
   user?: UserResponseDto | null;
 
   coordinates: CoordinateResponseDto[] = [];
-  plantedTrees: LandTreeSummaryResponseDto[] = [];
+  plannedPlantations: PlannedPlantationResponseDto[] = [];
 
   private destroy$ = new Subject<void>();
 
@@ -102,7 +104,7 @@ export class LandFormComponent implements OnInit, OnDestroy {
       this.previewImage = l.picture;
 
       this.loadCoordinates();
-      this.loadPlantedTrees( id );
+      this.loadPlannedPlantations();
     } );
   }
 
@@ -195,50 +197,24 @@ export class LandFormComponent implements OnInit, OnDestroy {
     } );
   }
 
-  /** ------------------ ÁRBOLES ------------------ */
-  private loadPlantedTrees ( landId: number ) {
-    this.treeService.getTreesByLand( landId ).subscribe( {
-      next: ( trees: LandTreeSummaryResponseDto[] ) => this.plantedTrees = trees,
-      error: err => this.snackBar.open( 'Error cargando árboles plantados', 'Cerrar', { duration: 3000 } )
-    } );
-  }
-
-  openPlantTreesModal () {
+  private loadPlannedPlantations (): void {
     if ( !this.land?.id ) return;
 
-    // 1️⃣ Obtener tipos de árboles
-    this.treeTypeService.getAllTreeTypes().pipe( takeUntil( this.destroy$ ) ).subscribe( {
-      next: ( types ) => {
+    this.plannedPlantationService
+      .getByLand( this.land.id )
+      .subscribe( {
+        next: ( pps ) => this.plannedPlantations = pps,
+        error: ( err ) => console.error( 'Error cargando plantaciones', err )
+      } );
+  }
 
-        // 2️⃣ Obtener plantaciones planificadas del terreno
-        this.plannedPlantationService.getByLand( this.land!.id! ).pipe( takeUntil( this.destroy$ ) ).subscribe( {
-          next: ( plantations ) => {
+  onEditPlantation ( pp: PlannedPlantationResponseDto ): void {
+    if ( !pp.id ) return;
 
-            // 3️⃣ Abrir el modal pasando ambos datos
-            const dialogRef = this.dialog.open( PlantTreesModalComponent, {
-              width: '400px',
-              data: { treeTypes: types, plannedPlantations: plantations }
-            } );
-
-            // 4️⃣ Después de cerrar el modal, plantar los árboles
-            dialogRef.afterClosed().subscribe( result => {
-              if ( result && this.land?.id ) {
-                this.treeService.plantTreeBatch( {
-                  landId: this.land.id,
-                  treeTypeId: result.treeTypeId,
-                  quantity: result.quantity,
-                  plannedPlantationId: result.plannedPlantationId // 🔹 enviar plantación seleccionada
-                } ).subscribe( () => this.loadPlantedTrees( this.land!.id! ) );
-              }
-            } );
-
-          },
-          error: ( err ) => console.error( 'Error cargando plantaciones planificadas', err )
-        } );
-
-      },
-      error: ( err ) => console.error( 'Error cargando tipos de árboles', err )
-    } );
+    this.router.navigate( [
+      '/admin/planned-plantation-form',
+      pp.id
+    ] );
   }
 
   editPlantedTrees ( plantedTrees: LandTreeSummaryResponseDto ) {

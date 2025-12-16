@@ -262,21 +262,45 @@ export class UserFormComponent implements OnInit {
   }
 
   openAssignTreesModal ( userId: number ) {
-    // Abrimos el modal pasando solo el userId
     const dialogRef = this.dialog.open( AssignTreesModalComponent, {
       width: '400px',
       data: { userId }
     } );
 
     dialogRef.afterClosed().subscribe( result => {
-      if ( result && result.treeId ) {
-        this.treeService.assignTreeToUser( result.treeId, userId )
-          .subscribe( () => {
-            this.loadUserTrees( userId );
-          } );
+      if ( result && result.treeTypeId && result.plannedPlantationId ) {
+        const payload = {
+          ownerUserId: result.ownerUserId,
+          ownerCompanyId: result.ownerCompanyId,
+          landId: result.landId,
+          plannedPlantationId: result.plannedPlantationId,
+          treeTypeId: result.treeTypeId,
+          quantity: result.quantity
+        };
+        // Llamamos al endpoint batch desde el padre
+        this.treeService.plantTreeBatch( payload ).subscribe( {
+          next: () => {
+
+            // 🔹 Recargamos el usuario desde backend
+            this.userService.getUserById( userId ).subscribe( {
+              next: ( updatedUser ) => {
+                this.user = updatedUser;
+                this.userForm.patchValue( { pendingTreesCount: updatedUser.pendingTreesCount } );
+
+                // 🔹 También recargamos los árboles plantados
+                this.loadUserTrees( userId );
+              },
+              error: err => console.error( 'Error recargando usuario', err )
+            } );
+          },
+          error: ( err ) => {
+            console.error( 'Error plantando árboles', err );
+          }
+        } );
       }
     } );
   }
+
 
   private finalizeUpdate ( user: UserResponseDto ) {
     this.user = user;

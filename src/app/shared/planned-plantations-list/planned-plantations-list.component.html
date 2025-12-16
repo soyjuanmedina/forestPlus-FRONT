@@ -1,0 +1,70 @@
+<!-- Plantaciones planificadas -->
+<div class="w-full text-left">
+
+  <p class="font-semibold text-gray-700 mb-2">
+    {{ 'LANDS.PLANNED_PLANTATIONS' | translate }}
+  </p>
+
+  <ul *ngIf="plantations?.length; else noPlantations">
+    <li *ngFor="let pp of plantations" class="border-b py-3 space-y-2">
+
+      <!-- Estado -->
+      <div class="flex justify-between items-center">
+        <span class="text-xs font-semibold px-2 py-1 rounded-full" [ngClass]="pp.isActive
+            ? 'bg-green-100 text-green-700'
+            : 'bg-gray-200 text-gray-600'">
+          {{ pp.isActive
+          ? ('PLANNED_PLANTATION.ACTIVE' | translate)
+          : ('PLANNED_PLANTATION.INACTIVE' | translate) }}
+        </span>
+      </div>
+
+      <!-- Fechas -->
+      <div class="text-sm text-gray-600 space-y-1">
+        <div>
+          📅 {{ 'PLANNED_PLANTATION.PLANNED_DATE' | translate }}:
+          <span class="font-medium">
+            {{ pp.plannedDate | date:'dd/MM/yyyy' }}
+          </span>
+        </div>
+
+        <div *ngIf="pp.effectiveDate">
+          ✅ {{ 'PLANNED_PLANTATION.EFFECTIVE_DATE' | translate }}:
+          <span class="font-medium">
+            {{ pp.effectiveDate | date:'dd/MM/yyyy' }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Cantidades -->
+      <div class="text-sm text-gray-700">
+        🌱 {{ 'PLANNED_PLANTATION.MIN_TREES' | translate }}:
+        <span class="font-medium">{{ pp.minTrees }}</span>
+
+        <span *ngIf="pp.optimalTrees">
+          · {{ 'PLANNED_PLANTATION.OPTIMAL_TREES' | translate }} {{ pp.optimalTrees }}
+        </span>
+
+        <span *ngIf="pp.maxTrees">
+          · {{ 'PLANNED_PLANTATION.MAX_TREES' | translate }} {{ pp.maxTrees }}
+        </span>
+      </div>
+
+      <!-- Acciones (solo si editable) -->
+      <div *ngIf="editable" class="flex gap-2 justify-end mt-2">
+        <button type="button" (click)="edit.emit(pp)"
+          class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm hover:bg-blue-300 transition">
+          ✏️ {{ 'COMMON.EDIT' | translate }}
+        </button>
+      </div>
+
+    </li>
+  </ul>
+
+  <ng-template #noPlantations>
+    <p class="text-gray-500 italic">
+      {{ 'LANDS.NO_PLANNED_PLANTATIONS' | translate }}
+    </p>
+  </ng-template>
+
+</div>
