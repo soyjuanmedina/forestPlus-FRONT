@@ -1,8 +1,70 @@
 <section class="home-presentation p-8 max-w-5xl mx-auto text-center space-y-6">
   <h1 class="text-4xl font-extrabold text-green-800">{{ 'HOME.TITLE' | translate }}<span
-      *ngIf="userName">, {{ userName }}</span></h1>
+      *ngIf="userName">, {{ userName }}</span><span *ngIf="isAdmin"> Admin</span></h1>
 
   <p *ngFor="let line of 'HOME.LINES' | translate" class="text-lg text-gray-700 leading-relaxed">
     {{ line }}
   </p>
 </section>
+<section class="planted-trees p-8 max-w-5xl mx-auto" *ngIf=" !isAdmin">
+
+  <!-- Si hay árboles plantados -->
+  <div *ngIf="plantedTrees > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+    <div class="bg-white shadow-md rounded-xl p-6 flex items-center space-x-4">
+      <!-- Icono a la izquierda -->
+      <div class="flex-shrink-0">
+        <i class="fas fa-tree text-green-500 text-4xl"></i>
+      </div>
+
+      <!-- Contenido -->
+      <div class="flex flex-col">
+        <span class="text-3xl font-extrabold text-gray-800">{{ plantedTrees }}</span>
+        <p class="text-green-600 font-medium mt-1">{{ 'HOME.PLANTED_TREES' | translate }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Si no hay árboles plantados -->
+  <div *ngIf="plantedTrees === 0"
+    class="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg flex flex-col items-center text-center space-y-4">
+    <p class="text-yellow-700 font-semibold text-lg">
+      ¡Aún no tienes árboles plantados!
+    </p>
+    <p class="text-yellow-600">
+      Comienza a plantar un árbol y contribuye al bosque.
+    </p>
+    <a href="http://localhost:4200/#/buy-tree"
+      class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300">
+      Plantar un árbol
+    </a>
+  </div>
+
+</section>
+
+
+
+
+<div class="bg-white rounded-2xl shadow p-6 w-full max-w-md">
+  <p class="text-sm text-gray-500 mb-1">
+    Próxima plantación
+  </p>
+
+  <p class="text-3xl font-bold text-green-700">
+    {{ plantedTrees }} / {{ plannedTrees }}
+  </p>
+
+  <p class="text-sm text-gray-500 mb-3">
+    árboles plantados
+  </p>
+
+  <!-- Progress -->
+  <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+    <div class="bg-green-500 h-3 rounded-full transition-all duration-500"
+      [style.width.%]="(plantedTrees / plannedTrees) * 100">
+    </div>
+  </div>
+
+  <p class="text-xs text-gray-500 mt-2 text-right">
+    {{ (plantedTrees / plannedTrees) * 100 | number:'1.0-0' }}%
+  </p>
+</div>

@@ -89,8 +89,6 @@ export class CompanyComponent implements OnInit, AfterViewInit {
     }
   }
 
-
-
   checkRole () {
     const role = this.authService.currentUserRole;
     this.isAdmin = role === 'ADMIN';

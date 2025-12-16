@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 export class AuthService {
   private userSubject = new BehaviorSubject<UserResponseDto | null>( null );
   user$ = this.userSubject.asObservable();
+  private tokenSubject = new BehaviorSubject<string | null>( localStorage.getItem( 'forestPlus_token' ) );
+  token$ = this.tokenSubject.asObservable();
 
   constructor ( private authApi: AuthControllerService, private router: Router ) {
     // Cargar usuario desde localStorage si existe
@@ -66,6 +68,7 @@ export class AuthService {
     localStorage.setItem( 'forestPlus_user', JSON.stringify( user ) );
     if ( token ) {
       localStorage.setItem( 'forestPlus_token', token );
+      this.tokenSubject.next( token ); // ✅ actualizamos BehaviorSubject
     }
   }
 

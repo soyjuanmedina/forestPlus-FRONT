@@ -12,6 +12,8 @@ export class AuthInterceptorFactory {
     return ( req: HttpRequest<any>, next: HttpHandlerFn ) => {
       const token = localStorage.getItem( 'forestPlus_token' );
 
+      console.log( 'localStorage', localStorage );
+
       const authReq = token
         ? req.clone( { setHeaders: { Authorization: `Bearer ${token}` } } )
         : req;

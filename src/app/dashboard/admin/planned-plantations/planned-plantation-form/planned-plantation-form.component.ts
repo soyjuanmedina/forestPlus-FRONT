@@ -12,6 +12,7 @@ import { PlannedPlantationRequestDto } from '../../../../api/model/plannedPlanta
 import { PlannedPlantationResponseDto } from '../../../../api/model/plannedPlantationResponse';
 import { LandService } from '../../../../services/land.service';
 import { LandResponseDto } from '../../../../api/model/landResponse';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component( {
   selector: 'app-planned-plantation-form',
@@ -22,7 +23,8 @@ import { LandResponseDto } from '../../../../api/model/landResponse';
     FormsModule,
     MatCardModule,
     MatIconModule,
-    TranslateModule
+    TranslateModule,
+    MatSlideToggleModule
   ]
 } )
 export class PlannedPlantationFormComponent implements OnInit {
@@ -76,7 +78,8 @@ export class PlannedPlantationFormComponent implements OnInit {
           plannedDate: pp.plannedDate ?? '',
           minTrees: pp.minTrees ?? 0,
           optimalTrees: pp.optimalTrees,
-          maxTrees: pp.maxTrees
+          maxTrees: pp.maxTrees,
+          isActive: pp.isActive
         };
       },
       error: err => {

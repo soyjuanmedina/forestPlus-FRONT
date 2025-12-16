@@ -87,11 +87,9 @@
   "HOME": {
     "TITLE": "Bienvenido a Forest+",
     "LINES": [
-      "La plataforma que combina tecnología e innovación para cuidar nuestro planeta.",
-      "Con imágenes satelitales e Inteligencia Artificial, hacemos posible la reforestación digital con trazabilidad y resultados medibles.",
-      "Regeneramos ecosistemas y ayudamos a organizaciones a cumplir sus metas climáticas de manera eficiente.",
-      "Juntos, construimos un futuro más verde."
-    ]
+      "La plataforma que combina tecnología e innovación para cuidar nuestro planeta."
+    ],
+    "PLANTED_TREES": "Árboles plantados"
   },
   "PROFILE": {
     "ROLE": "Rol",
@@ -435,6 +433,7 @@
     "TITLE": "Gestión de árboles"
   },
   "PLANNED_PLANTATION": {
+    "ACTIVE": "Plantación Activa",
     "TITLE": "Plantaciones previstas",
     "NEW": "Nueva plantación",
     "EDIT": "Editar plantación",

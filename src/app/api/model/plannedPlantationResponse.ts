@@ -35,5 +35,6 @@ export interface PlannedPlantationResponseDto {
      * Cantidad máxima de árboles a plantar (opcional)
      */
     maxTrees?: number;
+    isActive?: boolean;
 }
 

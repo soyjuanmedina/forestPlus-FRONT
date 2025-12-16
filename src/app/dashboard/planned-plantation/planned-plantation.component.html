@@ -2,6 +2,13 @@
   class="rounded-2xl shadow-md p-4 md:p-6 flex flex-col items-center text-center w-full max-w-full"
   *ngIf="plannedPlantation">
 
+  <div class="flex items-center gap-2 mt-2">
+    <mat-icon [ngClass]="plannedPlantation.isActive ? 'text-green-600' : 'text-gray-400'">
+      {{ plannedPlantation.isActive ? 'check_circle' : 'cancel' }}
+    </mat-icon>
+    <span>{{ plannedPlantation.isActive ? 'Activa' : 'Inactiva' }}</span>
+  </div>
+
   <!-- Icono -->
   <div class="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center shadow-lg mb-4">
     <mat-icon class="text-green-600" style="font-size: 48px;">event</mat-icon>

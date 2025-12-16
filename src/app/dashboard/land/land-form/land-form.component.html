@@ -72,28 +72,47 @@
 
     <!-- Coordenadas -->
     <div class="mt-6 w-full text-left">
-      <div class="flex justify-between items-center mb-2">
-        <p class="font-semibold text-gray-700">{{ 'LANDS.COORDINATES' | translate }}</p>
+      <div class="flex justify-between items-center mb-4">
+        <p class="font-semibold text-gray-700">
+          {{ 'LANDS.COORDINATES' | translate }}
+        </p>
         <button type="button" (click)="openAddCoordinateModal()"
           class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full hover:bg-blue-300 transition text-sm">
           {{ 'LAND_FORM.ADD_COORDINATE' | translate }}
         </button>
       </div>
-      <ul *ngIf="coordinates?.length; else noCoordinates">
-        <li *ngFor="let coord of coordinates" class="flex justify-between border-b py-1">
-          <span>Lat: {{ coord.latitude | number:'1.6-6' }}, Lng: {{ coord.longitude | number:'1.6-6'
-            }}</span>
-          <div class="flex items-center gap-2">
-            <!-- BOTÓN ELIMINAR -->
-            <button type="button" (click)="deleteCoordinate(coord)"
-              class="bg-red-200 text-red-800 px-2 py-1 rounded-full hover:bg-red-300 transition text-sm">
-              {{ 'LAND_FORM.DELETE_COORDINATE' | translate }}
+
+      <!-- GRID DE CARDS -->
+      <div *ngIf="coordinates?.length; else noCoordinates"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+
+        <div *ngFor="let coord of coordinates"
+          class="bg-white rounded-xl shadow-sm border p-4 flex flex-col justify-between">
+
+          <div class="text-sm text-gray-700 mb-3">
+            <p><span class="font-semibold">Lat:</span> {{ coord.latitude | number:'1.6-6' }}</p>
+            <p><span class="font-semibold">Lng:</span> {{ coord.longitude | number:'1.6-6' }}</p>
+          </div>
+
+          <!-- BOTONES -->
+
+          <div class="flex justify-end">
+            <button type="button" (click)="deleteCoordinate(coord)" class="bg-red-500 hover:bg-red-600 text-white rounded-full
+                     w-10 h-10 flex items-center justify-center
+                     transition">
+              <mat-icon class="text-white" style="font-size: 20px;">delete</mat-icon>
             </button>
           </div>
-        </li>
-      </ul>
+
+
+
+        </div>
+      </div>
+
       <ng-template #noCoordinates>
-        <p class="text-gray-400">{{ 'LANDS.NO_COORDINATES' | translate }}</p>
+        <p class="text-gray-400">
+          {{ 'LANDS.NO_COORDINATES' | translate }}
+        </p>
       </ng-template>
     </div>
 

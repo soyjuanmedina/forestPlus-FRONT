@@ -20,6 +20,7 @@ export interface UserResponseDto {
     role?: UserResponseDto.RoleEnum;
     emailVerified?: boolean;
     forcePasswordChange?: boolean;
+    pendingTreesCount?: number;
     company?: CompanyResponseDto;
 }
 export namespace UserResponseDto {
