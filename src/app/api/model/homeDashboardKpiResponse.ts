@@ -12,6 +12,7 @@ import { PlannedPlantationKpiResponseDto } from './plannedPlantationKpiResponse'
 
 export interface HomeDashboardKpiResponseDto { 
     plantedTrees?: number;
+    pendingTreesCount?: number;
     plannedPlantations?: Array<PlannedPlantationKpiResponseDto>;
 }
 

@@ -19,9 +19,8 @@ import { AuthService } from '../../services/auth.service';
 } )
 export class HomeComponent implements OnInit {
   userName: string = '';
-  plantedTrees = 0;
-  plannedTrees = 0;
   isAdmin = false;
+  homeKpis?: HomeDashboardKpiResponseDto;
 
   constructor (
     private userService: UserService,
@@ -43,7 +42,7 @@ export class HomeComponent implements OnInit {
       this.userName = user.name;
       this.checkRole();
       this.dashboardService.loadHomeKpis().subscribe( kpis => {
-        this.plantedTrees = kpis.plantedTrees ?? 0;
+        this.homeKpis = kpis;
       } );
     } );
   }
