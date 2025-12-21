@@ -18,7 +18,7 @@ describe( 'AuthService', () => {
     name: 'juan',
     email: 'juan@juan.es',
     role: 'ADMIN',
-    company: { id: 100, name: 'Forest Inc.' }
+    company: { id: 100, name: 'forest Inc.' }
   } as any;
 
   beforeEach( () => {

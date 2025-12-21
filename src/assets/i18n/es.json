@@ -15,6 +15,7 @@
   },
   "MENU": {
     "MENU": "Menú",
+    "COLLAPSE": "Cerrar menú",
     "HOME": "Inicio",
     "PROFILE": "Perfil",
     "MY_COMPANY": "Mi compañía",
@@ -103,11 +104,25 @@
     "SEND_NEW_PASSWORD": "Enviar nueva contraseña"
   },
   "HOME": {
-    "TITLE": "Bienvenido a Forest+",
-    "LINES": [
-      "La plataforma que combina tecnología e innovación para cuidar nuestro planeta."
-    ],
-    "PLANTED_TREES": "Árboles plantados"
+    "TITLE": "Bienvenido a forest+",
+    "LINES": "Aquí puedes ver el impacto positivo de tu contribución.<br>Cada árbol cuenta para un futuro más sostenible.",
+    "PENDING_TREES_WARNING": "⚠️ Tienes {{count}} árbol(es) pendiente(s) de plantar.",
+    "PLANTED_TREES": "Árboles plantados",
+    "ENVIRONMENTAL_IMPACT": {
+      "TITLE": "Impacto ambiental",
+      "VALUE": "{{value}} kg CO₂ / año",
+      "INTRO": "Enhorabuena, con tu actuación estás contribuyendo a compensar el CO₂ producido por:",
+      "CAR": "{{value}} km en coche",
+      "PLANE": "{{value}} km en avión",
+      "HOMES": "{{value}} hogares / año",
+      "HOME_PERCENT": "{{value}}% de un hogar"
+    },
+    "NO_TREES": {
+      "TITLE": "¡Aún no tienes árboles plantados!",
+      "DESCRIPTION": "Comienza a plantar un árbol y contribuye al bosque.",
+      "CTA": "Plantar un árbol"
+    },
+    "NEXT_PLANTATION": "Próxima plantación"
   },
   "PROFILE": {
     "ROLE": "Rol",
@@ -138,7 +153,7 @@
     "BUTTON": "Registrarse",
     "HAVE_ACCOUNT": "¿Ya tienes una cuenta?",
     "LOGIN": "Iniciar sesión",
-    "SUCCESS": "Gracias por registrarte en Forest+. Por favor, confirma tu correo electrónico antes de hacer login",
+    "SUCCESS": "Gracias por registrarte en forest+. Por favor, confirma tu correo electrónico antes de hacer login",
     "ALREADY_ACCOUNT": "¿Ya tienes cuenta?"
   },
   "VERIFY_EMAIL": {
@@ -290,7 +305,7 @@
     "NO_TREES_PLANTED": "La compañia aún no ha plantado ningún árbol"
   },
   "RESET_PASSWORD": {
-    "LOGO_ALT": "Forest+ Logo",
+    "LOGO_ALT": "forest+ Logo",
     "TITLE": "Cambiar contraseña",
     "NEW_PASSWORD_LABEL": "Nueva contraseña",
     "NEW_PASSWORD_PLACEHOLDER": "Ingresa tu nueva contraseña",
@@ -382,6 +397,7 @@
   },
   "MY_TREES": {
     "SEARCH_PLACEHOLDER": "Buscar por tipo de árbol...",
+    "ADD_NEW_TREE": "Añade un nuevo árbol a tu bosque",
     "BUY_NEW_TREE": "Comprar un árbol",
     "QUANTITY": "Cantidad",
     "PREVIOUS": "Anterior",

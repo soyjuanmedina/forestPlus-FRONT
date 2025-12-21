@@ -55,7 +55,7 @@
     "SEND_NEW_PASSWORD": "Send new password"
   },
   "HOME": {
-    "TITLE": "Welcome to Forest+",
+    "TITLE": "Welcome to forest+",
     "LINES": [
       "The platform that combines technology and innovation to take care of our planet.",
       "With satellite images and Artificial Intelligence, we make digital reforestation possible with traceability and measurable results.",
@@ -92,7 +92,7 @@
     "BUTTON": "Register",
     "HAVE_ACCOUNT": "Already have an account?",
     "LOGIN": "Login",
-    "SUCCESS": "Thanks for registering at Forest+. Please confirm your email before logging in",
+    "SUCCESS": "Thanks for registering at forest+. Please confirm your email before logging in",
     "ALREADY_ACCOUNT": "Already have an account?"
   },
   "VERIFY_EMAIL": {
@@ -238,7 +238,7 @@
     "PREVIOUS_YEARS_TITLE": "Previous years"
   },
   "RESET_PASSWORD": {
-    "LOGO_ALT": "Forest+ Logo",
+    "LOGO_ALT": "forest+ Logo",
     "TITLE": "Change password",
     "NEW_PASSWORD_LABEL": "New password",
     "NEW_PASSWORD_PLACEHOLDER": "Enter your new password",

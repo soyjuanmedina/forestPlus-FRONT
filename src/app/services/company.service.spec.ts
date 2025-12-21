@@ -13,7 +13,7 @@ describe( 'CompanyService', () => {
   let httpMock: HttpTestingController;
   let httpClient: HttpClient;
 
-  const mockCompany: CompanyResponseDto = { id: 1, name: 'Forest Inc.', address: 'Calle Falsa 123' } as any;
+  const mockCompany: CompanyResponseDto = { id: 1, name: 'forest Inc.', address: 'Calle Falsa 123' } as any;
 
   beforeEach( () => {
     const ctrlSpy = jasmine.createSpyObj( 'CompanyControllerService', [
@@ -73,7 +73,7 @@ describe( 'CompanyService', () => {
 
   it( 'createCompany should call controller and update current company', ( done ) => {
     controllerSpy.createCompany.and.returnValue( of( mockCompany ) as any );
-    service.createCompany( { name: 'Forest Inc.' } ).subscribe( company => {
+    service.createCompany( { name: 'forest Inc.' } ).subscribe( company => {
       expect( company ).toEqual( mockCompany );
       expect( service.getCurrentCompany() ).toEqual( mockCompany );
       done();
@@ -82,12 +82,12 @@ describe( 'CompanyService', () => {
 
   it( 'updateCompany should update current company if IDs match', ( done ) => {
     service.updateCurrentCompany( mockCompany );
-    const updated = { ...mockCompany, name: 'Forest Updated' };
+    const updated = { ...mockCompany, name: 'forest Updated' };
     controllerSpy.updateCompany.and.returnValue( of( updated ) as any );
 
-    service.updateCompany( mockCompany.id!, { name: 'Forest Updated' } ).subscribe( company => {
-      expect( company.name ).toBe( 'Forest Updated' );
-      expect( service.getCurrentCompany()?.name ).toBe( 'Forest Updated' );
+    service.updateCompany( mockCompany.id!, { name: 'forest Updated' } ).subscribe( company => {
+      expect( company.name ).toBe( 'forest Updated' );
+      expect( service.getCurrentCompany()?.name ).toBe( 'forest Updated' );
       done();
     } );
   } );

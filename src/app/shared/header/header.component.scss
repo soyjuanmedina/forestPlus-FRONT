@@ -22,8 +22,9 @@
   }
 }
 
-    .logo {
-      height: 40px;
-      width: 40px;
-      border-radius: 50%;
-    }
+.logo {
+  height: 40px;
+  max-height: 40px;
+  width: auto;
+  flex-shrink: 0;
+}

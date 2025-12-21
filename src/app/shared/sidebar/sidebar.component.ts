@@ -4,9 +4,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { RolesEnum } from '../../models/roles';
+import { MatIconModule } from '@angular/material/icon';
 
 interface MenuLink {
   label: string;
+  icon: string;
   route?: string;
   roles?: RolesEnum[];
   children?: MenuLink[];
@@ -15,7 +17,7 @@ interface MenuLink {
 @Component( {
   selector: 'app-sidebar',
   standalone: true,
-  imports: [TranslateModule, CommonModule, RouterModule],
+  imports: [TranslateModule, CommonModule, RouterModule, MatIconModule],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 } )
@@ -24,25 +26,21 @@ export class SidebarComponent {
   @Output() sidebarOpenChange = new EventEmitter<boolean>();
 
   menuLinks: MenuLink[] = [
-    { label: 'MENU.HOME', route: 'home' },
-    { label: 'MENU.PROFILE', route: 'profile' },
-    { label: 'MENU.MY_COMPANY', route: 'company', roles: [RolesEnum.COMPANY_ADMIN, RolesEnum.COMPANY_USER] },
-    { label: 'MENU.MY_TREES', route: 'my-trees', roles: [RolesEnum.USER] },
-    { label: 'MENU.MY_COMPANY_TREES', route: 'my-trees', roles: [RolesEnum.COMPANY_ADMIN, RolesEnum.COMPANY_USER] },
-    /* { label: 'MENU.MY_LANDS', route: 'lands' },
- { label: 'MENU.MY_TREES', route: 'trees' }, */
+    { label: 'MENU.HOME', route: 'home', icon: 'fa-solid fa-house' },
+    { label: 'MENU.PROFILE', route: 'profile', icon: 'fa-solid fa-user' },
+    { label: 'MENU.MY_COMPANY', route: 'company', roles: [RolesEnum.COMPANY_ADMIN, RolesEnum.COMPANY_USER], icon: 'fa-solid fa-building' },
+    { label: 'MENU.MY_TREES', route: 'my-trees', roles: [RolesEnum.USER], icon: 'fa-solid fa-tree' },
+    { label: 'MENU.MY_COMPANY_TREES', route: 'my-trees', roles: [RolesEnum.COMPANY_ADMIN, RolesEnum.COMPANY_USER], icon: 'fa-solid fa-seedling' },
     {
       label: 'MENU.ADMIN.ADMIN',
       roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN],
+      icon: 'fa-solid fa-gear',
       children: [
-        { label: 'MENU.ADMIN.USERS', route: 'admin/users', roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] },
-        { label: 'MENU.ADMIN.COMPANIES', route: 'admin/companies', roles: [RolesEnum.ADMIN] },
-        { label: 'MENU.ADMIN.LANDS', route: 'admin/lands', roles: [RolesEnum.ADMIN] },
-        { label: 'MENU.ADMIN.TREE_TYPES', route: 'admin/tree-types', roles: [RolesEnum.ADMIN] },
-        { label: 'MENU.ADMIN.PLANNED_PLANTATIONS', route: 'admin/planned-plantations', roles: [RolesEnum.ADMIN] },
-        /* { label: 'MENU.ADMIN.TREES', route: 'admin/trees', roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] },
-        { label: 'MENU.ADMIN.AVAILABLE_LANDS', route: 'admin/available-lands', roles: [RolesEnum.ADMIN] },
-        { label: 'MENU.ADMIN.LANDS', route: 'admin/lands', roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN] } */
+        { label: 'MENU.ADMIN.USERS', route: 'admin/users', roles: [RolesEnum.ADMIN, RolesEnum.COMPANY_ADMIN], icon: 'fa-solid fa-users' },
+        { label: 'MENU.ADMIN.COMPANIES', route: 'admin/companies', roles: [RolesEnum.ADMIN], icon: 'fa-solid fa-building' },
+        { label: 'MENU.ADMIN.LANDS', route: 'admin/lands', roles: [RolesEnum.ADMIN], icon: 'fa-solid fa-tree-city' },
+        { label: 'MENU.ADMIN.TREE_TYPES', route: 'admin/tree-types', roles: [RolesEnum.ADMIN], icon: 'fa-solid fa-leaf' },
+        { label: 'MENU.ADMIN.PLANNED_PLANTATIONS', route: 'admin/planned-plantations', roles: [RolesEnum.ADMIN], icon: 'fa-solid fa-seedling' },
       ]
     }
   ];
@@ -66,5 +64,10 @@ export class SidebarComponent {
 
   get adminLinks (): MenuLink[] {
     return this.menuLinks.filter( link => link.children && this.canShow( link ) );
+  }
+
+  onToggleSidebar (): void {
+    this.sidebarOpen = !this.sidebarOpen;
+    this.sidebarOpenChange.emit( this.sidebarOpen );
   }
 }
