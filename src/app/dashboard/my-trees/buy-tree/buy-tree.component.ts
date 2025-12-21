@@ -13,6 +13,7 @@ import { LandResponseDto, PurchaseRequestDto } from '../../../api';
 import { ModalService } from '../../../services/modal.service';
 import { PurchaseService } from '../../../services/purchase.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component( {
   selector: 'app-buy-tree',
@@ -43,12 +44,7 @@ export class BuyTreeComponent implements OnInit {
   defaultTreePrice = 2.0;
 
   treePrices: { [key: number]: number | undefined } = {
-    1: 2.5,
-    2: 3.0,
-    3: 4.0,
-    4: 2.0,
-    5: 1.5,
-    6: 5.0,
+    7: 10
   };
 
   quantity = 1;
@@ -58,7 +54,8 @@ export class BuyTreeComponent implements OnInit {
     private treeTypeService: TreeTypeService,
     private modalService: ModalService,
     private snackBar: MatSnackBar,
-    private purchaseService: PurchaseService
+    private purchaseService: PurchaseService,
+    private router: Router
   ) { }
 
   ngOnInit (): void {
@@ -90,6 +87,7 @@ export class BuyTreeComponent implements OnInit {
 
   onLandSelected ( landId: number ) {
     this.selectedLand = landId;
+    this.selectedTreeType = this.treeTypes.find( t => t.id === 7 )!;
     this.selectedLandInfo = this.lands.find( l => l.id === landId ) ?? null;
   }
 
@@ -164,6 +162,7 @@ export class BuyTreeComponent implements OnInit {
     this.purchaseService.purchaseTrees( request ).subscribe( {
       next: ( res ) => {
         // Mostrar notificación de éxito
+        this.router.navigate( ['/home'] );
         this.snackBar.open(
           `Compra confirmada: ${this.selectedTreeType?.name} x${this.quantity}`,
           'Cerrar',

@@ -44,7 +44,7 @@
                 <ng-container *ngFor="let child of link.children">
                   <a *ngIf="canShow(child)" [routerLink]="child.route"
                     class="flex items-center gap-2 px-3 py-1 rounded hover:bg-gray-100">
-                    <i class="{{ child.icon }} text-sm"></i>
+                    <i class="{{ child.icon }} text-sm"></i>&nbsp;
                     <span>{{ child.label | translate }}</span>
                   </a>
                 </ng-container>
