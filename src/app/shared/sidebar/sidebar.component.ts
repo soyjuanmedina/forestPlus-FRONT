@@ -30,6 +30,7 @@ export class SidebarComponent {
     { label: 'MENU.PROFILE', route: 'profile', icon: 'fa-solid fa-user' },
     { label: 'MENU.MY_COMPANY', route: 'company', roles: [RolesEnum.COMPANY_ADMIN, RolesEnum.COMPANY_USER], icon: 'fa-solid fa-building' },
     { label: 'MENU.MY_TREES', route: 'my-trees', roles: [RolesEnum.USER], icon: 'fa-solid fa-tree' },
+    { label: 'MENU.ADMIN.LANDS', route: '/land/1', roles: [RolesEnum.USER], icon: 'fa-solid fa-tree-city' },
     { label: 'MENU.MY_COMPANY_TREES', route: 'my-trees', roles: [RolesEnum.COMPANY_ADMIN, RolesEnum.COMPANY_USER], icon: 'fa-solid fa-seedling' },
     {
       label: 'MENU.ADMIN.ADMIN',
