@@ -52,9 +52,29 @@
             </div>
 
             <!-- Sidebar colapsada: solo icono centrado -->
-            <a *ngIf="!sidebarOpen" class="flex justify-center px-3 py-2 rounded hover:bg-gray-200">
-              <i class="{{ link.icon }}"></i>
-            </a>
+            <!-- Sidebar colapsada: sección administración -->
+            <div *ngIf="!sidebarOpen" class="flex flex-col items-center space-y-2 mt-4">
+
+              <!-- Icono ADMIN (padre) -->
+              <div
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 text-gray-700">
+                <i class="{{ link.icon }} text-lg"></i>
+              </div>
+
+              <!-- Separador -->
+              <div class="w-6 border-t border-gray-300 my-1"></div>
+
+              <!-- Iconos hijos -->
+              <ng-container *ngFor="let child of link.children">
+                <a *ngIf="canShow(child)" [routerLink]="child.route"
+                  class="w-10 h-10 flex items-center justify-center rounded hover:bg-gray-200">
+
+                  <i class="{{ child.icon }} text-lg"></i>
+                </a>
+              </ng-container>
+
+            </div>
+
           </ng-container>
 
         </ng-container>
@@ -99,7 +119,7 @@
           <ng-container *ngIf="!link.children && canShow(link)">
             <a [routerLink]="link.route" (click)="closeSidebar()"
               class="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-200">
-              <i class="{{ link.icon }}"></i>
+              <i class="{{ link.icon }}"></i>&nbsp;
               <span>{{ link.label | translate }}</span>
             </a>
           </ng-container>
@@ -112,7 +132,7 @@
               <ng-container *ngFor="let child of link.children">
                 <a *ngIf="canShow(child)" [routerLink]="child.route" (click)="closeSidebar()"
                   class="flex items-center gap-2 px-3 py-1 rounded hover:bg-gray-100">
-                  <i class="{{ child.icon }} text-sm"></i>
+                  <i class="{{ child.icon }} text-sm"></i>&nbsp;
                   <span>{{ child.label | translate }}</span>
                 </a>
               </ng-container>
