@@ -8,12 +8,15 @@ import { TranslateModule } from '@ngx-translate/core';
 import { LandService } from '../../../services/land.service';
 import { TreeTypeService } from '../../../services/tree-type.service';
 import { TreeTypeResponseDto } from '../../../api/model/treeTypeResponse';
-import { MatDialog } from '@angular/material/dialog';
-import { LandResponseDto, PurchaseRequestDto } from '../../../api';
+import { LandResponseDto, OrderRequestDto, OrderResponseDto, PurchaseRequestDto, RedsysPaymentResponseDto } from '../../../api';
 import { ModalService } from '../../../services/modal.service';
 import { PurchaseService } from '../../../services/purchase.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { environment } from '../../../../environments/environment';
+import { RedsysPaymentService } from '../../../services/redsys-payment.service';
+import { OrdersService } from '../../../services/orders.service';
+import { UserService } from '../../../services/user.service';
 
 @Component( {
   selector: 'app-buy-tree',
@@ -53,9 +56,12 @@ export class BuyTreeComponent implements OnInit {
     private landService: LandService,
     private treeTypeService: TreeTypeService,
     private modalService: ModalService,
-    private snackBar: MatSnackBar,
     private purchaseService: PurchaseService,
-    private router: Router
+    private redsysPaymentService: RedsysPaymentService,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private ordersService: OrdersService,
+    private userService: UserService
   ) { }
 
   ngOnInit (): void {
@@ -186,5 +192,49 @@ export class BuyTreeComponent implements OnInit {
         );
       }
     } );
+
+    /* 
+REDSYS
+    const user = this.userService.getCurrentUser();
+
+    // 1️⃣ Crear la orden en el backend
+    const orderRequest: OrderRequestDto = {
+      userId: user?.id!,
+      companyId: user?.company?.id ?? undefined,
+      totalAmount: this.totalPrice
+    };
+
+    this.ordersService.createOrder( orderRequest ).subscribe( {
+      next: ( orderRes: OrderResponseDto ) => {
+        // 2️⃣ Una vez creado el pedido, usamos su ID numérico para Redsys
+        const orderId = orderRes.id;
+        if ( !orderId ) {
+          console.error( "No se pudo crear el pago porque orderId es undefined" );
+          return;
+        }
+
+        this.redsysPaymentService.createPayment( orderId ).subscribe( {
+          next: ( paymentRes: RedsysPaymentResponseDto ) => {
+            // 3️⃣ Redirigimos al usuario al formulario de Redsys
+
+            this.redsysPaymentService.sendToRedsys( paymentRes );
+          },
+          error: ( err ) => {
+            console.error( 'Error creating Redsys payment', err );
+            this.snackBar.open( 'Error initiating payment', 'Close', {
+              duration: 5000,
+              panelClass: ['bg-red-600', 'text-white']
+            } );
+          }
+        } );
+      },
+      error: ( err ) => {
+        console.error( 'Error creating order', err );
+        this.snackBar.open( 'Error creating order', 'Close', {
+          duration: 5000,
+          panelClass: ['bg-red-600', 'text-white']
+        } );
+      }
+    } ); */
   }
 }

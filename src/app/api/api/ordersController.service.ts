@@ -17,9 +17,9 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { PurchaseRequestDto } from '../model/purchaseRequest';
+import { OrderRequestDto } from '../model/orderRequest';
 // @ts-ignore
-import { PurchaseResponseDto } from '../model/purchaseResponse';
+import { OrderResponseDto } from '../model/orderResponse';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -31,23 +31,23 @@ import { BaseService } from '../api.base.service';
 @Injectable({
   providedIn: 'root'
 })
-export class PurchaseControllerService extends BaseService {
+export class OrdersControllerService extends BaseService {
 
     constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string|string[], @Optional() configuration?: Configuration) {
         super(basePath, configuration);
     }
 
     /**
-     * @param purchaseRequestDto 
+     * @param orderRequestDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public purchaseTrees(purchaseRequestDto: PurchaseRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PurchaseResponseDto>;
-    public purchaseTrees(purchaseRequestDto: PurchaseRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PurchaseResponseDto>>;
-    public purchaseTrees(purchaseRequestDto: PurchaseRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PurchaseResponseDto>>;
-    public purchaseTrees(purchaseRequestDto: PurchaseRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (purchaseRequestDto === null || purchaseRequestDto === undefined) {
-            throw new Error('Required parameter purchaseRequestDto was null or undefined when calling purchaseTrees.');
+    public createOrder(orderRequestDto: OrderRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<OrderResponseDto>;
+    public createOrder(orderRequestDto: OrderRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<OrderResponseDto>>;
+    public createOrder(orderRequestDto: OrderRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<OrderResponseDto>>;
+    public createOrder(orderRequestDto: OrderRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (orderRequestDto === null || orderRequestDto === undefined) {
+            throw new Error('Required parameter orderRequestDto was null or undefined when calling createOrder.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -84,12 +84,12 @@ export class PurchaseControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/purchases`;
+        let localVarPath = `/api/orders`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<PurchaseResponseDto>('post', `${basePath}${localVarPath}`,
+        return this.httpClient.request<OrderResponseDto>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: purchaseRequestDto,
+                body: orderRequestDto,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

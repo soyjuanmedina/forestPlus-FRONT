@@ -9,9 +9,11 @@ api/companyController.service.ts
 api/coordinateController.service.ts
 api/dashboardController.service.ts
 api/landController.service.ts
+api/ordersController.service.ts
 api/pingController.service.ts
 api/plannedPlantationController.service.ts
 api/purchaseController.service.ts
+api/redsysPaymentsController.service.ts
 api/treeController.service.ts
 api/treeTypeController.service.ts
 api/uploadsController.service.ts
@@ -37,6 +39,8 @@ model/landTreeSummaryResponse.ts
 model/landUpdateRequest.ts
 model/messageResponse.ts
 model/models.ts
+model/orderRequest.ts
+model/orderResponse.ts
 model/pageUserResponse.ts
 model/pageableObject.ts
 model/plannedPlantationKpiResponse.ts
@@ -45,6 +49,8 @@ model/plannedPlantationResponse.ts
 model/plannedPlantationUpdateRequest.ts
 model/purchaseRequest.ts
 model/purchaseResponse.ts
+model/redsysNotificationRequest.ts
+model/redsysPaymentResponse.ts
 model/registerUserByAdminRequest.ts
 model/registerUserRequest.ts
 model/resendVerificationEmailRequest.ts
