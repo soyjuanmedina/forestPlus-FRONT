@@ -81,7 +81,7 @@
     "LOGOUT": "Cerrar sesion"
   },
   "LOGIN": {
-    "TITLE": "Icinio de Sesión",
+    "TITLE": "Inicio de Sesión",
     "EMAIL": "Correo electrónico",
     "EMAIL_PLACEHOLDER": "ejemplo@correo.com",
     "EMAIL_REQUIRED": "El email es obligatorio",
