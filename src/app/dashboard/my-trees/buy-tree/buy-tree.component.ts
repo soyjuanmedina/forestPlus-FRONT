@@ -158,43 +158,41 @@ export class BuyTreeComponent implements OnInit {
   confirmPurchase () {
     if ( !this.selectedLand || !this.selectedTreeType ) return;
 
-    const request: PurchaseRequestDto = {
-      landId: this.selectedLand,
-      treeTypeId: this.selectedTreeType.id!,
-      quantity: this.quantity,
-      pricePerUnit: this.unitPrice
-    };
+    /* const request: PurchaseRequestDto = {
+       landId: this.selectedLand,
+       treeTypeId: this.selectedTreeType.id!,
+       quantity: this.quantity,
+       pricePerUnit: this.unitPrice
+     };
+ 
+     this.purchaseService.purchaseTrees( request ).subscribe( {
+       next: ( res ) => {
+         // Mostrar notificación de éxito
+         this.router.navigate( ['/home'] );
+         this.snackBar.open(
+           `Compra confirmada: ${this.selectedTreeType?.name} x${this.quantity}`,
+           'Cerrar',
+           { duration: 5000, panelClass: ['bg-green-600', 'text-white'] }
+         );
+ 
+         // Opcional: resetear pasos o variables si quieres
+         this.step = 1;
+         this.selectedLand = null;
+         this.selectedLandInfo = null;
+         this.selectedTreeType = null;
+         this.selectedTreeTypeInfo = null;
+         this.quantity = 1;
+       },
+       error: ( err ) => {
+         console.error( 'Error al realizar la compra', err );
+         this.snackBar.open(
+           `Error al confirmar la compra`,
+           'Cerrar',
+           { duration: 5000, panelClass: ['bg-red-600', 'text-white'] }
+         );
+       }
+     } );*/
 
-    this.purchaseService.purchaseTrees( request ).subscribe( {
-      next: ( res ) => {
-        // Mostrar notificación de éxito
-        this.router.navigate( ['/home'] );
-        this.snackBar.open(
-          `Compra confirmada: ${this.selectedTreeType?.name} x${this.quantity}`,
-          'Cerrar',
-          { duration: 5000, panelClass: ['bg-green-600', 'text-white'] }
-        );
-
-        // Opcional: resetear pasos o variables si quieres
-        this.step = 1;
-        this.selectedLand = null;
-        this.selectedLandInfo = null;
-        this.selectedTreeType = null;
-        this.selectedTreeTypeInfo = null;
-        this.quantity = 1;
-      },
-      error: ( err ) => {
-        console.error( 'Error al realizar la compra', err );
-        this.snackBar.open(
-          `Error al confirmar la compra`,
-          'Cerrar',
-          { duration: 5000, panelClass: ['bg-red-600', 'text-white'] }
-        );
-      }
-    } );
-
-    /* 
-REDSYS
     const user = this.userService.getCurrentUser();
 
     // 1️⃣ Crear la orden en el backend
@@ -235,6 +233,6 @@ REDSYS
           panelClass: ['bg-red-600', 'text-white']
         } );
       }
-    } ); */
+    } );
   }
 }
