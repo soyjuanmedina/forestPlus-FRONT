@@ -26,14 +26,19 @@ jobs:
         run: npm ci
 
       - name: Build Angular app
-        run: npm run build -- --configuration=production --base-href /
+        run: |
+          if [[ "${GITHUB_REF_NAME}" == "development" ]]; then
+            npm run build -- --configuration=production --base-href /development/
+          else
+            npm run build -- --configuration=production --base-href /
+          fi
 
       # ---------- Determine deploy path ----------
       - name: Set deploy path
         id: deploy-path
         run: |
           if [[ "${GITHUB_REF_NAME}" == "development" ]]; then
-            echo "DEPLOY_PATH=/appservers/apache-tomcat-10x/webapps/forestplus-dev/WEB-INF/classes/static" >> $GITHUB_ENV
+            echo "DEPLOY_PATH=/appservers/apache-tomcat-10x/webapps/development/WEB-INF/classes/static" >> $GITHUB_ENV
           else
             echo "DEPLOY_PATH=/appservers/apache-tomcat-10x/webapps/ROOT/WEB-INF/classes/static" >> $GITHUB_ENV
           fi
