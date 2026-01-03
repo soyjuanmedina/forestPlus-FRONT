@@ -4,35 +4,58 @@ on:
   push:
     branches:
       - main
+      - development
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # ---------- Checkout frontend ----------
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # ---------- Node ----------
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
+      # ---------- Build Angular ----------
       - name: Install dependencies
         run: npm ci
 
       - name: Build Angular app
-        run: npm run build -- --configuration=production --base-href /
+        run: |
+          if [[ "${GITHUB_REF_NAME}" == "development" ]]; then
+            npm run build -- --configuration=production --base-href /development/ --deploy-url /development/
+          else
+            npm run build -- --configuration=production --base-href / --deploy-url /
+          fi
 
+      # ---------- Determine deploy path ----------
+      - name: Set deploy path
+        id: deploy-path
+        run: |
+          if [[ "${GITHUB_REF_NAME}" == "development" ]]; then
+            echo "DEPLOY_PATH=/appservers/apache-tomcat-10x/webapps/development/WEB-INF/classes/static" >> $GITHUB_ENV
+          else
+            echo "DEPLOY_PATH=/appservers/apache-tomcat-10x/webapps/ROOT/WEB-INF/classes/static" >> $GITHUB_ENV
+          fi
+
+      # ---------- Install lftp ----------
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
 
+      # ---------- Deploy via lftp ----------
       - name: Deploy via lftp
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          DEPLOY_PATH: ${{ env.DEPLOY_PATH }}
         run: |
+          echo "Deploying Angular build to $DEPLOY_PATH"
           lftp -c "
             set ftp:ssl-allow true
             set ftp:ssl-force true
@@ -42,8 +65,8 @@ jobs:
             open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
 
             # Limpiar directorio static
-            rm -rf /appservers/apache-tomcat-10x/webapps/ROOT/WEB-INF/classes/static/* || true
+            rm -rf $DEPLOY_PATH/* || true
 
-            # Subir build Angular a static
-            mirror -R --verbose dist/forest-plus/browser /appservers/apache-tomcat-10x/webapps/ROOT/WEB-INF/classes/static
+            # Subir build Angular
+            mirror -R --verbose dist/forest-plus/browser $DEPLOY_PATH
           "
