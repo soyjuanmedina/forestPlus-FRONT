@@ -158,6 +158,8 @@ export class BuyTreeComponent implements OnInit {
   confirmPurchase () {
     if ( !this.selectedLand || !this.selectedTreeType ) return;
 
+    console.log( 'development', );
+
     /* const request: PurchaseRequestDto = {
        landId: this.selectedLand,
        treeTypeId: this.selectedTreeType.id!,
