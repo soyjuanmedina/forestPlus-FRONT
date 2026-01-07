@@ -28,7 +28,7 @@ jobs:
       - name: Build Angular app
         run: |
           if [[ "${GITHUB_REF_NAME}" == "development" ]]; then
-            npm run build -- --configuration=production --base-href /development/ --deploy-url /development/
+            npm run build -- --configuration=development --base-href /development/ --deploy-url /development/
           else
             npm run build -- --configuration=production --base-href / --deploy-url /
           fi
