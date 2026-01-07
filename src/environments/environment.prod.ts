@@ -1,4 +1,6 @@
 export const environment = {
+  name: '',
+  envColor: '#09ff00ff',
   production: true,
   devAccessKey: 'fp',
   apiBaseUrl: 'https://forestplusapp.com',

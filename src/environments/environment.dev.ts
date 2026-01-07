@@ -1,5 +1,7 @@
 export const environment = {
-  production: true,
+  name: 'development',
+  envColor: '#ff9800',
+  production: false,
   devAccessKey: 'fp',
   apiBaseUrl: 'https://forestplusapp.com/development',
   redsysUrl: 'https://sis.redsys.es/sis/realizarPago', // production URL
@@ -9,5 +11,4 @@ export const environment = {
   urlOK: 'https://forestplusapp.com/payment-success', // production success page
   urlKO: 'https://forestplusapp.com/payment-failed', // production failed page
   merchantURL: 'https://forestplusapp.com/api/payments/notification' // production backend notification URL
-
 };
