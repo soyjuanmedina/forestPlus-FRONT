@@ -1,4 +1,6 @@
 export const environment = {
+  name: 'local',
+  envColor: '#ff9800',
   production: false,
   devAccessKey: 'fp',
   apiBaseUrl: 'http://localhost:8080',

@@ -1,2 +1,7 @@
+<div *ngIf="!environment.production" [style.backgroundColor]="environment.envColor"
+  class="env-banner">
+  ENV: {{ environment.name }}
+</div>
+
 <app-loading-spinner></app-loading-spinner>
 <router-outlet></router-outlet>
