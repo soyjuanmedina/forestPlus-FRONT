@@ -23,11 +23,10 @@
 
     <!-- Usuario -->
     <ng-container *ngIf="currentUser$ | async as user">
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 cursor-pointer hover:opacity-80" (click)="goToProfile()">
         <img [src]="user.picture || 'assets/default-avatar.png'" alt="Usuario"
-          class="h-8 w-8 rounded-full border border-white">
+          class="h-8 w-8 rounded-full border border-white" />
 
-        <!-- Ocultamos apellido en pantallas muy pequeñas -->
         <span class="font-medium hidden sm:inline">
           {{ user.name }} {{ user.surname }}
         </span>

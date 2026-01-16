@@ -11,6 +11,7 @@ import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { TreeService } from '../../services/tree.service';
 import { Subject, takeUntil } from 'rxjs';
+import { LocalizedDatePipe } from '../../pipes/localized-date.pipe';
 
 @Component( {
   selector: 'app-profile',
@@ -20,7 +21,8 @@ import { Subject, takeUntil } from 'rxjs';
     TranslateModule,
     MatCardModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    LocalizedDatePipe
   ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']

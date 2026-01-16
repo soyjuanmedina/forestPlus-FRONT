@@ -36,4 +36,8 @@ export class HeaderComponent {
     this.authService.logout();
     this.router.navigate( ['/login'] ); // redirige al login
   }
+
+  goToProfile () {
+    this.router.navigate( ['/profile'] ); // redirige al login
+  }
 }

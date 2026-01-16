@@ -14,13 +14,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { AssignTreesModalComponent } from '../../../modals/assign-trees-modal/assign-trees-modal.component';
 import { TreeService } from '../../../services/tree.service';
 import { ManageTreesModalComponent } from '../../../modals/manage-trees-modal/manage-trees-modal.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component( {
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslateModule, MatIconModule]
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule, MatIconModule, MatSlideToggleModule]
 } )
 export class UserFormComponent implements OnInit {
   userForm!: FormGroup;
@@ -70,6 +71,7 @@ export class UserFormComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.minLength( 6 )]],
       role: [null as RolesEnum | null, Validators.required],
+      receiveEmails: [false],
       companyId: [''],
     } );
 
@@ -118,6 +120,7 @@ export class UserFormComponent implements OnInit {
           secondSurname: user.secondSurname,
           email: user.email,
           role: user.role,
+          receiveEmails: user.receiveEmails,
           companyId: user.company?.id ?? '',
           password: '' // dejar vacío
         } );
@@ -188,6 +191,7 @@ export class UserFormComponent implements OnInit {
           secondSurname: user.secondSurname,
           email: user.email,
           role: user.role,
+          receiveEmails: user.receiveEmails,
           companyId: user.company?.id ?? '',
         } );
 
@@ -220,6 +224,8 @@ export class UserFormComponent implements OnInit {
 
     const dto: RegisterUserRequestDto = this.userForm.getRawValue();
 
+    console.log( 'dto', dto );
+
     // Si es COMPANY_ADMIN, forzamos su companyId
     if ( this.isCompanyAdmin ) {
       dto.companyId = this.currentUser?.company?.id ?? undefined;
@@ -239,6 +245,8 @@ export class UserFormComponent implements OnInit {
 
     update$.subscribe( {
       next: ( updatedUser: UserResponseDto ) => {
+
+        console.log( 'updatedUser', updatedUser );
         this.finalizeUpdate( updatedUser );
       },
       error: err => {

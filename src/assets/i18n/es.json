@@ -1,4 +1,6 @@
 {
+  "WRONG_PASSWORD": "Contraseña erronea, vuelva a intentarlo",
+  "ACCOUNT_LOCKED": "Cuenta bloqueada, por favor solicite una nueva contraseña a través del formulario de olvido",
   "COMMON": {
     "CANCEL": "Cancelar",
     "EDIT": "Editar",
@@ -125,6 +127,11 @@
     "NEXT_PLANTATION": "Próxima plantación"
   },
   "PROFILE": {
+    "LAST_LOGIN": "Último login",
+    "LOGIN_COUNT": "Logins exitosos",
+    "RECIBE_MAIL_TOOGLE": "Recibir correos",
+    "RECIBE_MAIL": "Recibiendo correos",
+    "NO_RECIBE_MAIL": "No se estan recibiendo correos",
     "ROLE": "Rol",
     "AVATAR_ALT": "Avatar",
     "EDIT_BUTTON": "Editar",

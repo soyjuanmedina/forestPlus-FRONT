@@ -13,6 +13,12 @@ import { AuthService } from './app/services/auth.service';
 import { provideApi } from './app/api';
 import { environment } from './environments/environment';
 import { catchError, switchMap, throwError } from 'rxjs';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+import localeEn from '@angular/common/locales/en';
+
+registerLocaleData( localeEs );
+registerLocaleData( localeEn );
 
 // Loader de traducciones
 export function HttpLoaderFactory ( http: HttpClient ) {
