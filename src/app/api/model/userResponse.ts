@@ -21,6 +21,10 @@ export interface UserResponseDto {
     emailVerified?: boolean;
     forcePasswordChange?: boolean;
     pendingTreesCount?: number;
+    lastLoginAt?: string;
+    loginCount?: number;
+    accountLocked?: boolean;
+    receiveEmails?: boolean;
     company?: CompanyResponseDto;
 }
 export namespace UserResponseDto {

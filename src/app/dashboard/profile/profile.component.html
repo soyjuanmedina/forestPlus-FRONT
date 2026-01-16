@@ -8,10 +8,44 @@
         {{ user.name }} {{ user.surname }} {{ user.secondSurname }}
       </h2>
       <p class="text-gray-500">{{ user.email }}</p>
+
       <p class="text-gray-500 font-medium mt-1"
         *ngIf="user.role === 'COMPANY_ADMIN' || user.role === 'COMPANY_USER'">
         {{ 'PROFILE.COMPANY_LABEL' | translate }}: {{ user.company?.name }}
       </p>
+
+      <span *ngIf="user.receiveEmails"
+        class="bg-green-500 text-white text-xs font-semibold px-4 py-1 rounded-full shadow-md">
+        {{ 'PROFILE.RECIBE_MAIL' | translate }}
+      </span>
+
+      <span *ngIf="!user.receiveEmails"
+        class="bg-red-500 text-white text-xs font-semibold px-4 py-1 rounded-full shadow-md">
+        {{ 'PROFILE.NO_RECIBE_MAIL' | translate }}
+      </span>
+
+      <mat-card *ngIf="isAdmin" class="mt-4">
+        <mat-card-content class="text-sm text-gray-700 space-y-2">
+
+          <div class="flex">
+            <span class="w-40 font-semibold">
+              {{ 'PROFILE.LAST_LOGIN' | translate }}:
+            </span>
+            <span>
+              {{ user.lastLoginAt | localizedDate:"d '-' MMMM '-' y ': ' H:mm" }}
+            </span>
+          </div>
+
+          <div class="flex">
+            <span class="w-40 font-semibold">
+              {{ 'PROFILE.LOGIN_COUNT' | translate }}:
+            </span>
+            <span>
+              {{ user.loginCount }}
+            </span>
+          </div>
+        </mat-card-content>
+      </mat-card>
 
       <div class="flex gap-4 mt-4 w-full justify-center md:justify-start">
         <!-- Botón Editar con estilo unificado -->

@@ -18,6 +18,8 @@ export interface RegisterUserByAdminRequestDto {
     companyId?: number;
     picture?: string;
     pendingTreesCount?: number;
+    accountLocked?: boolean;
+    receiveEmails?: boolean;
 }
 export namespace RegisterUserByAdminRequestDto {
     export const RoleEnum = {
