@@ -71,6 +71,11 @@ export class ResetPasswordComponent {
 
     if ( this.mode === 'PROFILE' ) {
 
+      if ( !currentPassword ) {
+        this.errorMessage = 'Debes introducir la contraseña actual';
+        return;
+      }
+
       const payload: ResetPasswordRequestDto = {
         newPassword: newPassword as string,
         currentPassword: currentPassword as string
