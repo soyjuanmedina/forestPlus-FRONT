@@ -62,10 +62,29 @@ export class ResetPasswordComponent {
   onSubmit () {
     if ( this.resetForm.invalid ) return;
 
-    const { newPassword, confirmPassword } = this.resetForm.value;
+    const { currentPassword, newPassword, confirmPassword } = this.resetForm.value;
 
     if ( newPassword !== confirmPassword ) {
       this.errorMessage = 'Las contraseñas no coinciden';
+      return;
+    }
+
+    if ( this.mode === 'PROFILE' ) {
+
+      const payload: ResetPasswordRequestDto = {
+        newPassword: newPassword as string,
+        currentPassword: currentPassword as string
+      };
+
+      this.authService.resetPassword( payload ).subscribe( {
+        next: () => {
+          this.successMessage = 'Contraseña cambiada correctamente';
+        },
+        error: err => {
+          this.errorMessage = err.error?.message || 'Error al cambiar la contraseña';
+        }
+      } );
+
       return;
     }
 
