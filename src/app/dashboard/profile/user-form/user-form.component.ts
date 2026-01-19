@@ -15,6 +15,7 @@ import { AssignTreesModalComponent } from '../../../modals/assign-trees-modal/as
 import { TreeService } from '../../../services/tree.service';
 import { ManageTreesModalComponent } from '../../../modals/manage-trees-modal/manage-trees-modal.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { PasswordMode, ResetPasswordComponent } from '../../../pages/reset-password/reset-password.component';
 
 @Component( {
   selector: 'app-user-form',
@@ -307,6 +308,10 @@ export class UserFormComponent implements OnInit {
         } );
       }
     } );
+  }
+
+  openChangePassword () {
+    this.router.navigate( ['/profile/change-password'] );
   }
 
 
