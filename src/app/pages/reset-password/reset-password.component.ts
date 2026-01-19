@@ -60,6 +60,9 @@ export class ResetPasswordComponent {
   }
 
   onSubmit () {
+
+    this.successMessage = '';
+    this.errorMessage = '';
     if ( this.resetForm.invalid ) return;
 
     const { currentPassword, newPassword, confirmPassword } = this.resetForm.value;
@@ -84,6 +87,7 @@ export class ResetPasswordComponent {
       this.authService.resetPassword( payload ).subscribe( {
         next: () => {
           this.successMessage = 'Contraseña cambiada correctamente';
+          setTimeout( () => this.router.navigate( ['/profile'] ), 2000 );
         },
         error: err => {
           this.errorMessage = err.error?.message || 'Error al cambiar la contraseña';
