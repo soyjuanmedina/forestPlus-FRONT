@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { RolesEnum } from '../../models/roles';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 interface MenuLink {
   label: string;
@@ -17,7 +18,7 @@ interface MenuLink {
 @Component( {
   selector: 'app-sidebar',
   standalone: true,
-  imports: [TranslateModule, CommonModule, RouterModule, MatIconModule],
+  imports: [TranslateModule, CommonModule, RouterModule, MatIconModule, MatTooltipModule],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 } )
