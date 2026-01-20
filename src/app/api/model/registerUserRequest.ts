@@ -18,6 +18,7 @@ export interface RegisterUserRequestDto {
     secondSurname?: string;
     email?: string;
     password?: string;
+    receiveEmails?: boolean;
     role?: RegisterUserRequestDto.RoleEnum;
     companyId?: number;
     picture?: string;

@@ -128,7 +128,9 @@
   },
   "PROFILE": {
     "LAST_LOGIN": "Último login",
+    "CHANGE_PASSWORD": "Cambio de contraseña",
     "LOGIN_COUNT": "Logins exitosos",
+    "SECURITY": "Área de Seguridad",
     "RECIBE_MAIL_TOOGLE": "Recibir correos",
     "RECIBE_MAIL": "Recibiendo correos",
     "NO_RECIBE_MAIL": "No se estan recibiendo correos",
@@ -313,6 +315,7 @@
   },
   "RESET_PASSWORD": {
     "LOGO_ALT": "forest+ Logo",
+    "CURRENT_PASSWORD": "Contraseña actual",
     "TITLE": "Cambiar contraseña",
     "NEW_PASSWORD_LABEL": "Nueva contraseña",
     "NEW_PASSWORD_PLACEHOLDER": "Ingresa tu nueva contraseña",

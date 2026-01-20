@@ -7,7 +7,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { EmailVerifyComponent } from './pages/email-verify/email-verify.component';
-import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { PasswordMode, ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { RoleGuard } from './guards/role.guard';
 import { RolesEnum } from './models/roles';
 import { AdminPageComponent } from './dashboard/admin/admin-page/admin-page.component';
@@ -29,7 +29,14 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'verify-email', component: EmailVerifyComponent },
-  { path: 'reset-password', component: ResetPasswordComponent },
+  {
+    path: 'reset-password', component: ResetPasswordComponent, canActivate: [AuthGuard]
+  },
+  {
+    path: 'profile/change-password',
+    component: ResetPasswordComponent,
+    data: { mode: PasswordMode.PROFILE }
+  },
 
   // Dashboard routes
   {
