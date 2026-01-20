@@ -45,7 +45,7 @@
               matTooltipPosition="right">
 
               <i class="{{ link.icon }} text-lg"></i>
-              <span *ngIf="sidebarOpen">{{ link.label | translate }}</span>
+              <span *ngIf="sidebarOpen">&nbsp;{{ link.label | translate }}</span>
             </a>
           </ng-container>
 
@@ -72,7 +72,7 @@
                     [routerLinkActiveOptions]="{ exact: true }"
                     class="flex items-center gap-2 px-3 py-1 rounded hover:bg-gray-100">
                     <i class="{{ child.icon }} text-sm"></i>
-                    <span>{{ child.label | translate }}</span>
+                    <span>&nbsp;{{ child.label | translate }}</span>
                   </a>
                 </ng-container>
               </div>
