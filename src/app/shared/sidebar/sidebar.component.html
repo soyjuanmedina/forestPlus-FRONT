@@ -1,160 +1,4 @@
-<ng-container *ngIf="userService.getCurrentUser(); else loggedOutLinks">
-
-  <!-- ===================== -->
-  <!-- DESKTOP SIDEBAR -->
-  <!-- ===================== -->
-  <aside class="hidden md:flex flex-col h-screen bg-white shadow-md
-           transition-all duration-300 overflow-hidden" [class.w-64]="sidebarOpen"
-    [class.w-16]="!sidebarOpen">
-
-    <!-- Encabezado -->
-    <div class="p-4 text-xl font-bold border-b whitespace-nowrap" *ngIf="sidebarOpen">
-      {{ 'MENU.MENU' | translate }}
-    </div>
-
-    <!-- Links de usuario -->
-    <div class="flex-1">
-      <nav class="p-4 space-y-2">
-        <ng-container *ngFor="let link of menuLinks">
-
-          <!-- Links sin children -->
-          <ng-container *ngIf="!link.children && canShow(link)">
-            <a [routerLink]="link.route"
-              class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-200 justify-center md:justify-start"
-              [matTooltip]="!sidebarOpen ? (link.label | translate) : ''"
-              matTooltipPosition="right">
-
-              <!-- Icono siempre visible -->
-              <i class="{{ link.icon }} text-lg"></i>
-
-              <!-- Texto solo si sidebar abierta -->
-              <span *ngIf="sidebarOpen">
-                {{ link.label | translate }}
-              </span>
-            </a>
-          </ng-container>
-
-          <!-- Links con children -->
-          <ng-container *ngIf="link.children && canShow(link)">
-            <!-- Sidebar abierta: mostrar label principal + hijos -->
-            <div *ngIf="sidebarOpen">
-              <div class="px-3 py-2 font-semibold text-gray-700 flex items-center gap-3">
-                <i class="{{ link.icon }}"></i>
-                {{ link.label | translate }}
-              </div>
-              <div class="ml-4 space-y-1">
-                <ng-container *ngFor="let child of link.children">
-                  <a *ngIf="canShow(child)" [routerLink]="child.route"
-                    class="flex items-center gap-2 px-3 py-1 rounded hover:bg-gray-100">
-                    <i class="{{ child.icon }} text-sm"></i>&nbsp;
-                    <span>{{ child.label | translate }}</span>
-                  </a>
-                </ng-container>
-              </div>
-            </div>
-
-            <!-- Sidebar colapsada: solo icono centrado -->
-            <!-- Sidebar colapsada: sección administración -->
-            <div *ngIf="!sidebarOpen" class="flex flex-col items-center space-y-2 mt-4">
-
-              <!-- Icono ADMIN (padre) -->
-              <div
-                class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 text-gray-700"
-                [matTooltip]="link.label | translate" matTooltipPosition="right">
-                <i class="{{ link.icon }} text-lg"></i>
-              </div>
-
-              <!-- Separador -->
-              <div class="w-6 border-t border-gray-300 my-1"></div>
-
-              <!-- Iconos hijos -->
-              <ng-container *ngFor="let child of link.children">
-                <a *ngIf="canShow(child)" [routerLink]="child.route"
-                  class="w-10 h-10 flex items-center justify-center rounded hover:bg-gray-200"
-                  [matTooltip]="child.label | translate" matTooltipPosition="right">
-
-                  <i class="{{ child.icon }} text-lg"></i>
-                </a>
-              </ng-container>
-
-            </div>
-
-          </ng-container>
-
-        </ng-container>
-      </nav>
-    </div>
-
-    <!-- Botón Colapsar / Expandir -->
-    <div class="border-t p-3 flex justify-center">
-      <button (click)="onToggleSidebar()"
-        class="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900">
-        <mat-icon>
-          {{ sidebarOpen ? 'chevron_left' : 'chevron_right' }}
-        </mat-icon>
-
-        <span *ngIf="sidebarOpen">
-          {{ 'MENU.COLLAPSE' | translate }}
-        </span>
-      </button>
-    </div>
-
-  </aside>
-
-  <!-- ===================== -->
-  <!-- MOBILE OVERLAY -->
-  <!-- ===================== -->
-  <button *ngIf="sidebarOpen" class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-    (click)="closeSidebar()" aria-label="Cerrar menú"></button>
-
-  <!-- ===================== -->
-  <!-- MOBILE SIDEBAR -->
-  <!-- ===================== -->
-  <aside *ngIf="sidebarOpen" class="fixed inset-y-0 left-0 w-64 bg-white shadow-md z-50
-           md:hidden flex flex-col h-full">
-
-    <div class="p-4 text-xl font-bold border-b">
-      {{ 'MENU.MENU' | translate }}
-    </div>
-
-    <div class="flex-1 overflow-auto">
-      <nav class="p-4 space-y-2">
-        <ng-container *ngFor="let link of menuLinks">
-          <ng-container *ngIf="!link.children && canShow(link)">
-            <a [routerLink]="link.route" (click)="closeSidebar()"
-              class="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-200">
-              <i class="{{ link.icon }}"></i>&nbsp;
-              <span>{{ link.label | translate }}</span>
-            </a>
-          </ng-container>
-          <ng-container *ngIf="link.children && canShow(link)">
-            <div class="px-3 py-2 font-semibold text-gray-700 flex items-center gap-2">
-              <i class="{{ link.icon }}"></i>
-              {{ link.label | translate }}
-            </div>
-            <div class="ml-4 space-y-1">
-              <ng-container *ngFor="let child of link.children">
-                <a *ngIf="canShow(child)" [routerLink]="child.route" (click)="closeSidebar()"
-                  class="flex items-center gap-2 px-3 py-1 rounded hover:bg-gray-100">
-                  <i class="{{ child.icon }} text-sm"></i>&nbsp;
-                  <span>{{ child.label | translate }}</span>
-                </a>
-              </ng-container>
-            </div>
-          </ng-container>
-        </ng-container>
-      </nav>
-    </div>
-
-  </aside>
-
-</ng-container>
-
-<!-- ===================== -->
-<!-- LOGGED OUT -->
-<!-- ===================== -->
 <ng-template #loggedOutLinks>
-
   <aside class="hidden md:flex w-64 bg-white shadow-md flex-col h-screen">
     <div class="p-4 text-xl font-bold border-b">
       {{ 'MENU.MENU' | translate }}
@@ -168,5 +12,162 @@
       </a>
     </nav>
   </aside>
-
 </ng-template>
+
+
+<ng-container *ngIf="userService.getCurrentUser(); else loggedOutLinks">
+
+  <!-- ===================== -->
+  <!-- DESKTOP SIDEBAR -->
+  <!-- ===================== -->
+  <aside
+    class="hidden md:flex flex-col h-screen bg-white shadow-md transition-all duration-300 overflow-hidden"
+    [class.w-64]="sidebarOpen" [class.w-16]="!sidebarOpen">
+
+    <!-- Encabezado -->
+    <div class="p-4 text-xl font-bold border-b whitespace-nowrap" *ngIf="sidebarOpen">
+      {{ 'MENU.MENU' | translate }}
+    </div>
+
+    <!-- Links -->
+    <div class="flex-1">
+      <nav class="p-4 space-y-2">
+        <ng-container *ngFor="let link of menuLinks">
+
+          <!-- ===================== -->
+          <!-- LINKS SIN CHILDREN -->
+          <!-- ===================== -->
+          <ng-container *ngIf="!link.children && canShow(link)">
+            <a [routerLink]="link.route" routerLinkActive="bg-gray-300 font-semibold"
+              [routerLinkActiveOptions]="{ exact: true }"
+              class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-200 justify-center md:justify-start"
+              [matTooltip]="!sidebarOpen ? (link.label | translate) : ''"
+              matTooltipPosition="right">
+
+              <i class="{{ link.icon }} text-lg"></i>
+              <span *ngIf="sidebarOpen">{{ link.label | translate }}</span>
+            </a>
+          </ng-container>
+
+          <!-- ===================== -->
+          <!-- LINKS CON CHILDREN -->
+          <!-- ===================== -->
+          <ng-container *ngIf="link.children && canShow(link)">
+
+            <!-- ===== SIDEBAR ABIERTA ===== -->
+            <div *ngIf="sidebarOpen">
+
+              <!-- Padre (Admin) -->
+              <div class="px-3 py-2 font-semibold flex items-center gap-3 rounded"
+                routerLinkActive="bg-gray-200" [routerLinkActiveOptions]="{ exact: false }">
+                <i class="{{ link.icon }}"></i>
+                {{ link.label | translate }}
+              </div>
+
+              <!-- Hijos -->
+              <div class="ml-4 space-y-1">
+                <ng-container *ngFor="let child of link.children">
+                  <a *ngIf="canShow(child)" [routerLink]="child.route"
+                    routerLinkActive="bg-gray-200 font-semibold"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                    class="flex items-center gap-2 px-3 py-1 rounded hover:bg-gray-100">
+                    <i class="{{ child.icon }} text-sm"></i>
+                    <span>{{ child.label | translate }}</span>
+                  </a>
+                </ng-container>
+              </div>
+
+            </div>
+
+            <!-- ===== SIDEBAR COLAPSADA ===== -->
+            <div *ngIf="!sidebarOpen" class="flex flex-col items-center space-y-2 mt-4">
+
+              <!-- Padre ADMIN -->
+              <div routerLinkActive="ring-2 ring-green-500"
+                [routerLinkActiveOptions]="{ exact: false }"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 text-gray-700"
+                [matTooltip]="link.label | translate" matTooltipPosition="right">
+                <i class="{{ link.icon }} text-lg"></i>
+              </div>
+
+              <div class="w-6 border-t border-gray-300 my-1"></div>
+
+              <!-- Hijos -->
+              <ng-container *ngFor="let child of link.children">
+                <a *ngIf="canShow(child)" [routerLink]="child.route"
+                  routerLinkActive="bg-gray-300 text-green-600"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  class="w-10 h-10 flex items-center justify-center rounded hover:bg-gray-200"
+                  [matTooltip]="child.label | translate" matTooltipPosition="right">
+                  <i class="{{ child.icon }} text-lg"></i>
+                </a>
+              </ng-container>
+
+            </div>
+          </ng-container>
+
+        </ng-container>
+      </nav>
+    </div>
+
+    <!-- Toggle -->
+    <div class="border-t p-3 flex justify-center">
+      <button (click)="onToggleSidebar()"
+        class="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900">
+        <mat-icon>{{ sidebarOpen ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+        <span *ngIf="sidebarOpen">{{ 'MENU.COLLAPSE' | translate }}</span>
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- ===================== -->
+  <!-- MOBILE -->
+  <!-- ===================== -->
+  <button *ngIf="sidebarOpen" class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+    (click)="closeSidebar()"></button>
+
+  <aside *ngIf="sidebarOpen"
+    class="fixed inset-y-0 left-0 w-64 bg-white shadow-md z-50 md:hidden flex flex-col h-full">
+
+    <div class="p-4 text-xl font-bold border-b">
+      {{ 'MENU.MENU' | translate }}
+    </div>
+
+    <nav class="p-4 space-y-2">
+      <ng-container *ngFor="let link of menuLinks">
+
+        <ng-container *ngIf="!link.children && canShow(link)">
+          <a [routerLink]="link.route" routerLinkActive="bg-gray-300 font-semibold"
+            [routerLinkActiveOptions]="{ exact: true }" (click)="closeSidebar()"
+            class="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-200">
+            <i class="{{ link.icon }}"></i>
+            <span>{{ link.label | translate }}</span>
+          </a>
+        </ng-container>
+
+        <ng-container *ngIf="link.children && canShow(link)">
+          <div class="px-3 py-2 font-semibold text-gray-700 flex items-center gap-2">
+            <i class="{{ link.icon }}"></i>
+            {{ link.label | translate }}
+          </div>
+
+          <div class="ml-4 space-y-1">
+            <ng-container *ngFor="let child of link.children">
+              <a *ngIf="canShow(child)" [routerLink]="child.route"
+                routerLinkActive="bg-gray-200 font-semibold"
+                [routerLinkActiveOptions]="{ exact: true }" (click)="closeSidebar()"
+                class="flex items-center gap-2 px-3 py-1 rounded hover:bg-gray-100">
+                <i class="{{ child.icon }} text-sm"></i>
+                <span>{{ child.label | translate }}</span>
+              </a>
+            </ng-container>
+          </div>
+        </ng-container>
+
+      </ng-container>
+    </nav>
+
+  </aside>
+
+</ng-container>
