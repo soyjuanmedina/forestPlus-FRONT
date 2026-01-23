@@ -30,11 +30,12 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'verify-email', component: EmailVerifyComponent },
   {
-    path: 'reset-password', component: ResetPasswordComponent, canActivate: [AuthGuard]
+    path: 'reset-password', component: ResetPasswordComponent
   },
   {
     path: 'profile/change-password',
     component: ResetPasswordComponent,
+    canActivate: [AuthGuard],
     data: { mode: PasswordMode.PROFILE }
   },
 

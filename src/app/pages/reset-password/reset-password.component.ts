@@ -29,7 +29,7 @@ export class ResetPasswordComponent {
   errorMessage = '';
   successMessage = '';
   token: string | null = null;  // Puede ser JWT o UUID
-  mode: PasswordMode = PasswordMode.PROFILE;
+  mode: PasswordMode = PasswordMode.FORCED;
 
   resetForm = this.fb.group( {
     currentPassword: [null],
@@ -43,16 +43,27 @@ export class ResetPasswordComponent {
     private router: Router,
     private route: ActivatedRoute,
   ) {
-    // Detectar token en query param (UUID) o JWT pasado desde login
-    this.token = this.route.snapshot.queryParamMap.get( 'token' ) || localStorage.getItem( 'forestPlus_token' );
+
+    this.token = this.route.snapshot.queryParamMap.get( 'token' );
     const routeMode = this.route.snapshot.data['mode'];
-    if ( routeMode ) {
-      this.mode = routeMode;
+
+    if ( routeMode === PasswordMode.PROFILE ) {
+      this.mode = PasswordMode.PROFILE;
+    } else if ( this.token ) {
+      this.mode = PasswordMode.FORCED;
+    } else {
+      this.mode = PasswordMode.PROFILE;
     }
 
+    const currentPasswordControl = this.resetForm.get( 'currentPassword' );
+
     if ( this.mode === PasswordMode.PROFILE ) {
-      this.resetForm.get( 'currentPassword' )?.setValidators( Validators.required );
+      currentPasswordControl?.setValidators( Validators.required );
+    } else {
+      currentPasswordControl?.clearValidators();
     }
+
+    currentPasswordControl?.updateValueAndValidity();
   }
 
   onCancel () {
@@ -72,7 +83,7 @@ export class ResetPasswordComponent {
       return;
     }
 
-    if ( this.mode === 'PROFILE' ) {
+    if ( this.mode === PasswordMode.PROFILE ) {
 
       if ( !currentPassword ) {
         this.errorMessage = 'Debes introducir la contraseña actual';

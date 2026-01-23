@@ -316,7 +316,8 @@
   "RESET_PASSWORD": {
     "LOGO_ALT": "forest+ Logo",
     "CURRENT_PASSWORD": "Contraseña actual",
-    "TITLE": "Cambiar contraseña",
+    "TITLE_PROFILE": "Cambiar contraseña",
+    "TITLE_FORGOT": "Contraseña olvidada",
     "NEW_PASSWORD_LABEL": "Nueva contraseña",
     "NEW_PASSWORD_PLACEHOLDER": "Ingresa tu nueva contraseña",
     "NEW_PASSWORD_REQUIRED": "La nueva contraseña es requerida",
