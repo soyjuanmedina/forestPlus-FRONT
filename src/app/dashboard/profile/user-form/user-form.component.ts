@@ -69,7 +69,7 @@ export class UserFormComponent implements OnInit {
       name: ['', Validators.required],
       surname: ['', Validators.required],
       secondSurname: [''],
-      email: ['', [Validators.required, Validators.email]],
+      email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
       password: ['', [Validators.minLength( 6 )]],
       role: [null as RolesEnum | null, Validators.required],
       receiveEmails: [false],
@@ -201,9 +201,6 @@ export class UserFormComponent implements OnInit {
           this.userForm.get( 'role' )?.disable();
           this.userForm.get( 'companyId' )?.disable();
           this.userForm.get( 'password' )?.disable();
-        } else {
-          // Admin no puede cambiar email
-          this.userForm.get( 'email' )?.disable();
         }
       },
       error: err => console.error( '❌ Error al cargar usuario', err )
@@ -224,8 +221,6 @@ export class UserFormComponent implements OnInit {
     if ( this.userForm.invalid ) return;
 
     const dto: RegisterUserRequestDto = this.userForm.getRawValue();
-
-    console.log( 'dto', dto );
 
     // Si es COMPANY_ADMIN, forzamos su companyId
     if ( this.isCompanyAdmin ) {
