@@ -80,7 +80,7 @@ export class TreeFormComponent implements OnInit {
       co2AbsorptionAt30: [{ value: this.tree.co2AbsorptionAt30, disabled: !this.isAdmin }, [Validators.min( 0 )]],
       co2AbsorptionAt35: [{ value: this.tree.co2AbsorptionAt35, disabled: !this.isAdmin }, [Validators.min( 0 )]],
       co2AbsorptionAt40: [{ value: this.tree.co2AbsorptionAt40, disabled: !this.isAdmin }, [Validators.min( 0 )]],
-      plantedAt: [{ value: this.tree.plantedAt, disabled: !this.isAdmin }, Validators.required],
+      plantedAt: [{ value: this.tree.plantedAt, disabled: !this.isAdmin }],
       landName: [{ value: this.tree.land?.name, disabled: true }],
       ownerName: [{ value: this.tree.ownerUserName, disabled: true }],
       plannedPlantationId: [{ value: this.tree.plannedPlantation?.id || null, disabled: !this.isAdmin }]

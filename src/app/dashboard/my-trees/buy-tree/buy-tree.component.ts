@@ -119,10 +119,12 @@ export class BuyTreeComponent implements OnInit {
   }
 
   get totalPrice (): number {
+    console.log( 'selectedTreeType', this.selectedTreeType );
     if ( !this.selectedTreeType ) return 0;
 
     const id = this.selectedTreeType.id!;
     const price = this.treePrices[id] ?? this.defaultTreePrice;
+
     return this.quantity * price;
   }
 

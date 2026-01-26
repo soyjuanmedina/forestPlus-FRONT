@@ -40,7 +40,8 @@ export class PlannedPlantationFormComponent implements OnInit {
     plannedDate: '',
     minTrees: 0,
     optimalTrees: undefined,
-    maxTrees: undefined
+    maxTrees: undefined,
+    isActive: false
   };
 
   constructor (

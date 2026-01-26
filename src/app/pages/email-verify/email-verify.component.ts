@@ -30,7 +30,6 @@ export class EmailVerifyComponent implements OnInit {
   ngOnInit (): void {
     this.route.queryParams.subscribe( params => {
       const uuid = params['uuid'];
-      console.log( 'uuid:', uuid );
       if ( uuid ) {
         this.authService.verifyEmail( uuid ).subscribe( {
           next: () => {
