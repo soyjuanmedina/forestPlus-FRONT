@@ -96,6 +96,7 @@
     "NO_ACCOUNT": "¿No tienes cuenta?",
     "REGISTER": "Regístrate",
     "EMAIL_NOT_VERIFIED": "El email no ha sido verificado",
+    "EMAIL_ALREADY_EXISTS": "El email ya existe en nuestra aplicación. Prueba a iniciar sesión",
     "RESEND_EMAIL": "Enviar nuevo correo de verificación",
     "VERIFICATION_EMAIL_SENT": "Se ha enviado un nuevo correo de verificación",
     "VERIFICATION_EMAIL_FAILED": "Ha fallado el envio del correo de verificación",
