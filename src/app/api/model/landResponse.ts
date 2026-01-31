@@ -12,6 +12,7 @@
 export interface LandResponseDto { 
     id?: number;
     name?: string;
+    description?: string;
     location?: string;
     area?: number;
     picture?: string;

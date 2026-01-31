@@ -11,6 +11,7 @@
 
 export interface LandRequestDto { 
     name?: string;
+    description?: string;
     location?: string;
     area?: number;
     userIds?: Array<number>;
