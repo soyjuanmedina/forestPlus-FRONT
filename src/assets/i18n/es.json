@@ -373,7 +373,8 @@
     "ADD_COORDINATE": "Añadir coordenadas",
     "PLANT_TREES": "Plantar árboles",
     "EDIT_TREES": "Editar",
-    "DELETE_COORDINATE": "Eliminar Coordenada"
+    "DELETE_COORDINATE": "Eliminar Coordenada",
+    "DESCRIPTION_LABEL": "Descripción"
   },
   "ADD_COORDINATE": {
     "TITLE": "Añadir coordenada",
