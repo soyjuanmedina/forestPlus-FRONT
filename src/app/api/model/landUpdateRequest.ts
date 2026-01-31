@@ -11,6 +11,7 @@
 
 export interface LandUpdateRequestDto { 
     name?: string;
+    description?: string;
     location?: string;
     area?: number;
     picture?: string;

@@ -9,6 +9,7 @@ api/companyController.service.ts
 api/coordinateController.service.ts
 api/dashboardController.service.ts
 api/landController.service.ts
+api/loopsWebhookController.service.ts
 api/ordersController.service.ts
 api/pingController.service.ts
 api/plannedPlantationController.service.ts

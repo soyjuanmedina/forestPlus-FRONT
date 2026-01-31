@@ -11,15 +11,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Subject, takeUntil, forkJoin } from 'rxjs';
 import { LandService } from '../../../services/land.service';
 import { UserService } from '../../../services/user.service';
-import { TreeService } from '../../../services/tree.service';
 import { CoordinateService } from '../../../services/coordinate.service';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { DomSanitizer } from '@angular/platform-browser';
+import { SecurityContext } from '@angular/core';
 import { LandResponseDto, LandRequestDto, LandUpdateRequestDto, UserResponseDto, CoordinateResponseDto, LandTreeSummaryResponseDto, PlannedPlantationResponseDto } from '../../../api';
-import { PlantTreesModalComponent } from '../../../modals/plant-trees-modal/plant-trees-modal.component';
 import { AddCoordinateModalComponent } from '../../../modals/add-coordinate-modal/add-coordinate-modal.component';
-import { TreeTypeService } from '../../../services/tree-type.service';
 import { PlannedPlantationService } from '../../../services/planned-plantation.service';
 import { PlannedPlantationsListComponent } from '../../../shared/planned-plantations-list/planned-plantations-list.component';
 
@@ -61,10 +58,8 @@ export class LandFormComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
-    private treeService: TreeService,
-    private treeTypeService: TreeTypeService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private sanitizer: DomSanitizer,
   ) { }
 
   ngOnInit () {
@@ -86,6 +81,7 @@ export class LandFormComponent implements OnInit, OnDestroy {
   private initForm () {
     this.landForm = this.fb.group( {
       name: ['', Validators.required],
+      description: [''],
       location: [''],
       area: [0, Validators.required],
       maxTrees: [0]
@@ -97,6 +93,7 @@ export class LandFormComponent implements OnInit, OnDestroy {
       this.land = l;
       this.landForm.patchValue( {
         name: l.name,
+        description: l.description,
         location: l.location,
         area: l.area,
         maxTrees: l.maxTrees
@@ -121,7 +118,17 @@ export class LandFormComponent implements OnInit, OnDestroy {
   onSubmitLand () {
     if ( this.landForm.invalid ) return;
 
-    const formValue = this.landForm.value;
+    const rawValue = this.landForm.value;
+
+    const sanitizedDescription = this.sanitizer.sanitize(
+      SecurityContext.HTML,
+      rawValue.description
+    );
+
+    const formValue = {
+      ...rawValue,
+      description: sanitizedDescription
+    };
     const requests = [];
 
     if ( !this.land?.id ) {

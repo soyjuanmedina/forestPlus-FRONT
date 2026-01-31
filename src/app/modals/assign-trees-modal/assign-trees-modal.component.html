@@ -5,6 +5,8 @@
     {{ 'ASSIGN_TREES.TITLE' | translate }}
   </h2>
 
+  valid: {{form.valid}}
+
   <form [formGroup]="form" (ngSubmit)="submit()">
 
     <!-- Selección de terreno -->

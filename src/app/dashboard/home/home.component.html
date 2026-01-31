@@ -71,13 +71,6 @@
         </li>
       </ul>
     </div>
-    <div class="md:col-span-4 flex justify-end mb-4">
-      <button (click)="buyNewTree()" class="flex items-center gap-2 bg-green-600 text-white py-3 px-4 rounded-xl
-           hover:bg-green-700 disabled:opacity-50 transition">
-        <mat-icon>add</mat-icon>
-        {{ 'MY_TREES.ADD_NEW_TREE' | translate }}
-      </button>
-    </div>
   </div>
 
   <!-- CASO: sin árboles -->
@@ -93,6 +86,17 @@
       class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300">
       {{ 'HOME.NO_TREES.CTA' | translate }}
     </a>
+  </div>
+
+  <!-- BOTÓN SIEMPRE VISIBLE (no admin) -->
+  <div *ngIf="!isAdmin" class="max-w-5xl mx-auto flex justify-end mb-6 mt-6">
+    <button (click)="buyNewTree()" class="flex items-center gap-2 bg-green-600 text-white py-3 px-4 rounded-xl
+             hover:bg-green-700 disabled:opacity-50 transition">
+      <mat-icon>add</mat-icon>
+      {{ (homeKpis?.plantedTrees ?? 0) > 0
+      ? ('MY_TREES.ADD_NEW_TREE' | translate)
+      : ('HOME.NO_TREES.CTA' | translate) }}
+    </button>
   </div>
 
   <!-- PRÓXIMA PLANTACIÓN -->

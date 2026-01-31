@@ -57,6 +57,23 @@
       </div>
     </div>
 
+    <!-- Descripción -->
+    <div class="mb-6">
+      <label class="block text-gray-700 font-medium mb-1">
+        {{ 'LAND_FORM.DESCRIPTION_LABEL' | translate }}
+      </label>
+
+      <textarea formControlName="description" rows="6"
+        class="w-full rounded-xl border border-gray-300 px-4 py-2 shadow-sm
+               focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+        placeholder="{{ 'LAND_FORM.DESCRIPTION_PLACEHOLDER' | translate }}">
+      </textarea>
+
+      <p class="text-xs text-gray-400 mt-1">
+        {{ 'LAND_FORM.DESCRIPTION_HELP' | translate }}
+      </p>
+    </div>
+
     <!-- Botones principales -->
     <div class="flex justify-end gap-4 mt-6">
       <button type="button" (click)="cancel()"
