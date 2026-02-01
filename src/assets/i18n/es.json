@@ -374,7 +374,8 @@
     "PLANT_TREES": "Plantar árboles",
     "EDIT_TREES": "Editar",
     "DELETE_COORDINATE": "Eliminar Coordenada",
-    "DESCRIPTION_LABEL": "Descripción"
+    "DESCRIPTION_LABEL": "Descripción",
+    "DESCRIPTION_HELP": "Puede usar etiquetas html para enriquecer el texto"
   },
   "ADD_COORDINATE": {
     "TITLE": "Añadir coordenada",
