@@ -7,6 +7,7 @@
     "lint": "ng lint",
     "start": "ng serve",
     "start-local": "ng serve --configuration local",
+    "start-prod": "ng serve --configuration production",
     "build": "ng build",
     "build:prod": "ng build --configuration production --base-href /",
     "prod-to-back": "npm run build:prod && robocopy dist\\forest-plus\\browser C:\\Users\\juan.medina\\git\\forestPlus-BACK\\src\\main\\resources\\static /MIR /NFL /NDL /NJH /NJS /NP",
