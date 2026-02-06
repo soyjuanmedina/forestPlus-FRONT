@@ -23,6 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class HomeComponent implements OnInit {
   userName: string = '';
   isAdmin = false;
+  isPreLaunch = true;
   homeKpis?: HomeDashboardKpiResponseDto;
 
   carKm!: number;
@@ -67,18 +68,27 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit (): void {
-    // Suscribimos al usuario actual solo cuando está definido
-    this.userService.user$.pipe(
-      filter( ( user ): user is UserResponseDto => user !== null ),
-      take( 1 )
-    ).subscribe( user => {
-      this.userName = user.name;
-      this.checkRole();
-      this.dashboardService.loadHomeKpis().subscribe( kpis => {
-        this.homeKpis = kpis;
-        this.calculateEquivalences();
+    if ( this.isPreLaunch ) {
+      this.homeKpis = {
+        plantedTrees: 500,
+        pendingTreesCount: 0,
+        annualCo2Compensated: 2500
+      }
+      this.calculateEquivalences();
+    } else {
+      // Suscribimos al usuario actual solo cuando está definido
+      this.userService.user$.pipe(
+        filter( ( user ): user is UserResponseDto => user !== null ),
+        take( 1 )
+      ).subscribe( user => {
+        this.userName = user.name;
+        this.checkRole();
+        this.dashboardService.loadHomeKpis().subscribe( kpis => {
+          this.homeKpis = kpis;
+          this.calculateEquivalences();
+        } );
       } );
-    } );
+    }
   }
 
 
