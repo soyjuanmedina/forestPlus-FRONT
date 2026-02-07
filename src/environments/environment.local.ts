@@ -3,6 +3,7 @@ export const environment = {
   envColor: '#ff9800',
   production: false,
   devAccessKey: 'fp',
+  isPreLaunch: true,
   apiBaseUrl: 'http://localhost:8080',
   redsysUrl: 'https://sis-t.redsys.es:25443/sis/realizarPago', // test URL
   merchantCode: '123456789', // your test merchant code

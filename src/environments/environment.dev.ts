@@ -3,6 +3,7 @@ export const environment = {
   envColor: '#ff9800',
   production: false,
   devAccessKey: 'fp',
+  isPreLaunch: true,
   apiBaseUrl: 'https://forestplusapp.com/development',
   redsysUrl: 'https://sis.redsys.es/sis/realizarPago', // production URL
   merchantCode: '987654321', // production merchant code

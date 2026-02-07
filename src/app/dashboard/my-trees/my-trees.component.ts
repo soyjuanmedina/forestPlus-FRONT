@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
+import { environment } from '../../../environments/environment';
 
 @Component( {
   selector: 'app-my-trees',
@@ -22,7 +23,7 @@ export class MyTreesComponent implements OnInit {
   trees: TreeResponseDto[] = [];
   filteredTrees: TreeResponseDto[] = [];
   filterText = '';
-  isPreLaunch = true;
+  isPreLaunch = environment.isPreLaunch;
   currentPage = 0;
   pageSize = 10;
   totalPages = 1;

@@ -8,6 +8,7 @@ import { filter, take } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { environment } from '../../../environments/environment';
 
 @Component( {
   selector: 'app-home',
@@ -23,7 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class HomeComponent implements OnInit {
   userName: string = '';
   isAdmin = false;
-  isPreLaunch = true;
+  isPreLaunch = environment.isPreLaunch;
   homeKpis?: HomeDashboardKpiResponseDto;
 
   carKm!: number;
