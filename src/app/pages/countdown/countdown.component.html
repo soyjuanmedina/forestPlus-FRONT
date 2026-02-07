@@ -1,0 +1,21 @@
+<div class="flex gap-4 text-center">
+  <div>
+    <div class="text-3xl font-bold">{{ remaining.days }}</div>
+    <div class="text-sm text-gray-500">Days</div>
+  </div>
+
+  <div>
+    <div class="text-3xl font-bold">{{ remaining.hours | number:'2.0' }}</div>
+    <div class="text-sm text-gray-500">Hours</div>
+  </div>
+
+  <div>
+    <div class="text-3xl font-bold">{{ remaining.minutes | number:'2.0' }}</div>
+    <div class="text-sm text-gray-500">Minutes</div>
+  </div>
+
+  <div>
+    <div class="text-3xl font-bold">{{ remaining.seconds | number:'2.0' }}</div>
+    <div class="text-sm text-gray-500">Seconds</div>
+  </div>
+</div>
