@@ -9,6 +9,7 @@ api/companyController.service.ts
 api/coordinateController.service.ts
 api/dashboardController.service.ts
 api/landController.service.ts
+api/loopsController.service.ts
 api/loopsWebhookController.service.ts
 api/ordersController.service.ts
 api/pingController.service.ts
@@ -32,6 +33,7 @@ model/companyUpdateRequest.ts
 model/coordinateRequest.ts
 model/coordinateResponse.ts
 model/coordinateUpdateRequest.ts
+model/emailDto.ts
 model/forgotPasswordRequest.ts
 model/homeDashboardKpiResponse.ts
 model/landRequest.ts

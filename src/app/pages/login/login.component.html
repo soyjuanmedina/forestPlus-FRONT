@@ -1,12 +1,5 @@
-<div *ngIf="showPreLaunch" class="min-h-screen flex items-center justify-center">
-  <div class="bg-white rounded-xl p-6 shadow-md text-center">
-    <h2 class="text-xl font-semibold mb-4">
-      {{ 'Ya falta menos para el lanzamiento' | translate }}
-    </h2>
+<app-countdown *ngIf="showPreLaunch" [targetDate]="preLaunchEndDate"></app-countdown>
 
-    <app-countdown [targetDate]="preLaunchEndDate"></app-countdown>
-  </div>
-</div>
 
 
 <div class="flex flex-col items-center justify-start min-h-screen bg-gray-100 pt-16"
