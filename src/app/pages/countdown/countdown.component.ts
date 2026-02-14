@@ -6,6 +6,7 @@ import { LoopsService } from '../../services/loops.service';
 @Component( {
   selector: 'app-countdown',
   templateUrl: './countdown.component.html',
+  styleUrls: ['./countdown.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule]
