@@ -19,4 +19,8 @@ export class PlannedPlantationsListComponent {
 
   /** Acciones (opcionales) */
   @Output() edit = new EventEmitter<PlannedPlantationResponseDto>();
+
+  get activePlantations (): PlannedPlantationResponseDto[] {
+    return this.plantations?.filter( p => p.isActive ) || [];
+  }
 }

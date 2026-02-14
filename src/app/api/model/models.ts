@@ -7,6 +7,7 @@ export * from './companyUpdateRequest';
 export * from './coordinateRequest';
 export * from './coordinateResponse';
 export * from './coordinateUpdateRequest';
+export * from './emailDto';
 export * from './forgotPasswordRequest';
 export * from './homeDashboardKpiResponse';
 export * from './landRequest';

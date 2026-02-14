@@ -1,0 +1,109 @@
+<!-- CONTENEDOR PRINCIPAL -->
+<div class="min-h-screen flex flex-col items-center justify-center p-4">
+
+  <!-- Contenedor del contador -->
+  <section class="w-full max-w-3xl p-6 rounded-2xl
+           bg-white/20 backdrop-blur-md
+           shadow-xl text-center">
+
+    <!-- LOGO -->
+    <div class="flex justify-center mb-8">
+      <img src="assets/logo_forestplus_color.png" alt="forest+" class="logo-fade-in" />
+    </div>
+
+    <!-- Título -->
+    <p class="text-sm md:text-base mb-6 opacity-90 mb-3">
+      Sé de las primeras personas en probar <b>forest+</b>
+    </p>
+
+    <!-- CONTADOR -->
+    <div class="flex items-end justify-center gap-6 text-gray-700 mb-3">
+
+      <!-- DÍAS -->
+      <div class="text-center">
+        <div class="text-4xl font-light tracking-wide">
+          {{ remaining.days | number:'2.0' }}
+        </div>
+        <div class="text-xs mt-1 text-gray-400 tracking-widest">
+          D
+        </div>
+      </div>
+
+      <span class="text-3xl font-light text-gray-400 mb-4">·</span>
+
+      <!-- HORAS -->
+      <div class="text-center">
+        <div class="text-4xl font-light tracking-wide">
+          {{ remaining.hours | number:'2.0' }}
+        </div>
+        <div class="text-xs mt-1 text-gray-400 tracking-widest">
+          H
+        </div>
+      </div>
+
+      <span class="text-3xl font-light text-gray-400 mb-4">·</span>
+
+      <!-- MINUTOS -->
+      <div class="text-center">
+        <div class="text-4xl font-light tracking-wide">
+          {{ remaining.minutes | number:'2.0' }}
+        </div>
+        <div class="text-xs mt-1 text-gray-400 tracking-widest">
+          M
+        </div>
+      </div>
+
+      <span class="text-3xl font-light text-gray-400 mb-4">·</span>
+
+      <!-- SEGUNDOS -->
+      <div class="text-center">
+        <div class="text-4xl font-light tracking-wide">
+          {{ remaining.seconds | number:'2.0' }}
+        </div>
+        <div class="text-xs mt-1 text-gray-400 tracking-widest">
+          S
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Texto -->
+    <p class="text-sm md:text-base mb-6 opacity-90 mb-3">
+      Dejanos tu email y te avisaremos en cuanto abramos acceso
+    </p>
+
+    <!-- Input Email -->
+
+    <form [formGroup]="emailForm" (ngSubmit)="onSubmit()" class="flex items-center w-full max-w-md
+         bg-gray-200 rounded-full p-1 mx-auto">
+
+      <input type="email" placeholder="tu@email.com" formControlName="email" class="flex-1 bg-transparent px-5 py-3
+           text-gray-700 placeholder-gray-400
+           outline-none" required />
+
+      <button type="submit" class="bg-emerald-400 hover:bg-emerald-500
+           text-white font-medium
+           px-6 py-3 rounded-full
+           transition-colors">
+        Quiero acceso
+      </button>
+
+    </form>
+
+
+
+
+    <!-- Mensaje de éxito -->
+    <p *ngIf="successMessage" class="mt-3">{{ successMessage }}</p>
+
+    <!-- Mensaje de error -->
+    <p *ngIf="submitted && emailForm.controls['email'].invalid" class="text-red-200 mt-1 text-sm">
+      Por favor ingresa un email válido
+    </p>
+    <p *ngIf="errorMessage" class="text-red-200 mt-1 text-sm">
+      {{ errorMessage }}
+    </p>
+
+  </section>
+
+</div>

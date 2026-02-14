@@ -7,6 +7,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { FormsModule } from '@angular/forms';
+import { CountdownComponent } from '../countdown/countdown.component';
 
 @Component( {
   selector: 'app-login',
@@ -16,7 +17,8 @@ import { FormsModule } from '@angular/forms';
     ReactiveFormsModule,
     FormsModule,
     TranslateModule,
-    RouterModule
+    RouterModule,
+    CountdownComponent
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
@@ -32,6 +34,7 @@ export class LoginComponent {
   forgotMode = false;
   accessKey = '';
   error = false;
+  preLaunchEndDate = new Date( environment.launchDate );
 
 
   constructor (
@@ -57,6 +60,10 @@ export class LoginComponent {
     this.forgotMode = !this.forgotMode;
     this.success = false;
     this.loginError = null;
+  }
+
+  get showPreLaunch (): boolean {
+    return this.preLaunchEndDate.getTime() > Date.now();
   }
 
   onSubmit () {
