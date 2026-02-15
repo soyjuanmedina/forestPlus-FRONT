@@ -9,9 +9,9 @@
  */
 
 
-export interface RedsysNotificationRequestDto { 
-    ds_Signature?: string;
-    ds_Order?: string;
-    ds_Response?: string;
+export interface RedsysNotificationRequestDto {
+  ds_Order?: string;
+  ds_Signature?: string;
+  ds_Response?: string;
 }
 
