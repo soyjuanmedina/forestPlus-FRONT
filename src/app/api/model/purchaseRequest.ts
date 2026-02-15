@@ -13,6 +13,5 @@ export interface PurchaseRequestDto {
     landId?: number;
     treeTypeId?: number;
     quantity?: number;
-    pricePerUnit?: number;
 }
 

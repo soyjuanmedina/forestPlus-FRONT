@@ -163,8 +163,7 @@ export class BuyTreeComponent implements OnInit {
     const request: PurchaseRequestDto = {
       landId: this.selectedLand,
       treeTypeId: this.selectedTreeType.id!,
-      quantity: this.quantity,
-      pricePerUnit: this.unitPrice
+      quantity: this.quantity
     };
 
     this.purchaseService.purchaseTrees( request ).subscribe( {
