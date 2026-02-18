@@ -108,7 +108,7 @@
   },
   "HOME": {
     "TITLE": "Bienvenido a forest+",
-    "LINES": "Aquí puedes ver el impacto positivo de tu contribución.<br>Cada árbol cuenta para un futuro más sostenible.",
+    "LINES": "Desde aquí puedes ver el impacto positivo de tu contribución.<br>Cada árbol cuenta para un futuro más sostenible.",
     "PENDING_TREES_WARNING": "⚠️ Tienes {{count}} árbol(es) pendiente(s) de plantar.",
     "PLANTED_TREES": "Árboles plantados",
     "PLANNED_TREES": "Árboles previstos",
