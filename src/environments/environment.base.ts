@@ -4,7 +4,6 @@ export const baseEnvironment = {
   envColor: '#ff9800',
   launchDate: "2026-05-15T16:40:35",
   apiBaseUrl: 'https://forestplusapp.com',
-  isPreLaunch: true,
   redsysUrl: 'https://sis.redsys.es/sis/realizarPago', // production URL
   merchantCode: '987654321', // production merchant code
   terminal: '1',

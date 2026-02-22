@@ -23,7 +23,6 @@ export class MyTreesComponent implements OnInit {
   trees: TreeResponseDto[] = [];
   filteredTrees: TreeResponseDto[] = [];
   filterText = '';
-  isPreLaunch = environment.isPreLaunch;
   currentPage = 0;
   pageSize = 10;
   totalPages = 1;

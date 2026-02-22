@@ -24,17 +24,20 @@ import { environment } from '../../../environments/environment';
 export class HomeComponent implements OnInit {
   userName: string = '';
   isAdmin = false;
-  isPreLaunch = environment.isPreLaunch;
   homeKpis?: HomeDashboardKpiResponseDto;
 
   carKm!: number;
   planeKm !: number;
   homes!: number;
+  totalCarKm!: number;
+  totalPlaneKm !: number;
+  totalHomes!: number;
   CO2_EQUIVALENCES = {
     CAR_KG_PER_KM: 0.12,
     PLANE_KG_PER_KM: 0.10,
     HOME_YEAR_KG: 1800
   };
+  averageAnnualCo2At20PerTree = 12.85;
 
   constructor (
     private userService: UserService,
@@ -64,33 +67,44 @@ export class HomeComponent implements OnInit {
     ).toFixed( 1 );
   }
 
+  calculateTotalEquivalences (): void {
+    const totalAnnualCo2 = this.totalOptimalTrees * ( this.homeKpis?.annualCo2Compensated ?? 0 );
+
+    this.totalCarKm = Math.round(
+      totalAnnualCo2 / this.CO2_EQUIVALENCES.CAR_KG_PER_KM
+    );
+
+    this.totalPlaneKm = Math.round(
+      totalAnnualCo2 / this.CO2_EQUIVALENCES.PLANE_KG_PER_KM
+    );
+
+    this.totalHomes = +(
+      totalAnnualCo2 / this.CO2_EQUIVALENCES.HOME_YEAR_KG
+    ).toFixed( 1 );
+  }
+
   buyNewTree () {
     this.router.navigate( ['/buy-tree'] );
   }
 
   ngOnInit (): void {
-    if ( this.isPreLaunch ) {
-      this.homeKpis = {
-        plantedTrees: 500,
-        pendingTreesCount: 0,
-        annualCo2Compensated: 2500
-      }
-      this.calculateEquivalences();
-    } else {
-      // Suscribimos al usuario actual solo cuando está definido
-      this.userService.user$.pipe(
-        filter( ( user ): user is UserResponseDto => user !== null ),
-        take( 1 )
-      ).subscribe( user => {
-        this.userName = user.name;
-        this.checkRole();
-        this.dashboardService.loadHomeKpis().subscribe( kpis => {
-          this.homeKpis = kpis;
-          this.calculateEquivalences();
-        } );
+    // Suscribimos al usuario actual solo cuando está definido
+    this.userService.user$.pipe(
+      filter( ( user ): user is UserResponseDto => user !== null ),
+      take( 1 )
+    ).subscribe( user => {
+      this.userName = user.name;
+      this.checkRole();
+      this.dashboardService.loadHomeKpis().subscribe( kpis => {
+        this.homeKpis = kpis;
+        this.calculateEquivalences();
+        this.calculateTotalEquivalences();
       } );
-    }
+    } );
   }
 
-
+  get totalOptimalTrees (): number {
+    return this.homeKpis?.plannedPlantations
+      ?.reduce( ( sum, plantation ) => sum + ( plantation.optimalTrees ?? 0 ), 0 ) ?? 0;
+  }
 }
