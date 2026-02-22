@@ -2,6 +2,7 @@ export const baseEnvironment = {
   name: 'default',
   production: false,
   envColor: '#ff9800',
+  canBuy: false,
   launchDate: "2026-05-15T16:40:35",
   apiBaseUrl: 'https://forestplusapp.com',
   redsysUrl: 'https://sis.redsys.es/sis/realizarPago', // production URL

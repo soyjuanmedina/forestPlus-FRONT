@@ -26,6 +26,7 @@ export class MyTreesComponent implements OnInit {
   currentPage = 0;
   pageSize = 10;
   totalPages = 1;
+  canBuy = environment.canBuy;
 
   constructor (
     private treeService: TreeService,

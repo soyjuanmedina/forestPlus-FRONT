@@ -38,6 +38,7 @@ export class HomeComponent implements OnInit {
     HOME_YEAR_KG: 1800
   };
   averageAnnualCo2At20PerTree = 12.85;
+  canBuy = environment.canBuy
 
   constructor (
     private userService: UserService,

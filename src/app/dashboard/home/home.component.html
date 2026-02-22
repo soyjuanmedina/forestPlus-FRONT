@@ -96,7 +96,7 @@
   </div>
 
   <!-- KPIs GENERALES -->
-  <div class="mt-4">
+  <div class="mt-4" *ngIf="!isAdmin">
     <h4 class="text-4xl font-extrabold text-green-800">{{ 'HOME.OUR_CONTRIBUTION' | translate
       }}</h4>
 
@@ -163,7 +163,7 @@
   </div>
 
   <!-- BOTÓN NO VISIBLE TRAS EL LANZAMIENTO PONER EL *ngIf="!isAdmin"  -->
-  <div *ngIf="!isAdmin" class="max-w-5xl mx-auto flex justify-end mb-6 mt-6">
+  <div *ngIf="!isAdmin && canBuy" class="max-w-5xl mx-auto flex justify-end mb-6 mt-6">
     <button (click)="buyNewTree()" class="flex items-center gap-2 bg-green-600 text-white py-3 px-4 rounded-xl
              hover:bg-green-700 disabled:opacity-50 transition">
       <mat-icon>add</mat-icon>
