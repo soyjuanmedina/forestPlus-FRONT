@@ -13,6 +13,8 @@ export interface PlannedPlantationKpiResponseDto {
     plantationId?: number;
     plantationName?: string;
     minTrees?: number;
+    optimalTrees?: number;
+    maxTrees?: number;
     soldTrees?: number;
 }
 

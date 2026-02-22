@@ -108,6 +108,8 @@
   },
   "HOME": {
     "TITLE": "Bienvenido a forest+",
+    "YOUR_CONTRIBUTION": "Tu contribución",
+    "OUR_CONTRIBUTION": "Nuestro proyecto",
     "LINES": "Aquí puedes ver el impacto positivo de tu contribución.<br>Cada árbol cuenta para un futuro más sostenible.",
     "PENDING_TREES_WARNING": "⚠️ Tienes {{count}} árbol(es) pendiente(s) de plantar.",
     "PLANTED_TREES": "Árboles plantados",
@@ -116,6 +118,7 @@
       "TITLE": "Impacto ambiental",
       "VALUE": "{{value}} kg CO₂ / año",
       "INTRO": "Enhorabuena, con tu actuación estás contribuyendo a compensar el CO₂ producido por:",
+      "OUR_INTRO": "Cuando realicemos nuestro proyecto estaremos contribuyendo a compensar el CO₂ producido por:",
       "PRELAUNCH": "Con nuestra primera actuación vamos a contribuir a compensar el CO₂ producido por:",
       "CAR": "{{value}} km en coche",
       "PLANE": "{{value}} km en avión",

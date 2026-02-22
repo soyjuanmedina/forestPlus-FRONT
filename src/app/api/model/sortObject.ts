@@ -11,7 +11,7 @@
 
 export interface SortObjectDto { 
     empty?: boolean;
-    unsorted?: boolean;
     sorted?: boolean;
+    unsorted?: boolean;
 }
 

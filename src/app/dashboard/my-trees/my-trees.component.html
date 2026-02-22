@@ -1,5 +1,5 @@
 <mat-card class="p-4">
-  <div class="flex justify-between items-center mb-4" *ngIf="!isPreLaunch">
+  <div class="flex justify-between items-center mb-4">
     <input type="text" placeholder="{{ 'MY_TREES.SEARCH_PLACEHOLDER' | translate }}"
       [(ngModel)]="filterText" (keyup)="applyFilter()"
       class="w-64 rounded-xl border border-gray-300 px-4 py-2 shadow-sm
@@ -10,10 +10,6 @@
       <mat-icon>add</mat-icon>
       {{ 'MY_TREES.BUY_NEW_TREE' | translate }}
     </button>
-  </div>
-
-  <div class="flex justify-between items-center mb-4" *ngIf="isPreLaunch">
-    {{ 'MY_TREES.PRELAUNCH' | translate }}
   </div>
 
   <div class="flex flex-col gap-4">

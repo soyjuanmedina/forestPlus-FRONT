@@ -15,68 +15,69 @@
 
 <section class="planted-trees p-8 max-w-5xl mx-auto" *ngIf="!isAdmin">
 
-  <!-- GRID KPIs -->
-  <div *ngIf="homeKpis?.plantedTrees! > 0" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+  <div *ngIf="homeKpis?.plantedTrees! > 0">
+    <h4 class="text-4xl font-extrabold text-green-800">{{ 'HOME.YOUR_CONTRIBUTION' | translate }}
+    </h4>
 
-    <!-- KPI ÁRBOLES -->
-    <div class="bg-white shadow-md rounded-xl p-6 flex items-center space-x-4" ngi>
-      <div class="flex-shrink-0">
-        <i class="fas fa-tree text-green-500 text-4xl"></i>
+    <!-- GRID KPIs -->
+    <div *ngIf="homeKpis?.plantedTrees! > 0" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+      <!-- KPI ÁRBOLES -->
+      <div class="bg-white shadow-md rounded-xl p-6 flex items-center space-x-4" ngi>
+        <div class="flex-shrink-0">
+          <i class="fas fa-tree text-green-500 text-4xl"></i>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-3xl font-extrabold text-gray-800">{{ homeKpis?.plantedTrees }}</span>
+          <p class="text-green-600 font-medium mt-1">
+            {{ ('HOME.PLANTED_TREES' | translate)
+            }}
+          </p>
+        </div>
       </div>
 
-      <div class="flex flex-col">
-        <span class="text-3xl font-extrabold text-gray-800">{{ homeKpis?.plantedTrees }}</span>
-        <p class="text-green-600 font-medium mt-1">
-          {{ isPreLaunch
-          ? ('HOME.PLANNED_TREES' | translate)
-          : ('HOME.PLANTED_TREES' | translate)
+      <!-- KPI COMPENSACIÓN CO₂ -->
+      <div *ngIf="(homeKpis?.annualCo2Compensated ?? 0) > 0"
+        class="md:col-span-3 bg-white rounded-xl shadow-md p-6">
+        <p class="text-sm text-gray-500 mb-1">
+          {{ 'HOME.ENVIRONMENTAL_IMPACT.TITLE' | translate }}
+        </p>
+
+        <p class="text-3xl font-bold text-green-700 mb-2">
+          {{ 'HOME.ENVIRONMENTAL_IMPACT.VALUE' | translate:{ value: homeKpis?.annualCo2Compensated }
           }}
         </p>
+
+        <p class="text-sm text-gray-600 mb-4">
+          {{ ('HOME.ENVIRONMENTAL_IMPACT.INTRO' | translate)
+          }}
+        </p>
+
+        <ul class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm text-gray-700">
+          <li class="flex items-center gap-2">
+            <span>🚗</span>
+            <span>{{ 'HOME.ENVIRONMENTAL_IMPACT.CAR' | translate:{ value: carKm } }}</span>
+          </li>
+
+          <li class="flex items-center gap-2">
+            <span>✈️</span>
+            <span>{{ 'HOME.ENVIRONMENTAL_IMPACT.PLANE' | translate:{ value: planeKm } }}</span>
+          </li>
+
+          <li class="flex items-center gap-2">
+            <span>🏠</span>
+            <span *ngIf="homes >= 1">
+              {{ 'HOME.ENVIRONMENTAL_IMPACT.HOMES' | translate:{ value: homes } }}
+            </span>
+            <span *ngIf="homes < 1">
+              {{ 'HOME.ENVIRONMENTAL_IMPACT.HOME_PERCENT' | translate:{ value: homes * 100 |
+              number:'1.0-0' } }}
+            </span>
+          </li>
+        </ul>
       </div>
     </div>
 
-    <!-- KPI COMPENSACIÓN CO₂ -->
-    <div *ngIf="(homeKpis?.annualCo2Compensated ?? 0) > 0"
-      class="md:col-span-3 bg-white rounded-xl shadow-md p-6">
-      <p class="text-sm text-gray-500 mb-1">
-        {{ 'HOME.ENVIRONMENTAL_IMPACT.TITLE' | translate }}
-      </p>
-
-      <p class="text-3xl font-bold text-green-700 mb-2">
-        {{ 'HOME.ENVIRONMENTAL_IMPACT.VALUE' | translate:{ value: homeKpis?.annualCo2Compensated }
-        }}
-      </p>
-
-      <p class="text-sm text-gray-600 mb-4">
-        {{ isPreLaunch
-        ? ('HOME.ENVIRONMENTAL_IMPACT.PRELAUNCH' | translate)
-        : ('HOME.ENVIRONMENTAL_IMPACT.INTRO' | translate)
-        }}
-      </p>
-
-      <ul class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm text-gray-700">
-        <li class="flex items-center gap-2">
-          <span>🚗</span>
-          <span>{{ 'HOME.ENVIRONMENTAL_IMPACT.CAR' | translate:{ value: carKm } }}</span>
-        </li>
-
-        <li class="flex items-center gap-2">
-          <span>✈️</span>
-          <span>{{ 'HOME.ENVIRONMENTAL_IMPACT.PLANE' | translate:{ value: planeKm } }}</span>
-        </li>
-
-        <li class="flex items-center gap-2">
-          <span>🏠</span>
-          <span *ngIf="homes >= 1">
-            {{ 'HOME.ENVIRONMENTAL_IMPACT.HOMES' | translate:{ value: homes } }}
-          </span>
-          <span *ngIf="homes < 1">
-            {{ 'HOME.ENVIRONMENTAL_IMPACT.HOME_PERCENT' | translate:{ value: homes * 100 |
-            number:'1.0-0' } }}
-          </span>
-        </li>
-      </ul>
-    </div>
   </div>
 
   <!-- CASO: sin árboles -->
@@ -94,8 +95,75 @@
     </a>
   </div>
 
+  <!-- KPIs GENERALES -->
+  <div class="mt-4">
+    <h4 class="text-4xl font-extrabold text-green-800">{{ 'HOME.OUR_CONTRIBUTION' | translate
+      }}</h4>
+
+    <!-- GRID KPIs -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+      <!-- KPI ÁRBOLES -->
+      <div class="bg-white shadow-md rounded-xl p-6 flex items-center space-x-4" ngi>
+        <div class="flex-shrink-0">
+          <i class="fas fa-tree text-green-500 text-4xl"></i>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-3xl font-extrabold text-gray-800">{{ totalOptimalTrees }}</span>
+          <p class="text-green-600 font-medium mt-1">
+            {{ ('HOME.PLANTED_TREES' | translate)
+            }}
+          </p>
+        </div>
+      </div>
+
+      <!-- KPI COMPENSACIÓN CO₂ -->
+      <div *ngIf="(totalOptimalTrees ?? 0) > 0"
+        class="md:col-span-3 bg-white rounded-xl shadow-md p-6">
+        <p class="text-sm text-gray-500 mb-1">
+          {{ 'HOME.ENVIRONMENTAL_IMPACT.TITLE' | translate }}
+        </p>
+
+        <p class="text-3xl font-bold text-green-700 mb-2">
+          {{ 'HOME.ENVIRONMENTAL_IMPACT.VALUE' | translate:{ value: totalOptimalTrees *
+          averageAnnualCo2At20PerTree }
+          }}
+        </p>
+
+        <p class="text-sm text-gray-600 mb-4">
+          {{ ('HOME.ENVIRONMENTAL_IMPACT.OUR_INTRO' | translate)
+          }}
+        </p>
+
+        <ul class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm text-gray-700">
+          <li class="flex items-center gap-2">
+            <span>🚗</span>
+            <span>{{ 'HOME.ENVIRONMENTAL_IMPACT.CAR' | translate:{ value: totalCarKm } }}</span>
+          </li>
+
+          <li class="flex items-center gap-2">
+            <span>✈️</span>
+            <span>{{ 'HOME.ENVIRONMENTAL_IMPACT.PLANE' | translate:{ value: totalPlaneKm } }}</span>
+          </li>
+
+          <li class="flex items-center gap-2">
+            <span>🏠</span>
+            <span *ngIf="totalHomes >= 1">
+              {{ 'HOME.ENVIRONMENTAL_IMPACT.HOMES' | translate:{ value: totalHomes } }}
+            </span>
+            <span *ngIf="totalHomes < 1">
+              {{ 'HOME.ENVIRONMENTAL_IMPACT.HOME_PERCENT' | translate:{ value: totalHomes * 100 |
+              number:'1.0-0' } }}
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
   <!-- BOTÓN NO VISIBLE TRAS EL LANZAMIENTO PONER EL *ngIf="!isAdmin"  -->
-  <div *ngIf="!isAdmin && !isPreLaunch" class="max-w-5xl mx-auto flex justify-end mb-6 mt-6">
+  <div *ngIf="!isAdmin" class="max-w-5xl mx-auto flex justify-end mb-6 mt-6">
     <button (click)="buyNewTree()" class="flex items-center gap-2 bg-green-600 text-white py-3 px-4 rounded-xl
              hover:bg-green-700 disabled:opacity-50 transition">
       <mat-icon>add</mat-icon>
